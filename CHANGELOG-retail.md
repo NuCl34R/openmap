@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+### Fixed
+
+- **"Your arrow" off also hides the yellow location ping** when the world map opens or changes
+  zones. Turning it on again restores the normal arrow and ping; party markers stay visible (#78).
+
 ## v0.8.3 (2026-11-09)
 
 ### New

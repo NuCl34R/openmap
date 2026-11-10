@@ -445,11 +445,24 @@ end
 -- with it) and ours. Blizzard sets its level again as it reuses the pin, so it's checked each tick
 -- and your own blip on it sized away while your arrow is off (Your arrow): the pin draws the party
 -- too, so it stays. Blizzard sizes it again on every zoom step (SynchronizePinSizes): hooked, so it
--- goes at once, and each tick as well where there's no such step to hook
+-- goes at once, and each tick as well where there's no such step to hook. Its location ping is
+-- separate from the blip's size: stop it on opening and whenever Blizzard starts it again (#78).
 local BLIP_GONE = 0.01            -- (a size too small to draw: 0 is taken as the texture's own size, a huge arrow)
 local blipHidden = setmetatable({}, { __mode = "k" })
 local blipHooked = setmetatable({}, { __mode = "k" })
+local pingHooked = setmetatable({}, { __mode = "k" })
 local function PlayerBlip(pin, shown)
+	if type(pin.StartPlayerPing) == "function" and type(pin.StopPlayerPing) == "function" then
+		if not pingHooked[pin] then
+			pingHooked[pin] = true
+			hooksecurefunc(pin, "StartPlayerPing", function(self)
+				if mod.db.playerArrow == false and not (self:IsProtected() and InCombatLockdown()) then
+					self:StopPlayerPing()
+				end
+			end)
+		end
+		if not shown then pin:StopPlayerPing() end
+	end
 	if not pin.SetPinSize then return end
 	if not shown then
 		if not blipHooked[pin] and type(pin.SynchronizePinSizes) == "function" then
@@ -1353,6 +1366,7 @@ function mod:Refresh()
 	end
 	if S.RefreshRoutes then S.RefreshRoutes() end
 	S.SetPlayerHidden(self.db.playerArrow == false)
+	if active and map:IsShown() then RaisePlayer() end
 	S.SetPlacesFrom(self.db.iconsFrom)
 	S.SetFoundOnly(self.db.foundOnly)
 	if self.RefreshFlightsFound then self.RefreshFlightsFound() end
