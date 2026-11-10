@@ -209,6 +209,55 @@ class FriendsTests(unittest.TestCase):
         self.assertEqual(self.lua.eval("#pins"), 0)
         self.assertIn("1429:1", self.lua.eval("(function() local t = {} for _, d in ipairs(badges) do t[#t + 1] = d.map .. ':' .. #d.people end return table.concat(t, ',') end)()"))
 
+    def test_grouped_guildmates_are_hidden_by_guid(self):
+        self.lua.execute("""
+            ns.Client = 'Forever'
+            FOREIGN_SERVER_LABEL = ''
+            GetNormalizedRealmName = function() return 'CAMWOWEU5Realm12PvP' end
+            guild = {
+                { 'Mara Stonefist-CAMWOWEU5Realm12PvP', 30, 'Elwynn Forest', true, 'MAGE', 'Player-1-0002' },
+                { 'Mara Emberfall-CAMWOWEU5Realm12PvP', 30, 'Elwynn Forest', true, 'MAGE', 'Player-1-0003' },
+                { 'Edda Silverleaf-CAMWOWEU5Realm12PvP', 30, 'Elwynn Forest', true, 'MAGE', 'Player-1-0004' },
+            }
+            IsInGroup = function() return group ~= nil end
+            UnitInParty = function(unit) return group == 'party' and unit == 'party1' end
+            UnitInRaid = function(unit) if group == 'raid' and unit == 'raid1' then return 1 end end
+            C_PartyInfo = { IsGUIDInGroup = function(guid)
+                return group ~= nil and (guid == 'Player-1-0002' or guid == 'Player-1-0004')
+            end }
+            function SetGroup(kind)
+                group = kind
+                Fire('GROUP_ROSTER_UPDATE')
+            end
+            function BadgeNames()
+                local names = {}
+                for _, badge in ipairs(badges) do
+                    for _, person in ipairs(badge.people) do
+                        if person.guild then names[#names + 1] = person.name end
+                    end
+                end
+                table.sort(names)
+                return table.concat(names, ',')
+            end
+            Fire('GUILD_ROSTER_UPDATE')
+            Fire('CHAT_MSG_ADDON', 'OpenMapLoc', 'L1\\t1429\\t0.3\\t0.4\\tMAGE\\t30', 'GUILD', 'Mara-Stonefist-CAMWOWEU5Realm4PvP')
+        """)
+        self.run_(3)
+        sender = "Mara-Stonefist-CAMWOWEU5Realm4PvP"
+        self.assertEqual(self.lua.eval("pins[1].full"), sender)
+        self.assertIn("Edda Silverleaf", self.lua.eval("BadgeNames()").split(","))
+
+        for kind in ("party", "raid"):
+            with self.subTest(group=kind):
+                self.lua.eval("SetGroup")(kind)
+                self.run_(3)
+                self.assertEqual((self.lua.eval("#pins"), self.lua.eval("BadgeNames()")), (0, "Mara Emberfall"))
+
+                self.lua.eval("SetGroup")(None)
+                self.run_(3)
+                self.assertEqual(self.lua.eval("pins[1].full"), sender)
+                self.assertIn("Edda Silverleaf", self.lua.eval("BadgeNames()").split(","))
+
     def test_no_dot_or_badge_for_yourself_however_your_realm_is_written(self):
         # the guild writes your realm its own way (WoW Forever: "CAMWOWUS1Realm2PvP"); your entry has your GUID
         self.lua.execute("""

@@ -44,6 +44,7 @@ local me = {}                       -- (this file's events' owner: Pins.lua has 
 local map
 local dotSet, zoneSet
 local roster = {}                   -- full name -> { name, class, level, area, guild, friend }: online now
+local guildGuids = {}                -- Forever character name -> guild GUID, or false if ambiguous
 local friends = {}                  -- full name -> { whisper = name } or { bn = gameAccountID }: online now
 local known = {}                    -- full name -> true: friends who use OpenMap
 local live = {}                     -- full name -> { map, x, y, class, level, guild, at }: those sharing
@@ -135,8 +136,30 @@ local function IsMe(full)
 	return false
 end
 
-local function InGroup(full)
+-- Addon messages carry a name without a GUID. Match both parts of a Forever
+-- name when the sender and guild roster use different separators or realm labels.
+local function GuildNameKey(name)
+	if ns.Client ~= "Forever" then return end
+	local character, suffix = name:match("^(.+)%-([^%-]+)$")
+	if suffix then
+		local label = Plain(suffix)
+		local ownRealm = Safe.Call(GetNormalizedRealmName) or Safe.Call(GetRealmName)
+		if label:match("^camwow%a+%d+realm%d+%a+$") or (type(ownRealm) == "string" and label == Plain(ownRealm)) then
+			name = character
+		end
+	end
+	local first, surname = name:match("^([^%s%-]+)[%s%-]+([^%s%-]+)$")
+	if first then return (first .. "-" .. surname):lower() end
+end
+
+local function InGroup(full, guildKey)
 	if not IsInGroup() then return false end
+	local r = roster[full]
+	local guid = (r and r.guid) or (guildKey and guildGuids[guildKey])
+	if guid then
+		local grouped = Safe.Call(C_PartyInfo and C_PartyInfo.IsGUIDInGroup, guid)
+		if grouped ~= nil then return grouped end
+	end
 	local short = Short(full)
 	return (Safe.Call(UnitInParty, short) or Safe.Call(UnitInRaid, short)) and true or false
 end
@@ -267,13 +290,20 @@ local function ScanGuild()
 	if not IsInGuild() or not GetGuildRosterInfo then return end
 	for i = 1, tonumber(Safe.Value(GetNumGuildMembers())) or 0 do
 		local name, _, _, level, _, area, _, _, online, _, class, _, _, _, _, _, guid = GetGuildRosterInfo(i)
+		guid = Safe.Value(guid)
+		if type(guid) ~= "string" or guid == "" then guid = nil end
 		local full = Safe.Value(online) and Full(name)
-		if full and guid ~= nil and not Safe.IsSecret(guid) and guid == Safe.Call(UnitGUID, "player") then
+		if full and guid and guid == Safe.Call(UnitGUID, "player") then
 			selfFull = full   -- (you, as the guild writes you: your realm spelled that way from now on)
 			realm = full:match("%-(.+)$") or realm
 		elseif full and not IsMe(full) then
 			roster[full] = { name = Shown(full), class = Safe.Value(class), level = tonumber(Safe.Value(level)),
-				area = Safe.Value(area), guild = true }
+				area = Safe.Value(area), guild = true, guid = guid }
+			local key = guid and GuildNameKey(name)
+			if key then
+				local previous = guildGuids[key]
+				guildGuids[key] = (previous == nil or previous == guid) and guid or false
+			end
 		end
 	end
 end
@@ -314,7 +344,7 @@ end
 local function Scan()
 	local before = {}
 	for full in pairs(friends) do before[full] = true end
-	wipe(roster) wipe(friends)
+	wipe(roster) wipe(guildGuids) wipe(friends)
 	for _, scan in ipairs({ ScanGuild, ScanFriends, ScanBattleNet }) do
 		local ok, err = pcall(scan)
 		if not ok then geterrorhandler()(err) end
@@ -349,7 +379,7 @@ end
 -- Receiving
 --------------------------------------------------------------------------------
 
-local function Heard(full, text, guild)
+local function Heard(full, text, guild, sender)
 	local kind, m, x, y, class, level = strsplit("\t", text, 6)
 	if friends[full] then known[full] = true end
 	if kind == "H1" or kind == "H2" then
@@ -364,7 +394,7 @@ local function Heard(full, text, guild)
 		m, x, y = tonumber(m), tonumber(x), tonumber(y)
 		if not (m and x and y) or x < 0 or x > 1 or y < 0 or y > 1 or not S.Rect(m) then return end
 		live[full] = { map = m, x = x, y = y, class = class and class:match("^%u+$"), level = tonumber(level),
-			guild = guild or (roster[full] and roster[full].guild) or false, at = GetTime() }
+			guild = guild or (roster[full] and roster[full].guild) or false, guildKey = GuildNameKey(sender), at = GetTime() }
 		dirty = true
 	end
 end
@@ -375,7 +405,7 @@ local function OnAddonMessage(_, _, prefix, text, channel, from)
 	if channel ~= "GUILD" and channel ~= "WHISPER" then return end
 	local full = Full(from)
 	if not full or IsMe(full) then return end   -- (your own, sent to your guild)
-	Heard(full, text, channel == "GUILD")
+	Heard(full, text, channel == "GUILD", from)
 end
 
 local function OnBattleNetMessage(_, _, prefix, text, _, id)
@@ -385,7 +415,7 @@ local function OnBattleNetMessage(_, _, prefix, text, _, id)
 	local full = type(g) == "table" and Full(g.characterName, g.realmName)
 	if not full or IsMe(full) or (g.playerGuid and g.playerGuid == Safe.Call(UnitGUID, "player")) then return end
 	friends[full] = friends[full] or { bn = id }     -- (a Battle.net friend, whatever the last scan saw)
-	Heard(full, text, false)
+	Heard(full, text, false, g.characterName)
 end
 
 --------------------------------------------------------------------------------
@@ -458,7 +488,7 @@ local function Redraw()
 	for full, p in pairs(live) do
 		if now - p.at > GONE_AFTER or IsMe(full) then
 			live[full] = nil
-		elseif not InGroup(full) and Shows(full, p.guild) then
+		elseif not InGroup(full, p.guildKey) and Shows(full, p.guild) then
 			local u, v = mod.ToWorld(p.map, p.x, p.y)
 			if u then
 				local pin = S.AddPin(dotSet, u, v, DotLook(p.class), { full = full, p = p })

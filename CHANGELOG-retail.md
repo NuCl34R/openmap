@@ -14,6 +14,10 @@
   started counted as a click and zoomed into what was under the cursor, Ironforge from parts of Dun
   Morogh most of all (#37, #64).
 
+- **Guild markers clear when a guildmate joins your group**: their shared-location dot or zone
+  badge entry could stay when the guild roster and the party spelled the character's name
+  differently. By puschie286.
+
 ## v0.8.3 (2026-11-09)
 
 ### New
