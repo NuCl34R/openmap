@@ -10,6 +10,10 @@
 - **"Party and raid members" off means off**: Blizzard's own blips for your group are hidden too,
   not only OpenMap's dots (#77, found by Luquatic).
 
+- **Dragging the map no longer zooms into a zone or city**: a drag that came back near where it
+  started counted as a click and zoomed into what was under the cursor, Ironforge from parts of Dun
+  Morogh most of all (#37, #64).
+
 ## v0.8.3 (2026-11-09)
 
 ### New

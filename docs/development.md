@@ -38,6 +38,7 @@ AI coding agents: read [AGENTS.md](../AGENTS.md) too.
    python tools/offline-test/run.py pad      # the game's Gamepad UI on: the map left alone
    python tools/offline-test/run.py padmap   # ... and with Options' padMap: OpenMap's map then
    python -P tools/offline-test/player.py   # the player arrow and location ping hidden together
+   python -P tools/offline-test/press.py    # a press that wandered off isn't a click
    python -P tools/offline-test/combat.py   # the map's pins in combat (Combat.lua)
    python -P tools/offline-test/caves.py    # caves surfacing (Close.lua, the cave data), Ironforge's own minimap
    python -P tools/offline-test/explored.py # unexplored land hidden up close (Stitch.lua)
