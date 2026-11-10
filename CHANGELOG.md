@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+### Fixed
+
+- **Guild markers clear when a guildmate joins your group.** Their shared-location dot or
+  zone badge entry could stay visible when the guild roster and party used different names
+  for the same character.
+
 ## v0.8.3 (2026-11-09)
 
 ### New
