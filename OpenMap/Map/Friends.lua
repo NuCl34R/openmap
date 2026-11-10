@@ -3,7 +3,8 @@
 -- Guild members on the map). Everyone online on your friends list (Battle.net friends playing
 -- this game too) and in your guild shows by zone, as the game's own lists give it: a badge on the
 -- zone, with who's there. Those who use OpenMap and share where they are show as a class-coloured
--- dot where they stand instead. Your party and raid are left to Nav.lua's dots and Blizzard's.
+-- dot where they stand instead. Your party and raid are left to Nav.lua's bordered dots, which ask
+-- mod.FriendPlace for what's known here of those the game won't place.
 -- Sharing (asked once as the map opens; the menu's and Options' Share where you are; off unless turned on): your place as an addon message
 -- (prefix OpenMapLoc) every few seconds while you move, each minute while you stand still, to your
 -- guild and to your friends who use OpenMap; never from inside a dungeon, raid or battleground.
@@ -517,6 +518,18 @@ local function Redraw()
 		pin:SetScript("OnEnter", ZoneEnter)
 		pin:SetScript("OnLeave", GameTooltip_Hide)
 	end
+end
+
+-- what's known here of a player by name (Nav.lua's group dots, which this file leaves out of its
+-- own): u, v on the world from the place they share; else nil, nil and their zone's uiMapID from
+-- the guild roster or friends list; nothing if neither has them
+function mod.FriendPlace(name, rlm)
+	local full = Full(name, rlm)
+	if not full then return end
+	local p = live[full]
+	if p and GetTime() - p.at <= GONE_AFTER then return mod.ToWorld(p.map, p.x, p.y) end
+	local r = roster[full]
+	return nil, nil, r and ZoneMap(r.area)
 end
 
 function mod.RefreshFriends()

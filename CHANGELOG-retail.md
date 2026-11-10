@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+### Improved
+
+- **Your party and raid get a gold-bordered dot** on the stitched map, everywhere, so they can't be
+  mistaken for a guild member's dot. Someone the game won't place is shown faintly in the middle of
+  their zone, with "Somewhere in" on the tooltip. By KonigTX.
+
 ### Fixed
 
 - **"Your arrow" off also hides the yellow location ping** when the world map opens or changes

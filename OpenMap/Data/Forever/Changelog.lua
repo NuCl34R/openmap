@@ -4,7 +4,8 @@
 local _, ns = ...
 
 ns.MapChangelog = {
-	{ version = "Unreleased", date = "", heads = { [1] = "Fixed", }, items = {
+	{ version = "Unreleased", date = "", heads = { [1] = "Improved", [2] = "Fixed", }, items = {
+		"|cff6e2c0aYour party and raid get a gold-bordered dot|r on the stitched map, everywhere, so they can't be mistaken for a guild member's dot. Someone the game won't place is shown faintly in the middle of their zone, with \"Somewhere in\" on the tooltip. By KonigTX.",
 		"|cff6e2c0a\"Your arrow\" off also hides the yellow location ping|r when the world map opens or changes zones. Turning it on again restores the normal arrow and ping; party markers stay visible (#78). By Luquatic.",
 		"|cff6e2c0a\"Party and raid members\" off means off|r: Blizzard's own blips for your group are hidden too, not only OpenMap's dots (#77, found by Luquatic).",
 		"|cff6e2c0aDragging the map no longer zooms into a zone or city|r: a drag that came back near where it started counted as a click and zoomed into what was under the cursor, Ironforge from parts of Dun Morogh most of all (#37, #64).",
