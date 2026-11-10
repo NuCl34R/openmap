@@ -129,6 +129,19 @@ class PlayerTests(unittest.TestCase):
             assert(pin.sizes.player < 1)
         """)
 
+    def test_group_off_hides_party_and_raid_blips(self):
+        self.lua.execute("""
+            mod.db.playerArrow, mod.db.group = true, false
+            Tick()
+            assert(pin.sizes.party < 1 and pin.sizes.raid < 1, 'group blips still drawn (#77)')
+            assert(pin.sizes.player == 27)
+            pin:SynchronizePinSizes()
+            assert(pin.sizes.party < 1 and pin.sizes.raid < 1, 'a zoom step brought group blips back')
+            mod.db.group = true
+            Tick()
+            assert(pin.sizes.party == 5.5 and pin.sizes.raid == 4.125, 'group blips not restored at the canvas scale')
+        """)
+
     def test_ping_without_size_method(self):
         self.lua.execute("""
             pin.SetPinSize = nil

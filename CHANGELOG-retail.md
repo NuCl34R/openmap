@@ -5,7 +5,10 @@
 ### Fixed
 
 - **"Your arrow" off also hides the yellow location ping** when the world map opens or changes
-  zones. Turning it on again restores the normal arrow and ping; party markers stay visible (#78).
+  zones. Turning it on again restores the normal arrow and ping; party markers stay visible (#78). By Luquatic.
+
+- **"Party and raid members" off means off**: Blizzard's own blips for your group are hidden too,
+  not only OpenMap's dots (#77, found by Luquatic).
 
 ## v0.8.3 (2026-11-09)
 

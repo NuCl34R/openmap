@@ -442,56 +442,60 @@ local function Settled()
 end
 
 -- the player's arrow on top of every other icon (#31): Blizzard's (its group members pin, the party's
--- with it) and ours. Blizzard sets its level again as it reuses the pin, so it's checked each tick
--- and your own blip on it sized away while your arrow is off (Your arrow): the pin draws the party
--- too, so it stays. Blizzard sizes it again on every zoom step (SynchronizePinSizes): hooked, so it
--- goes at once, and each tick as well where there's no such step to hook. Its location ping is
--- separate from the blip's size: stop it on opening and whenever Blizzard starts it again (#78).
+-- with it) and ours. Blizzard sets its level again as it reuses the pin, so it's checked each tick.
+-- Its blips are sized away where OpenMap's switch for them is off: your own while Your arrow is off
+-- (and the yellow ring it pings on opening, #78), the party's and raid's while Party and raid members
+-- is off (#77). Blizzard sizes them again on every zoom step (SynchronizePinSizes): hooked, so they
+-- go at once, and each tick as well where there's no such step to hook
 local BLIP_GONE = 0.01            -- (a size too small to draw: 0 is taken as the texture's own size, a huge arrow)
-local blipHidden = setmetatable({}, { __mode = "k" })
+local BLIP_UNITS = { player = "playerArrow", party = "group", raid = "group" }
+local blipHidden = setmetatable({}, { __mode = "k" })    -- pin -> { unit = true } sized away
 local blipHooked = setmetatable({}, { __mode = "k" })
-local pingHooked = setmetatable({}, { __mode = "k" })
-local function PlayerBlip(pin, shown)
-	if type(pin.StartPlayerPing) == "function" and type(pin.StopPlayerPing) == "function" then
-		if not pingHooked[pin] then
-			pingHooked[pin] = true
-			hooksecurefunc(pin, "StartPlayerPing", function(self)
-				if mod.db.playerArrow == false and not (self:IsProtected() and InCombatLockdown()) then
-					self:StopPlayerPing()
-				end
-			end)
-		end
-		if not shown then pin:StopPlayerPing() end
-	end
-	if not pin.SetPinSize then return end
-	if not shown then
-		if not blipHooked[pin] and type(pin.SynchronizePinSizes) == "function" then
-			blipHooked[pin] = true
+local function BlipOff(unit) return mod.db[BLIP_UNITS[unit]] == false end
+local function Locked(pin) return pin:IsProtected() and InCombatLockdown() end
+local function Blips(pin)
+	local ping = type(pin.StartPlayerPing) == "function" and type(pin.StopPlayerPing) == "function"
+	if not blipHooked[pin] then
+		blipHooked[pin] = true
+		if pin.SetPinSize and type(pin.SynchronizePinSizes) == "function" then
 			hooksecurefunc(pin, "SynchronizePinSizes", function(self)
-				if mod.db.playerArrow == false and not (self:IsProtected() and InCombatLockdown()) then
-					pcall(self.SetPinSize, self, "player", BLIP_GONE)
+				if Locked(self) then return end
+				for unit in pairs(BLIP_UNITS) do
+					if BlipOff(unit) then pcall(self.SetPinSize, self, unit, BLIP_GONE) end
 				end
 			end)
 		end
-		pcall(pin.SetPinSize, pin, "player", BLIP_GONE)
-		blipHidden[pin] = true
-	elseif blipHidden[pin] then
-		-- (back at Blizzard's size for this zoom: its size over the canvas's scale, as it sets it)
-		local dp = pin.dataProvider
-		local sizes = dp and dp.GetUnitPinSizesTable and dp:GetUnitPinSizesTable()
-		local scale = map.GetCanvasScale and map:GetCanvasScale() or 1
-		if sizes and sizes.player and scale and scale > 0 then pcall(pin.SetPinSize, pin, "player", sizes.player / scale) end
-		blipHidden[pin] = nil
+		if ping then
+			hooksecurefunc(pin, "StartPlayerPing", function(self)
+				if BlipOff("player") and not Locked(self) then pcall(self.StopPlayerPing, self) end
+			end)
+		end
+	end
+	if ping and BlipOff("player") then pcall(pin.StopPlayerPing, pin) end
+	if not pin.SetPinSize then return end
+	local hidden = blipHidden[pin] or {}
+	blipHidden[pin] = hidden
+	for unit in pairs(BLIP_UNITS) do
+		if BlipOff(unit) then
+			pcall(pin.SetPinSize, pin, unit, BLIP_GONE)
+			hidden[unit] = true
+		elseif hidden[unit] then
+			-- (back at Blizzard's size for this zoom: its size over the canvas's scale, as it sets it)
+			local dp = pin.dataProvider
+			local sizes = dp and dp.GetUnitPinSizesTable and dp:GetUnitPinSizesTable()
+			local scale = map.GetCanvasScale and map:GetCanvasScale() or 1
+			if sizes and sizes[unit] and scale and scale > 0 then pcall(pin.SetPinSize, pin, unit, sizes[unit] / scale) end
+			hidden[unit] = nil
+		end
 	end
 end
 
 local function RaisePlayer()
 	local level = math.min(sc:GetFrameLevel() + PLAYER_ABOVE, 9500)
-	local shown = mod.db.playerArrow ~= false
 	for pin in map:EnumeratePinsByTemplate("GroupMembersPinTemplate") do
-		if not (pin:IsProtected() and InCombatLockdown()) then
+		if not Locked(pin) then
 			if pin:GetFrameLevel() ~= level then pin:SetFrameLevel(level) end
-			PlayerBlip(pin, shown)
+			Blips(pin)
 		end
 	end
 	S.RaiseArrow(level)
