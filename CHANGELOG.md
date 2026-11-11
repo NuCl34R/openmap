@@ -41,6 +41,10 @@
   along a straight line near the page's foot (Maraudon's entrance, Wailing Caverns', Night Web's
   Hollow ...); the caves' own rooms now say where they are, as was meant (#141).
 
+- **No white diamonds at cave mouths**: one of the game's own cave minimap pictures has a white block
+  baked in over its tunnel's mouth, which showed up close at two caves in the Hinterlands (and one in
+  Kalimdor); OpenMap now draws a mended copy (#114).
+
 ## v0.8.4 (2026-11-11)
 
 ### New
