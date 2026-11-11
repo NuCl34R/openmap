@@ -46,6 +46,9 @@
   character count twice in a zone badge or show more than one shared-location dot (#104, #115). By
   puschie286.
 
+- **No flight master at Powderfuse Port**: the map showed one there, but there's none in the game
+  yet; the port is reached by its boat, which stays on the map (#121, #132).
+
 ## v0.8.3 (2026-11-09)
 
 ### New
