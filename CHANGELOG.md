@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+### Fixed
+
+- **One map marker per friend or guildmate.** Different realm labels could make the same
+  character count twice in a zone badge or show more than one shared-location dot.
+
 ## v0.8.3 (2026-11-09)
 
 ### New
