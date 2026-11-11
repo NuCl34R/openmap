@@ -37,6 +37,10 @@
   shade was hard-edged rectangles, and it changed as the minimap came in; it now has each unexplored
   area's own shape, as further out (#101, #129).
 
+- **Cave maps whole**: Blizzard's cave maps showed only the parts their pale floors give away, cut off
+  along a straight line near the page's foot (Maraudon's entrance, Wailing Caverns', Night Web's
+  Hollow ...); the caves' own rooms now say where they are, as was meant (#141).
+
 ## v0.8.4 (2026-11-11)
 
 ### New
