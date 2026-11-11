@@ -112,6 +112,8 @@ table CSVs, `<tex>` a texture cache. Order matters where one step reads another'
 | 16 | `tools/changelog/build.py` (after any change to `CHANGELOG.md` or `CHANGELOG-retail.md`) | every client's `Data/<client>/Changelog.lua` | |
 | 17 | `tools/map-dungeons/build.py <cache> <WoW folder> [preview dir]` | `Data/DungeonMaps.lua` | 1 |
 | 17a | `tools/map-dungeons/drawn.py` | `MapDungeonDrawn/`, `Data/DungeonDrawn.lua` | `art/drawn/dungeons/` |
+| 17d | `tools/map-dungeons/minimap.py <cache> <WoW folder> [--preview <dir>]` (`--survey <mapID>`: a dungeon's rooms and their heights) | `MapDungeonMinimap/`, `Data/DungeonMinimap.lua` | `tools/map-dungeons/minimap.json` (the floors) |
+| 17e | `tools/map-dungeons/bosses.py <cache> [--import <OpenMap.lua SavedVariables>]` | `Data/DungeonBosses.lua` | 17, 17a, 17d, `tools/map-dungeons/bosses.json` |
 | 17b | `tools/map-chart/build.py <db2> <tex>` (his layers from his file first: `tools/map-chart/export.py <psd>`) | `MapChart/`, `Data/Chart.lua` | `art/drawn/chart/` |
 | 17c | `tools/map-tiles/build.py <WoW folder>` (Forever) | `MapTile/` (the cave and dungeon tiles, drawn from OpenMap's copies: `Data/Forever/Tiles.lua`) | 4, 17 |
 | 18 | `tools/locale/translate.py build` (after any change to the translations or to the English in `L[...]`) | `Locales/`, the toc's `## Notes-<locale>` lines | `tools/locale/*.json` |
@@ -126,6 +128,18 @@ WoW Forever's new dungeons): stand in the portal in game and type `/openmap entr
 the name as `build.py` lists it (`Dire Maul - East`, `The Hall of Thanes`). It prints the line (and
 keeps it in `OpenMapDB`, `worldmap.entrances`); add it to `ENTRANCES` in `tools/map-data/build.py`
 and rerun step 1.
+
+Where the bosses are on the dungeon maps: the journals give most (17e). The rest are placed by
+hand, in game or in the browser:
+- In game, open the dungeon's map and type `/openmap bosses`: the bar names a boss, click where it
+  is (right-click skips it, shift-click takes the last back; a drag pans). The places show at once
+  and are kept in `OpenMapDB` (`worldmap.bossPlaced`); after a `/reload` or logging out,
+  `bosses.py <cache> --import "<WoW folder>/_forever_/WTF/Account/<account>/SavedVariables/OpenMap.lua"`
+  adds them to `bosses.json` and builds.
+- In the browser: `python -P tools/map-dungeons/editor.py <cache> <WoW folder>`, then
+  http://127.0.0.1:8765/. Pick a dungeon, a boss, and click where it is (or drag its pin); Save &
+  build. Its Minimap floors panel sets up a dungeon's map from the minimap pictures (17d): its rooms
+  by height, a height range per floor, terrain or not, a preview of each, Save & build.
 
 `gapfill.py --rerender` re-renders the zones (slow) after anything that changes them
 (steps 5, 7, 8, 11), and so does `--bake-zones` (step 15: the zones' art as the map draws it,
