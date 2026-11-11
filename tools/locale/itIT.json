@@ -524,5 +524,6 @@
  "Dungeon maps from the minimap": "Mappe delle spedizioni dalla minimappa",
  "Where OpenMap has one, a dungeon's map built from the game's own minimap pictures (what the minimap draws inside) instead of its drawn map. Dungeons with no other map use it anyway.": "Dove OpenMap ne ha una, la mappa di una spedizione creata dalle immagini della minimappa del gioco (ciò che la minimappa mostra all'interno) al posto della mappa disegnata. Le spedizioni senza altra mappa la usano comunque.",
  "the yellow ping hidden with your arrow": "il segnale giallo nascosto con la tua freccia",
- "one marker per friend or guildmate, and none left over when they join your group": "un indicatore per amico o membro della gilda, e nessuno di troppo quando entrano nel tuo gruppo"
+ "one marker per friend or guildmate, and none left over when they join your group": "un indicatore per amico o membro della gilda, e nessuno di troppo quando entrano nel tuo gruppo",
+ "the controller map option turned on in combat, and B by a quest's details": "l'opzione della mappa col controller attivata in combattimento, e B nei dettagli di una missione"
 }

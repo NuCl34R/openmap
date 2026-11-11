@@ -524,5 +524,6 @@
  "Dungeon maps from the minimap": "미니맵으로 만든 던전 지도",
  "Where OpenMap has one, a dungeon's map built from the game's own minimap pictures (what the minimap draws inside) instead of its drawn map. Dungeons with no other map use it anyway.": "OpenMap에 있는 경우, 그린 지도 대신 게임의 미니맵 그림(미니맵이 실내에서 보여주는 것)으로 만든 던전 지도를 사용합니다. 다른 지도가 없는 던전은 항상 이것을 사용합니다.",
  "the yellow ping hidden with your arrow": "내 화살표와 함께 숨겨지는 노란색 알림",
- "one marker per friend or guildmate, and none left over when they join your group": "친구나 길드원마다 표시 하나, 파티에 들어오면 남는 표시 없음"
+ "one marker per friend or guildmate, and none left over when they join your group": "친구나 길드원마다 표시 하나, 파티에 들어오면 남는 표시 없음",
+ "the controller map option turned on in combat, and B by a quest's details": "전투 중 컨트롤러 지도 옵션 켜기, 그리고 퀘스트 세부 정보에서의 B 버튼"
 }

@@ -524,5 +524,6 @@
  "Dungeon maps from the minimap": "Mapas de calabozo del minimapa",
  "Where OpenMap has one, a dungeon's map built from the game's own minimap pictures (what the minimap draws inside) instead of its drawn map. Dungeons with no other map use it anyway.": "Donde OpenMap tenga uno, el mapa de un calabozo hecho con las imágenes del minimapa del propio juego (lo que el minimapa muestra adentro) en vez de su mapa dibujado. Los calabozos sin otro mapa lo usan de todos modos.",
  "the yellow ping hidden with your arrow": "el aviso amarillo oculto junto con tu flecha",
- "one marker per friend or guildmate, and none left over when they join your group": "un marcador por amigo o miembro de hermandad, y ninguno de sobra cuando se unen a tu grupo"
+ "one marker per friend or guildmate, and none left over when they join your group": "un marcador por amigo o miembro de hermandad, y ninguno de sobra cuando se unen a tu grupo",
+ "the controller map option turned on in combat, and B by a quest's details": "activar la opción del mapa con control en combate, y B junto a los detalles de una misión"
 }

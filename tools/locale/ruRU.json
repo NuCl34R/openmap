@@ -524,5 +524,6 @@
  "Dungeon maps from the minimap": "Карты подземелий по миникарте",
  "Where OpenMap has one, a dungeon's map built from the game's own minimap pictures (what the minimap draws inside) instead of its drawn map. Dungeons with no other map use it anyway.": "Если у OpenMap она есть, карта подземелья, собранная из изображений миникарты самой игры (то, что миникарта показывает внутри), вместо нарисованной карты. Подземелья без другой карты используют её в любом случае.",
  "the yellow ping hidden with your arrow": "жёлтый сигнал скрывается вместе с вашей стрелкой",
- "one marker per friend or guildmate, and none left over when they join your group": "одна метка на друга или члена гильдии, и ни одной лишней, когда они вступают в вашу группу"
+ "one marker per friend or guildmate, and none left over when they join your group": "одна метка на друга или члена гильдии, и ни одной лишней, когда они вступают в вашу группу",
+ "the controller map option turned on in combat, and B by a quest's details": "включение карты для контроллера в бою и кнопка B в описании задания"
 }

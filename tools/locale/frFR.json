@@ -524,5 +524,6 @@
  "Dungeon maps from the minimap": "Cartes de donjon de la minicarte",
  "Where OpenMap has one, a dungeon's map built from the game's own minimap pictures (what the minimap draws inside) instead of its drawn map. Dungeons with no other map use it anyway.": "Quand OpenMap en a une, la carte d'un donjon faite à partir des images de la minicarte du jeu (ce que la minicarte affiche à l'intérieur) au lieu de sa carte dessinée. Les donjons sans autre carte l'utilisent de toute façon.",
  "the yellow ping hidden with your arrow": "le signal jaune masqué avec votre flèche",
- "one marker per friend or guildmate, and none left over when they join your group": "un marqueur par ami ou membre de guilde, et aucun en trop quand ils rejoignent votre groupe"
+ "one marker per friend or guildmate, and none left over when they join your group": "un marqueur par ami ou membre de guilde, et aucun en trop quand ils rejoignent votre groupe",
+ "the controller map option turned on in combat, and B by a quest's details": "l'option de carte à la manette activée en combat, et B dans les détails d'une quête"
 }

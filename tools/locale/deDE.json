@@ -524,5 +524,6 @@
  "Dungeon maps from the minimap": "Dungeonkarten aus der Minikarte",
  "Where OpenMap has one, a dungeon's map built from the game's own minimap pictures (what the minimap draws inside) instead of its drawn map. Dungeons with no other map use it anyway.": "Wo OpenMap eine hat, die Karte eines Dungeons aus den Minikartenbildern des Spiels (was die Minikarte drinnen zeigt) statt seiner gezeichneten Karte. Dungeons ohne andere Karte nutzen sie ohnehin.",
  "the yellow ping hidden with your arrow": "der gelbe Ping verschwindet mit deinem Pfeil",
- "one marker per friend or guildmate, and none left over when they join your group": "eine Markierung pro Freund oder Gildenmitglied, und keine übrig, wenn sie deiner Gruppe beitreten"
+ "one marker per friend or guildmate, and none left over when they join your group": "eine Markierung pro Freund oder Gildenmitglied, und keine übrig, wenn sie deiner Gruppe beitreten",
+ "the controller map option turned on in combat, and B by a quest's details": "die Controller-Kartenoption im Kampf einschalten, und B bei den Questdetails"
 }
