@@ -167,6 +167,13 @@ local function SetupPadKeys(worldMap)
 		if type(worldMap[name]) == "function" then hooksecurefunc(worldMap, name, PadKeys) end
 	end
 	worldMap:HookScript("OnHide", PadKeys)
+	-- a quest's details opening or closing changes whose B it is (PadKeys: Blizzard's own while they're
+	-- open), and the footer doesn't always say so
+	local details = QuestMapFrame and QuestMapFrame.DetailsFrame
+	if details and details.HookScript then
+		details:HookScript("OnShow", PadKeys)
+		details:HookScript("OnHide", PadKeys)
+	end
 	ns.RegisterEvent(keyOwner, "PLAYER_REGEN_ENABLED", function() if waiting then PadKeys() end end)
 	ns.RegisterEvent(keyOwner, "INPUT_DEVICE_INTERFACE_TRANSITION", PadKeys)
 end

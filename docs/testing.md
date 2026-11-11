@@ -86,6 +86,8 @@ Write down anything odd, with `/openmap status` output, or use the map's own
 
 - [ ] With the Gamepad UI on (Forever's controller mode) at login: chat says once that OpenMap leaves the world map to Blizzard, and the map is Blizzard's own. Open it with the controller, move round, change maps with A and X, close it with B: no "OpenMap has been blocked" message. `/openmap` says why the map is off; the options window says it at the top.
 - [ ] Swap to mouse and keyboard (or turn the Gamepad UI off) with the map closed: chat says OpenMap's map is back, and it is, without a reload. Swap back to the Gamepad UI: chat asks for a `/reload`.
+- [ ] With the Gamepad UI on and Options' "OpenMap's map with the controller (test)" on: open the map. B closes it, the D-pad's down goes full screen and its up (in full screen) goes back; no "OpenMap has been blocked" message. Open a quest's details: B goes back to the quest list (Blizzard's), not closed; leave the details: B closes the map again. Close the map in combat and leave combat: B and the D-pad are the game's own with the map closed.
+- [ ] Turn that option on in combat (Gamepad UI on, at login it was off): the map stays Blizzard's until combat ends, then it is OpenMap's.
 
 ## 7. The quill, the menu and the tray (3 min)
 - [ ] The OpenMap menu: three tabs (On the map, Look, More) in the game's own tab art; the checkboxes and sliders look like the game's options panel's; the second column fits inside the frame. The Look tab has the sliders and Defaults; the menu remembers the tab.
