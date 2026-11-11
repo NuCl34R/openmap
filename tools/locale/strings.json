@@ -239,7 +239,7 @@
  {
   "en": "Always remember",
   "where": [
-   "Map/Nav.lua:546",
+   "Map/Nav.lua:550",
    "Map/Panel.lua:338"
   ]
  },
@@ -475,14 +475,21 @@
  {
   "en": "Center on player",
   "where": [
-   "Map/Nav.lua:546",
+   "Map/Nav.lua:549",
    "Map/Panel.lua:338"
   ]
  },
  {
   "en": "Center on player, keep zoom",
   "where": [
-   "Map/Nav.lua:546",
+   "Map/Nav.lua:549",
+   "Map/Panel.lua:338"
+  ]
+ },
+ {
+  "en": "Center on your zone",
+  "where": [
+   "Map/Nav.lua:549",
    "Map/Panel.lua:338"
   ]
  },
@@ -494,9 +501,9 @@
   ]
  },
  {
-  "en": "Choose one behavior. Center on player: always open on you. Center on player, keep zoom: open on you, at the zoom you closed the map at. Always remember: restore your previous position and zoom, even after changing zones. Remember while visible: restore only if your current location is inside the previous view, even across zone boundaries. Otherwise, open on you. Maps opened for a quest still show the quest's area.",
+  "en": "Choose one behavior. Center on player: always open on you. Center on player, keep zoom: open on you, at the zoom you closed the map at. Center on your zone: open on the whole zone you're in, wherever you are in it. Always remember: restore your previous position and zoom, even after changing zones. Remember while visible: restore only if your current location is inside the previous view, even across zone boundaries. Otherwise, open on you. Maps opened for a quest still show the quest's area.",
   "where": [
-   "Map/Nav.lua:548"
+   "Map/Nav.lua:551"
   ]
  },
  {
@@ -520,7 +527,7 @@
  {
   "en": "Class-coloured dots for your group anywhere on the stitched map.",
   "where": [
-   "Map/Nav.lua:550"
+   "Map/Nav.lua:553"
   ]
  },
  {
@@ -625,7 +632,7 @@
  {
   "en": "Click to stop following it",
   "where": [
-   "Map/Nav.lua:212"
+   "Map/Nav.lua:215"
   ]
  },
  {
@@ -711,7 +718,7 @@
  {
   "en": "Continent",
   "where": [
-   "Map/Nav.lua:282"
+   "Map/Nav.lua:285"
   ]
  },
  {
@@ -939,7 +946,7 @@
   "en": "Dungeon",
   "where": [
    "Map/Dungeons.lua:554",
-   "Map/Nav.lua:289"
+   "Map/Nav.lua:292"
   ]
  },
  {
@@ -1170,7 +1177,7 @@
  {
   "en": "Find a place",
   "where": [
-   "Map/Nav.lua:372"
+   "Map/Nav.lua:375"
   ]
  },
  {
@@ -1202,7 +1209,7 @@
  {
   "en": "Flight master",
   "where": [
-   "Map/Nav.lua:294"
+   "Map/Nav.lua:297"
   ]
  },
  {
@@ -1312,7 +1319,7 @@
  {
   "en": "Group",
   "where": [
-   "Map/Nav.lua:430",
+   "Map/Nav.lua:433",
    "Map/Pins.lua:538"
   ]
  },
@@ -2057,7 +2064,7 @@
  {
   "en": "Party and raid members",
   "where": [
-   "Map/Nav.lua:549",
+   "Map/Nav.lua:552",
    "Map/Panel.lua:223"
   ]
  },
@@ -2188,7 +2195,7 @@
    "Map/Dungeons.lua:1258",
    "Map/Dungeons.lua:1306",
    "Map/Dungeons.lua:1734",
-   "Map/Nav.lua:289"
+   "Map/Nav.lua:292"
   ]
  },
  {
@@ -2239,7 +2246,7 @@
  {
   "en": "Remember while visible",
   "where": [
-   "Map/Nav.lua:547",
+   "Map/Nav.lua:550",
    "Map/Panel.lua:339"
   ]
  },
@@ -2392,7 +2399,7 @@
  {
   "en": "Shift-click: share in chat",
   "where": [
-   "Map/Nav.lua:213",
+   "Map/Nav.lua:216",
    "Map/Pins.lua:131",
    "Map/Pins.lua:696"
   ]
@@ -2449,7 +2456,7 @@
  {
   "en": "Somewhere in %s",
   "where": [
-   "Map/Nav.lua:432"
+   "Map/Nav.lua:435"
   ]
  },
  {
@@ -2851,7 +2858,7 @@
  {
   "en": "Waypoint",
   "where": [
-   "Map/Nav.lua:210"
+   "Map/Nav.lua:213"
   ]
  },
  {
@@ -2888,7 +2895,7 @@
  {
   "en": "When reopening the map",
   "where": [
-   "Map/Nav.lua:544"
+   "Map/Nav.lua:547"
   ]
  },
  {
@@ -3098,7 +3105,7 @@
  {
   "en": "Zone",
   "where": [
-   "Map/Nav.lua:282"
+   "Map/Nav.lua:285"
   ]
  },
  {

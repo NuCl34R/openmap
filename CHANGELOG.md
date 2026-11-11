@@ -19,6 +19,9 @@
   Blizzard's map with the Gamepad UI, as before. If you play with a controller, try it and tell us
   how it goes (#57). By FlyingPenguin98.
 
+- **Reopen the map on your zone** (the menu's More tab, Reopen map: "Center on your zone"): the map
+  opens on the whole zone you're in, in the middle, wherever you stand in it (#143).
+
 ### Fixed
 
 - **With the controller (Options' "OpenMap's map with the controller"), turning it on in combat now
