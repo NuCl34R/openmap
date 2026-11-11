@@ -10,6 +10,9 @@
   the option off again meanwhile). B and the D-pad are also set again whenever a quest's details open
   or close, so B goes back to the quest list there and closes the map otherwise.
 
+- **Ragefire Chasm shows with "Only places you've found"** once you've found Orgrimmar: an entrance
+  inside a city is found with the city, whose own map has nothing to explore (#113).
+
 ## v0.8.4 (2026-11-11)
 
 ### New

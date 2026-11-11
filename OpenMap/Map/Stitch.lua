@@ -3156,6 +3156,12 @@ end
 -- you've explored the zone's land where it is (or a little round it: a dock stands in the water), as
 -- Blizzard's own map reveals it; one in no zone always (a player's request)
 function places.Found(u, v)
+	-- in a city (Ragefire Chasm, in Orgrimmar's Cleft of Shadow): found with the city, whose own map has
+	-- no pieces to explore (#113)
+	for _, c in ipairs(cities) do
+		local l, r, t, b = S.Rect(c.mapID)
+		if l and u >= l and u <= r and v >= t and v <= b then return not (c.piece and c.piece.unexplored) end
+	end
 	local chain = S.ChainAt(u, v)
 	local zone = chain[#chain]
 	if #chain < 3 then return true end

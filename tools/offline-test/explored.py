@@ -200,5 +200,36 @@ class PlaceTests(unittest.TestCase):
             self.assertFalse(At(box[2] + 0.01, box[3]))
 
 
+class FoundTests(unittest.TestCase):
+    """Only places you've found (Stitch.lua's places.Found): an entrance in a city is found with the city,
+    whose own map has no pieces to explore (Ragefire Chasm in Orgrimmar, #113); one in a zone, when the
+    zone's land there is explored"""
+
+    def setUp(self):
+        self.lua = LuaRuntime(unpack_returned_tuples=True)
+        self.lua.execute("""
+            places, S = {}, {}
+            cities = { { mapID = 85, piece = { unexplored = true } } }
+            rects = { [85] = { 0.10, 0.20, 0.30, 0.40 }, [1411] = { 0.0, 1.0, 0.0, 1.0 } }
+            S.Rect = function(id) local r = rects[id] if r then return r[1], r[2], r[3], r[4] end end
+            S.ChainAt = function() return { 947, 12, 1411 } end
+            explored = false
+            CreateVector2D = function(x, y) return { x = x, y = y } end
+            C_MapExplorationInfo = { GetExploredAreaIDsAtPosition = function() return explored and { 1 } or {} end }
+        """)
+        self.lua.execute(chunk("places.Found"))
+        self.found = self.lua.eval("function(u, v) return places.Found(u, v) end")
+
+    def test_in_a_city_found_with_the_city(self):
+        self.assertFalse(self.found(0.15, 0.35), "the city not found yet")
+        self.lua.execute("cities[1].piece.unexplored = false")
+        self.assertTrue(self.found(0.15, 0.35), "found with the city, whatever its own map's pieces say")
+
+    def test_in_a_zone_by_its_explored_land(self):
+        self.assertFalse(self.found(0.6, 0.6))
+        self.lua.execute("explored = true")
+        self.assertTrue(self.found(0.6, 0.6))
+
+
 if __name__ == "__main__":
     unittest.main()

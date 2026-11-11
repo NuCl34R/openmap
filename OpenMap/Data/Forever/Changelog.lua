@@ -6,6 +6,7 @@ local _, ns = ...
 ns.MapChangelog = {
 	{ version = "Unreleased", date = "", heads = { [1] = "Fixed", }, items = {
 		"|cff6e2c0aWith the controller (Options' \"OpenMap's map with the controller\"), turning it on in combat now works.|r It left OpenMap waiting for the Gamepad UI to go, and the map stayed Blizzard's until you swapped input devices; now the map is OpenMap's once combat ends (and not at all if you turned the option off again meanwhile). B and the D-pad are also set again whenever a quest's details open or close, so B goes back to the quest list there and closes the map otherwise.",
+		"|cff6e2c0aRagefire Chasm shows with \"Only places you've found\"|r once you've found Orgrimmar: an entrance inside a city is found with the city, whose own map has nothing to explore (#113).",
 	} },
 	{ version = "v0.8.4", date = "2026-11-11", heads = { [1] = "New", [4] = "Improved", [5] = "Fixed", }, items = {
 		"|cff6e2c0aBosses pinned on dungeon maps|r: a numbered pin where each boss is, on its floor, numbered as the Bosses tab lists them, with its name on the tooltip (click: its loot in NeedRoll). Placed from Blizzard's own dungeon journal for 153 bosses so far; \"Dungeon maps: bosses\" turns them off with the list (#90, #93).",
