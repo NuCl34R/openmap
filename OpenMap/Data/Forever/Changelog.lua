@@ -4,7 +4,7 @@
 local _, ns = ...
 
 ns.MapChangelog = {
-	{ version = "Unreleased", date = "", heads = { [1] = "New", [4] = "Improved", [5] = "Fixed", }, items = {
+	{ version = "v0.8.4", date = "2026-11-11", heads = { [1] = "New", [4] = "Improved", [5] = "Fixed", }, items = {
 		"|cff6e2c0aBosses pinned on dungeon maps|r: a numbered pin where each boss is, on its floor, numbered as the Bosses tab lists them, with its name on the tooltip (click: its loot in NeedRoll). Placed from Blizzard's own dungeon journal for 153 bosses so far; \"Dungeon maps: bosses\" turns them off with the list (#90, #93).",
 		"|cff6e2c0a/openmap bosses places the rest yourself|r: on a dungeon's map, click where the boss named in the bar is (right-click skips one, shift-click takes the last back). Your places show at once and are kept with your settings.",
 		"|cff6e2c0aDungeon maps from the minimap|r (Options, off): a dungeon's map built from the game's own minimap pictures of its rooms, a picture per floor, instead of its drawn map: The Hall of Thanes and Ruins of Lordaeron for now.",

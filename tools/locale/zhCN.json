@@ -522,5 +522,7 @@
  "Boss places saved in OpenMapDB (worldmap, bossPlaced) once you /reload or log out; tools/map-dungeons/bosses.py --import adds them to OpenMap's data.": "首领位置会在你 /reload 或登出后保存到 OpenMapDB（worldmap, bossPlaced）；tools/map-dungeons/bosses.py --import 会将其加入 OpenMap 的数据。",
  "Open a dungeon's map first: /openmap bosses places its bosses on it.": "请先打开地下城地图：/openmap bosses 会在上面放置首领。",
  "Dungeon maps from the minimap": "由小地图生成的地下城地图",
- "Where OpenMap has one, a dungeon's map built from the game's own minimap pictures (what the minimap draws inside) instead of its drawn map. Dungeons with no other map use it anyway.": "若 OpenMap 有，则使用由游戏自身小地图图片（小地图在室内显示的内容）生成的地下城地图，而不是手绘地图。没有其他地图的地下城总会使用它。"
+ "Where OpenMap has one, a dungeon's map built from the game's own minimap pictures (what the minimap draws inside) instead of its drawn map. Dungeons with no other map use it anyway.": "若 OpenMap 有，则使用由游戏自身小地图图片（小地图在室内显示的内容）生成的地下城地图，而不是手绘地图。没有其他地图的地下城总会使用它。",
+ "the yellow ping hidden with your arrow": "黄色提示随你的箭头一起隐藏",
+ "one marker per friend or guildmate, and none left over when they join your group": "每位好友或公会成员只有一个标记，加入你的队伍后不再残留"
 }

@@ -28,6 +28,8 @@ ns.Credits = {
 		{ "forcedroidbrain", L["map brightness"] },
 		{ "TheRayoX", L["friends on other numbered realms on the map"] },
 		{ "KonigTX", L["gold-bordered dots for your party and raid"] },
+		{ "Luquatic", L["the yellow ping hidden with your arrow"] },
+		{ "puschie286", L["one marker per friend or guildmate, and none left over when they join your group"] },
 	} },
 	{ L["Map art"], {
 		{ "Blizzard Entertainment", L["the map art is the game's own"] },
