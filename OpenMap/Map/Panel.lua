@@ -1511,6 +1511,12 @@ function mod:SetupPanel(worldMap)
 				set = function(v) mod:Options()[key].set({ key }, v) end,
 				fmt = o.isPercent and "%d%%" or (o.step or 0) >= 1 and "%d" or "%.2f", show = o.isPercent and function(v) return math.floor(v * 100 + 0.5) end or nil,
 				onRelease = key == "windowScale",         -- (it scales the window this menu is in)
+				-- (greyed out when Options' own is: Map size with Move Any, which sizes the map then)
+				enabled = function()
+					local d = mod:Options()[key].disabled
+					if type(d) == "function" then d = d({ key }) end
+					return not d
+				end,
 				tip = o.desc or s[2] })
 			made[key] = r
 			menu.extraRows[#menu.extraRows + 1] = r

@@ -4,6 +4,20 @@
 local _, ns = ...
 
 ns.MapChangelog = {
+	{ version = "v0.8.4", date = "2026-11-11", heads = { [1] = "New", [4] = "Improved", [5] = "Fixed", }, items = {
+		"|cff6e2c0aBosses pinned on dungeon maps|r: a numbered pin where each boss is, on its floor, numbered as the Bosses tab lists them, with its name on the tooltip (click: its loot in NeedRoll). Placed from Blizzard's own dungeon journal for 153 bosses so far; \"Dungeon maps: bosses\" turns them off with the list (#90, #93).",
+		"|cff6e2c0a/openmap bosses places the rest yourself|r: on a dungeon's map, click where the boss named in the bar is (right-click skips one, shift-click takes the last back). Your places show at once and are kept with your settings.",
+		"|cff6e2c0aDungeon maps from the minimap|r (Options, off): a dungeon's map built from the game's own minimap pictures of its rooms, a picture per floor, instead of its drawn map: The Hall of Thanes and Ruins of Lordaeron for now.",
+		"|cff6e2c0aYour party and raid get a gold-bordered dot|r on the stitched map, everywhere, so they can't be mistaken for a guild member's dot. Someone the game won't place is shown faintly in the middle of their zone, with \"Somewhere in\" on the tooltip. By KonigTX.",
+		"|cff6e2c0a\"Your arrow\" off also hides the yellow location ping|r when the world map opens or changes zones. Turning it on again restores the normal arrow and ping; party markers stay visible (#78). By Luquatic.",
+		"|cff6e2c0a\"Party and raid members\" off means off|r: Blizzard's own blips for your group are hidden too, not only OpenMap's dots (#77, found by Luquatic).",
+		"|cff6e2c0aDragging the map no longer zooms into a zone or city|r: a drag that came back near where it started counted as a click and zoomed into what was under the cursor, Ironforge from parts of Dun Morogh most of all (#37, #64).",
+		"|cff6e2c0aGuild markers clear when a guildmate joins your group|r: their shared-location dot or zone badge entry could stay when the guild roster and the party spelled the character's name differently. By puschie286.",
+		"|cff6e2c0a\"Ctrl-click drops a pin\" off leaves Ctrl-click to other addons|r: with it off, a Ctrl-click zoomed the map and went no further, so Map Pin Enhanced's own Ctrl-click did nothing (#19).",
+		"|cff6e2c0aOne map marker per friend or guildmate|r: different realm labels could make the same character count twice in a zone badge or show more than one shared-location dot (#104, #115). By puschie286.",
+		"|cff6e2c0aNo flight master at Powderfuse Port|r: the map showed one there, but there's none in the game yet; the port is reached by its boat, which stays on the map (#121, #132).",
+		"|cff6e2c0aMap size in OpenMap's menu is greyed out with Move Any|r, as it is in Options: Move Any sizes the map then, and the menu's slider moved without changing anything (perhaps #136).",
+	} },
 	{ version = "v0.8.3", date = "2026-11-09", heads = { [1] = "New", [5] = "Improved", [9] = "Fixed", }, items = {
 		"|cff6e2c0aTurn off OpenMap's dungeon maps|r (Options and the menu's On the map tab): off, clicking an entrance shows its card over the world map, and opening the map inside a dungeon shows the world map, so another dungeon map addon (NeedRoll, Dungeon Journal ...) can show its own. By ZiiMs.",
 		"|cff6e2c0aFriends and guild each have their own switch|r: keep your friends on the map and hide a big guild, or the other way round. A save with the old single switch off turns both off. By ZiiMs.",
@@ -57,11 +71,5 @@ ns.MapChangelog = {
 		"|cff6e2c0aThe map's art is there at once when you open it|r: since 0.7.4 the zones showed blank parchment for a moment each time the map opened.",
 		"|cff6e2c0aClicking a quest on the map keeps the map as it is|r: the quest is tracked and the map zooms in on it, full screen or windowed. It opened the quest's details, which Blizzard shows in the windowed map, so a full-screen map left full screen. With the quest log open beside the map, its details show there too.",
 		"|cff6e2c0aHiding your pins hides their drawings too|r (the menu's Pins, right-clicked): what you drew on a pin stayed on the map without it.",
-	} },
-	{ version = "v0.7.4-beta", date = "2026-10-23", heads = { [1] = "New", }, items = {
-		"|cff6e2c0aChat over the full-screen map|r (the menu's Look tab, and Options): the chat windows stay on show over the map while it's full screen, to keep talking while you look. Off unless you turn it on (a player's request).",
-		"|cff6e2c0aFaster to load|r: only your language's translations are read (the other nine were a quarter of OpenMap's code), and its look through every addon's map icons for combat waits till you're in the world, not the loading screen (a player's report: half a second more load time).",
-		"|cff6e2c0aThe zones' detail comes in sooner|r when the map first opens up close: it took a couple of seconds after a login or reload.",
-		"|cff6e2c0a/openmap status says what loading costs|r: OpenMap's files, the login, the map's setup and building the map (a player found it added load time: this shows where).",
 	} },
 }

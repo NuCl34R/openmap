@@ -1,6 +1,56 @@
 # OpenMap changelog
 
-## Unreleased
+## v0.8.4 (2026-11-11)
+
+### New
+
+- **Bosses pinned on dungeon maps**: a numbered pin where each boss is, on its floor, numbered as
+  the Bosses tab lists them, with its name on the tooltip (click: its loot in NeedRoll). Placed from
+  Blizzard's own dungeon journal for 153 bosses so far; "Dungeon maps: bosses" turns them off with
+  the list (#90, #93).
+
+- **/openmap bosses places the rest yourself**: on a dungeon's map, click where the boss named in
+  the bar is (right-click skips one, shift-click takes the last back). Your places show at once and
+  are kept with your settings.
+
+- **Dungeon maps from the minimap** (Options, off): a dungeon's map built from the game's own
+  minimap pictures of its rooms, a picture per floor, instead of its drawn map: The Hall of Thanes
+  and Ruins of Lordaeron for now.
+
+### Improved
+
+- **Your party and raid get a gold-bordered dot** on the stitched map, everywhere, so they can't be
+  mistaken for a guild member's dot. Someone the game won't place is shown faintly in the middle of
+  their zone, with "Somewhere in" on the tooltip. By KonigTX.
+
+### Fixed
+
+- **"Your arrow" off also hides the yellow location ping** when the world map opens or changes
+  zones. Turning it on again restores the normal arrow and ping; party markers stay visible (#78). By Luquatic.
+
+- **"Party and raid members" off means off**: Blizzard's own blips for your group are hidden too,
+  not only OpenMap's dots (#77, found by Luquatic).
+
+- **Dragging the map no longer zooms into a zone or city**: a drag that came back near where it
+  started counted as a click and zoomed into what was under the cursor, Ironforge from parts of Dun
+  Morogh most of all (#37, #64).
+
+- **Guild markers clear when a guildmate joins your group**: their shared-location dot or zone
+  badge entry could stay when the guild roster and the party spelled the character's name
+  differently. By puschie286.
+
+- **"Ctrl-click drops a pin" off leaves Ctrl-click to other addons**: with it off, a Ctrl-click zoomed
+  the map and went no further, so Map Pin Enhanced's own Ctrl-click did nothing (#19).
+
+- **One map marker per friend or guildmate**: different realm labels could make the same
+  character count twice in a zone badge or show more than one shared-location dot (#104, #115). By
+  puschie286.
+
+- **No flight master at Powderfuse Port**: the map showed one there, but there's none in the game
+  yet; the port is reached by its boat, which stays on the map (#121, #132).
+
+- **Map size in OpenMap's menu is greyed out with Move Any**, as it is in Options: Move Any sizes
+  the map then, and the menu's slider moved without changing anything (perhaps #136).
 
 ## v0.8.3 (2026-11-09)
 

@@ -49,7 +49,8 @@ Write down anything odd, with `/openmap status` output, or use the map's own
 - [ ] The menu's Show tab: Dungeons and raids, Boats and Zeppelins each switch only their own icons, and Boats / Zeppelins their routes too. An install from before (with the old "Dungeons, boats, zeppelins" off) comes up with all three off.
 - [ ] Flight masters: click two, the route and time show. Farholde Keep and Powderfuse Port (Alliance), Rog'mar and Powderfuse Port (Horde) are there, with their flights (the Horde's Powderfuse Port has none in the game's tables).
 - [ ] The Look tab's "Icons from" slider: at 1x, dungeons, boats, zeppelins and flight masters show from the whole-world view; at 6x, none of them zoomed out past 6x, and they come in past it. Townsfolk keep their own zoom either way; your pins and party stay at every zoom. Auto (or Defaults): as before.
-- [ ] The Show tab's "Your arrow" off: your arrow goes from the world map (in a group, the party's markers stay); on again: back at its own size.
+- [ ] The Show tab's "Your arrow" off while the yellow location ping is playing: both your arrow and the ping disappear immediately (in a group, the party's markers stay). Reopen the map, change zones, zoom, `/reload` and relog: neither returns while off. On again: the arrow returns at its own size, and opening the map plays the normal location ping again.
+- [ ] Repeat "Your arrow" off / on in combat: no blocked actions or Lua errors; any protected pin's update waits until combat ends.
 - [ ] Right-click out of Stormwind, Ironforge, Orgrimmar, Undercity, Thunder Bluff or Darnassus: the map goes out to its zone (Elwynn Forest, Dun Morogh ...), not the continent.
 - [ ] The close-up minimap shows at Menethil Harbor, Darnassus, Feathermoon and Southshore; over Quel'Thalas there's no green retail terrain.
 

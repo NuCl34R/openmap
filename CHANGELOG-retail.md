@@ -1,6 +1,28 @@
 # OpenMap changelog
 
-## Unreleased
+## v0.8.4 (2026-11-11)
+
+### Improved
+
+- **Your party and raid get a gold-bordered dot** on the stitched map, everywhere, so they can't be
+  mistaken for a guild member's dot. Someone the game won't place is shown faintly in the middle of
+  their zone, with "Somewhere in" on the tooltip. By KonigTX.
+
+### Fixed
+
+- **"Your arrow" off also hides the yellow location ping** when the world map opens or changes
+  zones. Turning it on again restores the normal arrow and ping; party markers stay visible (#78). By Luquatic.
+
+- **"Party and raid members" off means off**: Blizzard's own blips for your group are hidden too,
+  not only OpenMap's dots (#77, found by Luquatic).
+
+- **Dragging the map no longer zooms into a zone or city**: a drag that came back near where it
+  started counted as a click and zoomed into what was under the cursor, Ironforge from parts of Dun
+  Morogh most of all (#37, #64).
+
+- **Guild markers clear when a guildmate joins your group**: their shared-location dot or zone
+  badge entry could stay when the guild roster and the party spelled the character's name
+  differently. By puschie286.
 
 ## v0.8.3 (2026-11-09)
 

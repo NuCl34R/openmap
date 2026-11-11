@@ -4,6 +4,13 @@
 local _, ns = ...
 
 ns.MapChangelog = {
+	{ version = "v0.8.4", date = "2026-11-11", heads = { [1] = "Improved", [2] = "Fixed", }, items = {
+		"|cff6e2c0aYour party and raid get a gold-bordered dot|r on the stitched map, everywhere, so they can't be mistaken for a guild member's dot. Someone the game won't place is shown faintly in the middle of their zone, with \"Somewhere in\" on the tooltip. By KonigTX.",
+		"|cff6e2c0a\"Your arrow\" off also hides the yellow location ping|r when the world map opens or changes zones. Turning it on again restores the normal arrow and ping; party markers stay visible (#78). By Luquatic.",
+		"|cff6e2c0a\"Party and raid members\" off means off|r: Blizzard's own blips for your group are hidden too, not only OpenMap's dots (#77, found by Luquatic).",
+		"|cff6e2c0aDragging the map no longer zooms into a zone or city|r: a drag that came back near where it started counted as a click and zoomed into what was under the cursor, Ironforge from parts of Dun Morogh most of all (#37, #64).",
+		"|cff6e2c0aGuild markers clear when a guildmate joins your group|r: their shared-location dot or zone badge entry could stay when the guild roster and the party spelled the character's name differently. By puschie286.",
+	} },
 	{ version = "v0.8.3", date = "2026-11-09", heads = { [1] = "New", [5] = "Improved", [9] = "Fixed", }, items = {
 		"|cff6e2c0aTurn off OpenMap's dungeon maps|r (Options and the menu's On the map tab): off, clicking an entrance shows its card over the world map, and opening the map inside a dungeon shows the world map, so another dungeon map addon (NeedRoll, Dungeon Journal ...) can show its own. By ZiiMs.",
 		"|cff6e2c0aFriends and guild each have their own switch|r: keep your friends on the map and hide a big guild, or the other way round. A save with the old single switch off turns both off. By ZiiMs.",
@@ -50,12 +57,5 @@ ns.MapChangelog = {
 		"|cff6e2c0aFlight masters you've learned are in colour|r, all of them: OpenMap knew only the ones it had seen you visit since it was installed (and, on a client not in English, none). It now asks the game which you've found.",
 		"|cff6e2c0aRetail: your arrow and the map's icons where they are in the cities|r: in Stormwind, your arrow, Blizzard's flight master and the other icons on the city's map were drawn tens of yards from where they are (a player's report).",
 		"|cff6e2c0aWith Enhance QoL|r, OpenMap says once in chat to turn off its Mover > World Map: the two both size the map, and its scale goes wrong (a player's finding).",
-	} },
-	{ version = "v0.7.0-beta", date = "2026-10-20", heads = { [1] = "New", [2] = "Improved", }, items = {
-		"|cff6e2c0aOpenMap for retail|r (Midnight): the same seamless map, from retail's own maps. Every continent on Azeroth's map, its zones stitched in as you zoom with their explored areas painted (or hidden until you've been there, as Blizzard's own map does), Blizzard's art as it is; the world's parchment out to its torn edge and on past it; dungeon and raid entrances from the encounter journal with every floor of their maps, flight masters, boats and zeppelins, the close-up minimap. A download of its own on CurseForge.",
-		"|cff6e2c0aThe map stays open while you talk to an NPC|r (or open a vendor, the bags' windows ...): the windowed map is no longer put away to make room. Escape still closes it; maximized, it behaves as before.",
-		"|cff6e2c0aReopen map: Center on player, keep zoom|r (the menu's Reopen map, and Options): the map opens on you at the zoom you closed it at.",
-		"|cff6e2c0aChoose your map|r: the choice the first time the map opens is in the map window's own frame, with plainer words.",
-		"|cff6e2c0aA little lighter at the whole-world view|r: a city's map isn't drawn at all until it starts to fade in (before, it was drawn unseen).",
 	} },
 }

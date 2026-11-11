@@ -442,43 +442,60 @@ local function Settled()
 end
 
 -- the player's arrow on top of every other icon (#31): Blizzard's (its group members pin, the party's
--- with it) and ours. Blizzard sets its level again as it reuses the pin, so it's checked each tick
--- and your own blip on it sized away while your arrow is off (Your arrow): the pin draws the party
--- too, so it stays. Blizzard sizes it again on every zoom step (SynchronizePinSizes): hooked, so it
--- goes at once, and each tick as well where there's no such step to hook
+-- with it) and ours. Blizzard sets its level again as it reuses the pin, so it's checked each tick.
+-- Its blips are sized away where OpenMap's switch for them is off: your own while Your arrow is off
+-- (and the yellow ring it pings on opening, #78), the party's and raid's while Party and raid members
+-- is off (#77). Blizzard sizes them again on every zoom step (SynchronizePinSizes): hooked, so they
+-- go at once, and each tick as well where there's no such step to hook
 local BLIP_GONE = 0.01            -- (a size too small to draw: 0 is taken as the texture's own size, a huge arrow)
-local blipHidden = setmetatable({}, { __mode = "k" })
+local BLIP_UNITS = { player = "playerArrow", party = "group", raid = "group" }
+local blipHidden = setmetatable({}, { __mode = "k" })    -- pin -> { unit = true } sized away
 local blipHooked = setmetatable({}, { __mode = "k" })
-local function PlayerBlip(pin, shown)
-	if not pin.SetPinSize then return end
-	if not shown then
-		if not blipHooked[pin] and type(pin.SynchronizePinSizes) == "function" then
-			blipHooked[pin] = true
+local function BlipOff(unit) return mod.db[BLIP_UNITS[unit]] == false end
+local function Locked(pin) return pin:IsProtected() and InCombatLockdown() end
+local function Blips(pin)
+	local ping = type(pin.StartPlayerPing) == "function" and type(pin.StopPlayerPing) == "function"
+	if not blipHooked[pin] then
+		blipHooked[pin] = true
+		if pin.SetPinSize and type(pin.SynchronizePinSizes) == "function" then
 			hooksecurefunc(pin, "SynchronizePinSizes", function(self)
-				if mod.db.playerArrow == false and not (self:IsProtected() and InCombatLockdown()) then
-					pcall(self.SetPinSize, self, "player", BLIP_GONE)
+				if Locked(self) then return end
+				for unit in pairs(BLIP_UNITS) do
+					if BlipOff(unit) then pcall(self.SetPinSize, self, unit, BLIP_GONE) end
 				end
 			end)
 		end
-		pcall(pin.SetPinSize, pin, "player", BLIP_GONE)
-		blipHidden[pin] = true
-	elseif blipHidden[pin] then
-		-- (back at Blizzard's size for this zoom: its size over the canvas's scale, as it sets it)
-		local dp = pin.dataProvider
-		local sizes = dp and dp.GetUnitPinSizesTable and dp:GetUnitPinSizesTable()
-		local scale = map.GetCanvasScale and map:GetCanvasScale() or 1
-		if sizes and sizes.player and scale and scale > 0 then pcall(pin.SetPinSize, pin, "player", sizes.player / scale) end
-		blipHidden[pin] = nil
+		if ping then
+			hooksecurefunc(pin, "StartPlayerPing", function(self)
+				if BlipOff("player") and not Locked(self) then pcall(self.StopPlayerPing, self) end
+			end)
+		end
+	end
+	if ping and BlipOff("player") then pcall(pin.StopPlayerPing, pin) end
+	if not pin.SetPinSize then return end
+	local hidden = blipHidden[pin] or {}
+	blipHidden[pin] = hidden
+	for unit in pairs(BLIP_UNITS) do
+		if BlipOff(unit) then
+			pcall(pin.SetPinSize, pin, unit, BLIP_GONE)
+			hidden[unit] = true
+		elseif hidden[unit] then
+			-- (back at Blizzard's size for this zoom: its size over the canvas's scale, as it sets it)
+			local dp = pin.dataProvider
+			local sizes = dp and dp.GetUnitPinSizesTable and dp:GetUnitPinSizesTable()
+			local scale = map.GetCanvasScale and map:GetCanvasScale() or 1
+			if sizes and sizes[unit] and scale and scale > 0 then pcall(pin.SetPinSize, pin, unit, sizes[unit] / scale) end
+			hidden[unit] = nil
+		end
 	end
 end
 
 local function RaisePlayer()
 	local level = math.min(sc:GetFrameLevel() + PLAYER_ABOVE, 9500)
-	local shown = mod.db.playerArrow ~= false
 	for pin in map:EnumeratePinsByTemplate("GroupMembersPinTemplate") do
-		if not (pin:IsProtected() and InCombatLockdown()) then
+		if not Locked(pin) then
 			if pin:GetFrameLevel() ~= level then pin:SetFrameLevel(level) end
-			PlayerBlip(pin, shown)
+			Blips(pin)
 		end
 	end
 	S.RaiseArrow(level)
@@ -923,6 +940,24 @@ local function PathTo()
 	return ok and started and true or false
 end
 
+-- a left press that wandered off and came back isn't a click: Blizzard's test only compares where it
+-- went down with where it came up (about 4 pixels), so a drag back and forth over the map, or a slow
+-- one that ends near its start, zoomed into the zone or city under the cursor (#37, #64)
+local press = { moved = false }
+local PRESS_SLOP_SQ = 20          -- (Blizzard's own click distance, squared: MAX_DIST_FOR_CLICK_SQ)
+local function PressDown(_, button)
+	if button ~= "LeftButton" then return end
+	press.x, press.y = sc:GetCursorPosition()
+	press.moved = false
+end
+local function PressTrack()
+	if press.moved or not press.x or not sc.mouseButtonInfo.LeftButton.down then return end
+	local x, y = sc:GetCursorPosition()
+	local dx, dy = x - press.x, y - press.y
+	if dx * dx + dy * dy > PRESS_SLOP_SQ then press.moved = true end
+end
+local function WasDrag() return press.moved end
+
 local function OnCanvasClick(from, button)
 	if not active then return false end
 	if Dropping(button) then
@@ -932,6 +967,10 @@ local function OnCanvasClick(from, button)
 	-- (Shift-click is other addons' first, Shortest Path Forever's journeys: handled by none of them,
 	-- it comes back here through NavigateToCursor, `from` nil, and zooms in as a click)
 	if from and button == "LeftButton" and IsShiftKeyDown() then return PathTo() end
+	-- (Ctrl-click with "Ctrl-click drops a pin" off is other addons', Map Pin Enhanced's, and Blizzard's
+	-- own waypoint: passed on, not a zoom that ends the click here (#19))
+	if from and button == "LeftButton" and IsControlKeyDown() and mod.db.ctrlClickPin == false then return false end
+	if from and button == "LeftButton" and WasDrag() then return true end
 	local u, v = mod.CursorWorld()
 	local _, _, zoom = View()
 	local chain = S.ChainAt(u, v)
@@ -969,12 +1008,13 @@ end
 
 local function OnPinMouseDown(_, button)
 	sc:OnMouseDown(button)
+	PressDown(nil, button)
 	OnGrab()
 end
 
 local function OnPinMouseUp(pin, button)
 	local x, y = sc:GetCursorPosition()
-	if button ~= "LeftButton" or not sc:WouldCursorPositionBeClick(button, x, y) then
+	if button ~= "LeftButton" or not sc:WouldCursorPositionBeClick(button, x, y) or WasDrag() then
 		sc:OnMouseUp(button)
 		return
 	end
@@ -1043,11 +1083,13 @@ local function Setup()
 	sc.CalculateScrollExtentsAtScale = Extents(sc.CalculateScrollExtentsAtScale)
 	sc:HookScript("OnMouseWheel", OnMouseWheel)
 	sc:HookScript("OnMouseDown", OnGrab)
+	sc:HookScript("OnMouseDown", PressDown)
 	-- Listen directly: Blizzard's canvas click dispatcher only tracks left/right buttons.
 	sc:HookScript("OnMouseUp", function(_, button)
 		if active and button == "MiddleButton" then mod:FindMe(true) end
 	end)
 	sc:HookScript("OnUpdate", Animate)
+	sc:HookScript("OnUpdate", PressTrack)
 	-- the gamepad (Forever's gamepad mode): its zoom stick is ours on the stitched map (PadZoom);
 	-- its A (Blizzard's icons under the cursor, then this) presses OpenMap's control or icon under
 	-- the cursor (Gamepad.lua), or else zooms in as a click does; its X, with no icon under the
@@ -1353,6 +1395,7 @@ function mod:Refresh()
 	end
 	if S.RefreshRoutes then S.RefreshRoutes() end
 	S.SetPlayerHidden(self.db.playerArrow == false)
+	if active and map:IsShown() then RaisePlayer() end
 	S.SetPlacesFrom(self.db.iconsFrom)
 	S.SetFoundOnly(self.db.foundOnly)
 	if self.RefreshFlightsFound then self.RefreshFlightsFound() end

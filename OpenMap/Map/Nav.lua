@@ -6,9 +6,9 @@
 --   waypoints    Ctrl-click the map to drop Blizzard's map pin there (and a
 --                TomTom arrow, if TomTom is on); click the pin to clear it
 --   search       type a zone, city, dungeon or flight master and glide to it
---   group        party and raid members as class-coloured dots, wherever they
---                are on the stitched map (Blizzard's own only show on the map
---                underneath)
+--   group        party and raid members as class-coloured dots with a gold
+--                border, wherever they are on the stitched map (Blizzard's own
+--                only show on the map underneath)
 --------------------------------------------------------------------------------
 
 local _, ns = ...
@@ -391,6 +391,25 @@ end
 
 local groupSet, groupLooks = nil, {}
 local DOT = { atlas = "WhiteCircle-RaidBlips", texture = "Interface\\Minimap\\PartyRaidBlips" }
+-- the border that says "your group" (a guild member's or friend's dot, Friends.lua, has none): the
+-- dot's own circle, larger and behind it, gold around a dark gap so it reads on every class's colour
+local RING = { atlas = DOT.atlas, texture = DOT.texture, color = { 1, 0.82, 0, 1 } }
+local RING_GAP = { atlas = DOT.atlas, texture = DOT.texture, color = { 0, 0, 0, 1 } }
+local RING_SIZE, RING_GAP_SIZE = 19, 15
+local ROUGH_ALPHA = 0.55            -- the dot of someone known only by zone
+local ROUGH_SPREAD = 0.006          -- world (normalized): between those known only by zone, in the same zone
+
+local function Ring(pin)
+	if pin.Ring then return end
+	pin.Ring = pin:CreateTexture(nil, "BACKGROUND")
+	pin.Ring:SetSize(RING_SIZE, RING_SIZE)
+	pin.Ring:SetPoint("CENTER")
+	S.Look(pin.Ring, RING)
+	pin.RingGap = pin:CreateTexture(nil, "BORDER")
+	pin.RingGap:SetSize(RING_GAP_SIZE, RING_GAP_SIZE)
+	pin.RingGap:SetPoint("CENTER")
+	S.Look(pin.RingGap, RING_GAP)
+end
 
 local function GroupLook(unit)
 	local _, class = UnitClass(unit)
@@ -408,7 +427,44 @@ local function GroupEnter(pin)
 	GameTooltip:SetOwner(pin, "ANCHOR_RIGHT")
 	local name = Safe.Call(UnitName, pin.unit)
 	GameTooltip:AddLine(name or "?", 1, 1, 1)
+	GameTooltip:AddLine(L["Group"], 1, 0.82, 0)
+	local info = pin.zone and C_Map.GetMapInfo(pin.zone)
+	if info and info.name then GameTooltip:AddLine(L["Somewhere in %s"]:format(info.name), 0.6, 0.6, 0.6) end
 	GameTooltip:Show()
+end
+
+-- where a group member is: u, v on the world when that's known (the game's, or the place they
+-- share with OpenMap: on this client the game can keep a group member's place secret), else
+-- nil, nil and the zone they're in (the game's, or as the guild roster and friends lists give it)
+local function GroupPlace(unit)
+	local u, v = UnitWorld(unit)
+	if u then return u, v end
+	local name, rlm = UnitName(unit)
+	local zone
+	u, v, zone = mod.FriendPlace(Safe.Value(name), Safe.Value(rlm))
+	if u then return u, v end
+	local best = Safe.Call(C_Map.GetBestMapForUnit, unit)
+	if best and S.Rect(best) then zone = best end
+	return nil, nil, zone
+end
+
+-- whether Blizzard's own dot, at the true place, already shows someone in this zone: the map
+-- underneath is the zone or one it lies in (none on the whole-world map)
+local function BlizzardShows(zone, host)
+	if not host or host == S.WORLD then return false end
+	while zone and zone ~= 0 do
+		if zone == host then return true end
+		local info = C_Map.GetMapInfo(zone)
+		zone = info and info.parentMapID
+	end
+	return false
+end
+
+-- the n-th known only by this zone: rows of five just below its middle, clear of its friends badge
+local function ZoneSpot(zone, n)
+	local l, r, t, b = S.Rect(zone)
+	local col, row = (n - 1) % 5, math.floor((n - 1) / 5)
+	return (l + r) / 2 + col * ROUGH_SPREAD, (t + b) / 2 + (row + 1) * ROUGH_SPREAD
 end
 
 local function RefreshGroup()
@@ -417,19 +473,24 @@ local function RefreshGroup()
 	if not mod.db.group or not mod.IsStitched() or not IsInGroup() then return end
 	local host = mod.HostMap()
 	local raid = IsInRaid()
+	local inZone = {}
 	for i = 1, raid and 40 or 4 do
 		local unit = (raid and "raid" or "party") .. i
 		if UnitExists(unit) and not UnitIsUnit(unit, "player") then
-			-- Blizzard shows the ones on the map underneath; we show the rest
-			local onHost = host and Safe.Call(C_Map.GetPlayerMapPosition, host, unit)
-			if not onHost then
-				local u, v = UnitWorld(unit)
-				if u then
-					local pin = S.AddPin(groupSet, u, v, GroupLook(unit))
-					pin.unit = unit
-					pin:SetScript("OnEnter", GroupEnter)
-					pin:SetScript("OnLeave", GameTooltip_Hide)
-				end
+			-- every one known gets the bordered dot (over Blizzard's, on the map underneath: its plain
+			-- blip can't be told from a guild member's); by zone only if Blizzard's isn't there to place them
+			local u, v, zone = GroupPlace(unit)
+			if zone and not u and not BlizzardShows(zone, host) then
+				inZone[zone] = (inZone[zone] or 0) + 1
+				u, v = ZoneSpot(zone, inZone[zone])
+			end
+			if u then
+				local pin = S.AddPin(groupSet, u, v, GroupLook(unit))
+				pin.unit, pin.zone = unit, zone
+				Ring(pin)
+				if zone then pin.Icon:SetAlpha(ROUGH_ALPHA) end
+				pin:SetScript("OnEnter", GroupEnter)
+				pin:SetScript("OnLeave", GameTooltip_Hide)
 			end
 		end
 	end
