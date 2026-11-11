@@ -39,6 +39,9 @@
   badge entry could stay when the guild roster and the party spelled the character's name
   differently. By puschie286.
 
+- **"Ctrl-click drops a pin" off leaves Ctrl-click to other addons**: with it off, a Ctrl-click zoomed
+  the map and went no further, so Map Pin Enhanced's own Ctrl-click did nothing (#19).
+
 - **One map marker per friend or guildmate**: different realm labels could make the same
   character count twice in a zone badge or show more than one shared-location dot (#104, #115). By
   puschie286.

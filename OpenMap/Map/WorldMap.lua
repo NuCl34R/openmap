@@ -967,6 +967,9 @@ local function OnCanvasClick(from, button)
 	-- (Shift-click is other addons' first, Shortest Path Forever's journeys: handled by none of them,
 	-- it comes back here through NavigateToCursor, `from` nil, and zooms in as a click)
 	if from and button == "LeftButton" and IsShiftKeyDown() then return PathTo() end
+	-- (Ctrl-click with "Ctrl-click drops a pin" off is other addons', Map Pin Enhanced's, and Blizzard's
+	-- own waypoint: passed on, not a zoom that ends the click here (#19))
+	if from and button == "LeftButton" and IsControlKeyDown() and mod.db.ctrlClickPin == false then return false end
 	if from and button == "LeftButton" and WasDrag() then return true end
 	local u, v = mod.CursorWorld()
 	local _, _, zoom = View()
