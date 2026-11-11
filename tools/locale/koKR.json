@@ -23,7 +23,6 @@
  "A circle: drag from its middle out.": "원: 중심에서 바깥쪽으로 드래그합니다.",
  "A code to copy and paste anywhere: another player adds it with their OpenMap (Pins, Import).": "어디에나 복사해 붙여넣을 수 있는 코드입니다. 다른 플레이어는 자신의 OpenMap에서 추가할 수 있습니다 (핀, 가져오기).",
  "A dungeon's map has a Quests tab: with Questie, the quests for it that you can take, marked done or in your log; with Dungeon Journal or NeedRoll, a button that opens them there.": "던전 지도에 퀘스트 탭이 생깁니다. Questie가 있으면 그 던전에서 받을 수 있는 퀘스트를 완료했는지, 퀘스트 목록에 있는지와 함께 보여 주고, Dungeon Journal이나 NeedRoll이 있으면 그 애드온에서 퀘스트를 여는 버튼을 보여 줍니다.",
- "A dungeon's map lists its bosses, in the game's order.": "던전 지도에 우두머리 목록을 게임의 순서대로 표시합니다.",
  "A raid mark: click to set it down. Right-click this button for another mark.": "대상 표시기: 클릭하여 놓습니다. 이 버튼을 오른쪽 클릭하면 다른 표시기로 바뀝니다.",
  "A smaller brush": "더 작은 붓",
  "A star puts that action or setting on the map as a button of its own.": "별표를 누르면 그 기능이나 설정이 지도 위에 별도의 버튼으로 추가됩니다.",
@@ -513,5 +512,15 @@
  "zooming about four times smoother, found and measured": "약 네 배 부드러워진 확대/축소, 발견 및 측정",
  "Click: track this quest, zoom to it and show it in the quest log": "클릭: 이 퀘스트를 추적하고 확대한 뒤 퀘스트 목록에 표시",
  "Click: track this quest and zoom to it": "클릭: 이 퀘스트를 추적하고 확대",
- "friends on other numbered realms on the map": "번호가 붙은 다른 서버의 친구를 지도에 표시"
+ "friends on other numbered realms on the map": "번호가 붙은 다른 서버의 친구를 지도에 표시",
+ "A dungeon's map lists its bosses, in the game's order, and pins where they are.": "던전 지도에 우두머리를 게임 순서대로 나열하고 위치를 표시합니다.",
+ "Placed by you (/openmap bosses)": "직접 배치함 (/openmap bosses)",
+ "(placed: click to move it)": "(배치됨: 클릭하여 이동)",
+ "click where it is; right-click skips": "위치를 클릭하세요. 오른쪽 클릭은 건너뜁니다",
+ "Every boss gone through: Done, or Undo": "모든 우두머리 완료: 완료 또는 실행 취소",
+ "Skip": "건너뛰기",
+ "Boss places saved in OpenMapDB (worldmap, bossPlaced) once you /reload or log out; tools/map-dungeons/bosses.py --import adds them to OpenMap's data.": "우두머리 위치는 /reload 또는 로그아웃 시 OpenMapDB (worldmap, bossPlaced)에 저장됩니다. tools/map-dungeons/bosses.py --import로 OpenMap 데이터에 추가할 수 있습니다.",
+ "Open a dungeon's map first: /openmap bosses places its bosses on it.": "먼저 던전 지도를 여세요. 그다음 /openmap bosses 명령으로 우두머리를 배치합니다.",
+ "Dungeon maps from the minimap": "미니맵으로 만든 던전 지도",
+ "Where OpenMap has one, a dungeon's map built from the game's own minimap pictures (what the minimap draws inside) instead of its drawn map. Dungeons with no other map use it anyway.": "OpenMap에 있는 경우, 그린 지도 대신 게임의 미니맵 그림(미니맵이 실내에서 보여주는 것)으로 만든 던전 지도를 사용합니다. 다른 지도가 없는 던전은 항상 이것을 사용합니다."
 }

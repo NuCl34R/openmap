@@ -23,7 +23,6 @@
  "A circle: drag from its middle out.": "Ein Kreis: Zieht von der Mitte nach außen.",
  "A code to copy and paste anywhere: another player adds it with their OpenMap (Pins, Import).": "Ein Code zum Kopieren und Einfügen, wo Ihr wollt: Ein anderer Spieler fügt ihn mit seinem OpenMap hinzu (Markierungen, Import).",
  "A dungeon's map has a Quests tab: with Questie, the quests for it that you can take, marked done or in your log; with Dungeon Journal or NeedRoll, a button that opens them there.": "Die Karte eines Dungeons hat einen Reiter „Quests“: mit Questie die Quests dafür, die Ihr annehmen könnt, als erledigt oder im Questlog markiert; mit Dungeon Journal oder NeedRoll eine Schaltfläche, die sie dort öffnet.",
- "A dungeon's map lists its bosses, in the game's order.": "Die Karte eines Dungeons listet seine Bosse in der Reihenfolge des Spiels auf.",
  "A raid mark: click to set it down. Right-click this button for another mark.": "Eine Zielmarkierung: Klickt, um sie zu setzen. Rechtsklickt auf diese Schaltfläche für eine andere Zielmarkierung.",
  "A smaller brush": "Kleinerer Pinsel",
  "A star puts that action or setting on the map as a button of its own.": "Ein Stern legt diese Aktion oder Einstellung als eigene Schaltfläche auf die Karte.",
@@ -513,5 +512,15 @@
  "zooming about four times smoother, found and measured": "etwa viermal flüssigeres Zoomen, gefunden und gemessen",
  "Click: track this quest, zoom to it and show it in the quest log": "Klick: Quest verfolgen, heranzoomen und im Questlog zeigen",
  "Click: track this quest and zoom to it": "Klick: Quest verfolgen und heranzoomen",
- "friends on other numbered realms on the map": "Freunde auf anderen nummerierten Realms auf der Karte"
+ "friends on other numbered realms on the map": "Freunde auf anderen nummerierten Realms auf der Karte",
+ "A dungeon's map lists its bosses, in the game's order, and pins where they are.": "Die Karte eines Dungeons listet seine Bosse in der Reihenfolge des Spiels auf und markiert, wo sie sind.",
+ "Placed by you (/openmap bosses)": "Von dir gesetzt (/openmap bosses)",
+ "(placed: click to move it)": "(gesetzt: klicken zum Verschieben)",
+ "click where it is; right-click skips": "klicke, wo er ist; Rechtsklick überspringt",
+ "Every boss gone through: Done, or Undo": "Alle Bosse durchgegangen: Fertig oder Rückgängig",
+ "Skip": "Überspringen",
+ "Boss places saved in OpenMapDB (worldmap, bossPlaced) once you /reload or log out; tools/map-dungeons/bosses.py --import adds them to OpenMap's data.": "Bossorte werden in OpenMapDB (worldmap, bossPlaced) gespeichert, sobald du /reload eingibst oder dich ausloggst; tools/map-dungeons/bosses.py --import übernimmt sie in OpenMaps Daten.",
+ "Open a dungeon's map first: /openmap bosses places its bosses on it.": "Öffne zuerst die Karte eines Dungeons: /openmap bosses setzt seine Bosse darauf.",
+ "Dungeon maps from the minimap": "Dungeonkarten aus der Minikarte",
+ "Where OpenMap has one, a dungeon's map built from the game's own minimap pictures (what the minimap draws inside) instead of its drawn map. Dungeons with no other map use it anyway.": "Wo OpenMap eine hat, die Karte eines Dungeons aus den Minikartenbildern des Spiels (was die Minikarte drinnen zeigt) statt seiner gezeichneten Karte. Dungeons ohne andere Karte nutzen sie ohnehin."
 }

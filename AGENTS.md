@@ -47,6 +47,7 @@ python -P tools/offline-test/caves.py
 python -P tools/offline-test/explored.py
 python -P tools/offline-test/chart.py
 python -P tools/offline-test/friends.py
+python -P tools/offline-test/bosses.py
 ```
 
 All must pass, and the first seven again with `OPENMAP_CLIENT=retail` (retail's toc: one branch holds

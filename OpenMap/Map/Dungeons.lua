@@ -5,7 +5,7 @@
 -- the wheel past all the way out, or the card's Back puts the world back where you were.
 -- On a dungeon's map, a card of what's in it: its bosses (the game's list, in its order) and, with
 -- Questie, the quests for it. Questie knows no places inside dungeons, so they're listed, not pinned;
--- the game's own boss pins show by themselves where the client has them (its encounter journal).
+-- the bosses are pinned where Data/DungeonBosses.lua (or the placer, /openmap bosses) has them.
 -- /openmap entrance <name>, standing in a portal: the line for tools/map-data/build.py's ENTRANCES.
 --------------------------------------------------------------------------------
 
@@ -17,6 +17,7 @@ local Look, Safe, L = ns.Look, ns.Safe, ns.L
 local d = mod.defaults
 d.dungeonMaps = true            -- the maps of dungeons and raids (off: the world map, and an entrance's card)
 d.dungeonBosses = true          -- the card lists a dungeon's bosses
+d.dungeonMinimap = false        -- dungeons' maps from the game's minimap pictures, where there are (else only where there's no other)
 d.dungeonQuests = true          -- and its quests (questSource)
 d.questSource = "auto"          -- the quests from: "questie", "journal" (Dungeon Journal), "needroll"; "auto": the first there
 d.entranceClick = "map"         -- clicking an entrance: "map" (its map here) or "journal" (its Dungeon Journal page, where it has one)
@@ -26,6 +27,7 @@ d.dungeonHints = 0              -- dungeon maps opened with the how-to-leave hin
 d.dungeonTab = "floors"         -- the dungeon map's side panel: floors, bosses, quests or loot
 d.dungeonDockTab = "dungeon"    -- the tab picked beside the quest log on a dungeon's map: "dungeon" or "quests"
 d.entrances = {}                -- lines /openmap entrance recorded, to paste into build.py
+d.bossPlaced = {}               -- bosses placed with /openmap bosses: [instance key][boss] = { floor, x, y }
 
 local LOOK = {
 	dungeon = { atlas = "dungeon", texture = "Interface\\Minimap\\ObjectIcons", size = 26 },
@@ -156,7 +158,7 @@ local INNER_TABS = 36           -- the panel's bosses / quests / loot tabs, down
 local TAB_W, TAB_H = 40, 42     -- a tab by the quest log, out from it by along it (WoW Forever's tab art; a little smaller)
 local NEEDROLL_URL = "https://www.curseforge.com/wow/addons/needroll"
 local view
-local QuestList, EnsureQuests, FillSide, Dock, PlaceTabs, PlaceMarks, EndMarkup   -- (below)
+local QuestList, EnsureQuests, FillSide, Dock, PlaceTabs, PlaceMarks, PlacePins, EndMarkup   -- (below)
 
 local function Sound(name) if PlaySound and SOUNDKIT and SOUNDKIT[name] then PlaySound(SOUNDKIT[name]) end end
 
@@ -194,11 +196,18 @@ local function Atlas(tex, name, turn, ownSize)
 end
 
 -- Blizzard's map of it, else one drawn for WoW Forever's own dungeons (Data/DungeonDrawn.lua: by
--- mapID, or by name for one the game's tables have no mapID for yet, Places.lua's 0)
+-- mapID, or by name for one the game's tables have no mapID for yet, Places.lua's 0), else one built
+-- from the game's minimap pictures (Data/DungeonMinimap.lua; first, with Options' "from the minimap").
+-- Its second return says which: "blizzard", "drawn" or "minimap"
 local function FloorsOf(inst)
-	local drawn = ns.MapDungeonDrawn
-	return ns.MapDungeonMaps and ns.MapDungeonMaps[inst[1]]
-		or drawn and (drawn[inst[1]] or inst[1] == 0 and drawn[inst[2]] or nil)
+	local drawn, mini = ns.MapDungeonDrawn, ns.MapDungeonMinimap
+	local m = mini and inst[1] ~= 0 and mini[inst[1]]
+	if m and mod.db.dungeonMinimap then return m, "minimap" end
+	local b = ns.MapDungeonMaps and ns.MapDungeonMaps[inst[1]]
+	if b then return b, "blizzard" end
+	local d = drawn and (drawn[inst[1]] or inst[1] == 0 and drawn[inst[2]] or nil)
+	if d then return d, "drawn" end
+	if m then return m, "minimap" end
 end
 local BLANK = { { blank = true } }    -- (the floors of a dungeon the client has no map of: one blank page)
 
@@ -225,6 +234,7 @@ local function LayoutView()
 		t:SetTexCoord(0, tw / 256, 0, th / 256)
 	end
 	if PlaceMarks then PlaceMarks(pw, ph) end
+	if PlacePins then PlacePins(pw, ph) end
 end
 
 local function ShowFloor(i, quiet)
@@ -582,20 +592,28 @@ local function BuildView()
 	-- the mouse: the wheel zooms, a drag pans, a right-click goes back to the world
 	view:SetScript("OnMouseWheel", function(_, delta) Wheel(delta) end)
 	-- (drawing on it for a report, the markup: a left-drag draws, a right-drag pans, a right-click stays)
+	-- (placing bosses: a click places, a right-click skips, shift-click takes one back; either drag pans)
 	view:SetScript("OnMouseDown", function(self, button)
 		if self.markup and button == "LeftButton" then self.MarkStart() return end
-		if button == (self.markup and "RightButton" or "LeftButton") then
+		if self.placer or button == (self.markup and "RightButton" or "LeftButton") then
 			local x, y = GetCursorPosition()
 			self.drag = { x, y, self.ox, self.oy, button = button }
 		end
 	end)
 	view:SetScript("OnMouseUp", function(self, button)
-		if self.markup then
+		local d = self.drag
+		self.drag = nil
+		if self.placer then
+			local x, y = GetCursorPosition()
+			if d and math.abs(x - d[1]) + math.abs(y - d[2]) > 6 then return end   -- (a drag: it panned)
+			if button == "RightButton" then mod.BossPlacerNext()
+			elseif IsShiftKeyDown() then mod.BossPlacerUndo()
+			else mod.BossPlacerClick() end
+		elseif self.markup then
 			if button == "LeftButton" then self.MarkFinish() end
 		elseif button == "RightButton" then
 			CloseView()
 		end
-		self.drag = nil
 	end)
 	view:SetScript("OnUpdate", function(self)
 		if self.markup then self.MarkMove() end
@@ -611,6 +629,7 @@ local function BuildView()
 	view:SetScript("OnHide", function()
 		view.leaving = nil
 		EndMarkup(false)                            -- (a report being drawn: no report)
+		if view.placer then mod:ToggleBossPlacer() end   -- (placing bosses: done)
 		if view.list then view.list:Hide() end
 		Dock()                                      -- (out of the quest log, if it was in it)
 		if card and card:IsShown() then C_Timer.After(0, RefreshCard) end
@@ -1020,11 +1039,11 @@ end
 local function OpenView(inst, pin)
 	local t0 = debugprofilestop and debugprofilestop()
 	-- (none in the client, WoW Forever's own dungeons: a blank page, its side panel as any other's)
-	local floors = FloorsOf(inst)
+	local floors, source = FloorsOf(inst)
 	if not floors or #floors == 0 then floors = BLANK end
 	if not view then BuildView() end
 	portalCard = nil
-	view.inst, view.floors = inst, floors
+	view.inst, view.floors, view.source = inst, floors, source
 	local first = 1
 	for i, f in ipairs(floors) do
 		if f.wing == inst[2] or (f.name and f.name == WING_FLOORS[inst[2]]) then first = i break end
@@ -1896,7 +1915,228 @@ FillSide = function()
 	side.LightThumbs()
 end
 
-mod.RefreshDungeonCard = function() Recolour() RefreshCard() FillSide() end   -- (settings changed: mod:Refresh)
+--------------------------------------------------------------------------------
+-- Boss pins: where each boss is on the floor shown (Data/DungeonBosses.lua, from the journals and
+-- the places set by hand), numbered as the Bosses tab lists them; with "Dungeon maps: bosses".
+-- The placer (/openmap bosses, on a dungeon's map): click where the boss named in its bar is, and
+-- it goes on to the next; right-click skips one, shift-click takes the last one back. What it places
+-- is kept in OpenMapDB (worldmap, bossPlaced), shown over the shipped places at once, and
+-- tools/map-dungeons/bosses.py --import brings it into the data.
+--------------------------------------------------------------------------------
+
+local PIN_SIZE = 22
+
+-- (as Kept's; a map built from the minimap pictures has its own floors, so its own places: "minimap:<mapID>")
+local function InstKey(inst)
+	local key = inst and (inst[1] ~= 0 and inst[1] or inst[2])
+	if key and view and view.source == "minimap" and view.inst == inst then return "minimap:" .. key end
+	return key
+end
+
+-- the game's bosses of the instance shown, in its order, and any placed by hand that it doesn't list
+local function BossNames(inst)
+	local names, seen = {}, {}
+	for _, n in ipairs((Places().bosses or {})[inst[1]] or {}) do
+		if not seen[n] then names[#names + 1], seen[n] = n, true end
+	end
+	local key = InstKey(inst)
+	for _, src in ipairs({ ns.MapDungeonBosses and ns.MapDungeonBosses[key], mod.db.bossPlaced and mod.db.bossPlaced[key] }) do
+		local extra = {}
+		for n in pairs(src or {}) do if not seen[n] then extra[#extra + 1] = n end end
+		table.sort(extra)
+		for _, n in ipairs(extra) do names[#names + 1], seen[n] = n, true end
+	end
+	return names
+end
+
+-- a boss's place: { floor, x, y }, the placer's over the shipped one; nil where it has none
+local function BossAt(inst, name)
+	local key = InstKey(inst)
+	local mine = mod.db.bossPlaced and mod.db.bossPlaced[key]
+	if mine and mine[name] then return mine[name], true end
+	local shipped = ns.MapDungeonBosses and ns.MapDungeonBosses[key]
+	return shipped and shipped[name]
+end
+
+local function PinTip(pin)
+	GameTooltip:SetOwner(pin, "ANCHOR_RIGHT")
+	GameTooltip:AddLine(("%d. %s"):format(pin.index, pin.name), 1, 0.82, 0)
+	if pin.mine then GameTooltip:AddLine(L["Placed by you (/openmap bosses)"], 0.6, 0.6, 0.6) end
+	if NeedRoll() then GameTooltip:AddLine(L["Click to see loot in NeedRoll"], 0.6, 0.6, 0.6) end
+	GameTooltip:Show()
+end
+
+local function MakePin(i)
+	local pin = CreateFrame("Button", nil, view.page)
+	pin:SetSize(PIN_SIZE, PIN_SIZE)
+	pin:SetFrameLevel(view.page:GetFrameLevel() + 5)
+	pin.icon = pin:CreateTexture(nil, "ARTWORK")
+	pin.icon:SetAllPoints()
+	if not Atlas(pin.icon, "DungeonSkull") then pin.icon:SetTexture("Interface\\TargetingFrame\\UI-TargetingFrame-Skull") end
+	pin.ring = pin:CreateTexture(nil, "BACKGROUND")
+	pin.ring:SetPoint("CENTER")
+	pin.ring:SetSize(PIN_SIZE + 6, PIN_SIZE + 6)
+	pin.ring:SetTexture("Interface\\Minimap\\UI-Minimap-Background")
+	pin.ring:SetVertexColor(0, 0, 0, 0.7)
+	pin.num = Look:Font(pin:CreateFontString(nil, "OVERLAY"), 11, "OUTLINE")
+	pin.num:SetPoint("CENTER", pin, "BOTTOMRIGHT", -2, 3)
+	pin.num:SetTextColor(1, 0.82, 0)
+	pin:SetScript("OnEnter", PinTip)
+	pin:SetScript("OnLeave", GameTooltip_Hide)
+	pin:SetScript("OnClick", function(self)
+		if NeedRoll() then OpenNeedRoll(self.name, IsShiftKeyDown() and "map" or nil) end
+	end)
+	view.bossPins[i] = pin
+	return pin
+end
+
+PlacePins = function(pw, ph)
+	view.bossPins = view.bossPins or {}
+	local n = 0
+	local inst = view.inst
+	if inst and mod.db.dungeonBosses and view.floors and not (view.floors[view.floor] or {}).blank then
+		local placing = view.placer
+		for i, name in ipairs(BossNames(inst)) do
+			local p, mine = BossAt(inst, name)
+			if p and p[1] == view.floor then
+				n = n + 1
+				local pin = view.bossPins[n] or MakePin(n)
+				pin.index, pin.name, pin.mine = i, name, mine
+				pin.num:SetText(i)
+				pin:ClearAllPoints()
+				pin:SetPoint("CENTER", view.page, "TOPLEFT", p[2] * pw, -p[3] * ph)
+				pin:EnableMouse(not placing)
+				-- (placing: the one just placed lit, the others dimmed)
+				pin:SetAlpha(placing and (placing.last == name and 1 or 0.6) or 1)
+				pin:Show()
+			end
+		end
+	end
+	for i = n + 1, #view.bossPins do view.bossPins[i]:Hide() end
+end
+
+local function RedrawPins()
+	local pw, ph = view.page:GetSize()
+	if pw and pw > 0 then PlacePins(pw, ph) end
+end
+mod.RedrawBossPins = function() if view and view:IsShown() then RedrawPins() end end
+
+-- the placer's bar, over the picture's top: the boss to place, Skip, Undo, Done
+local function PlacerBar()
+	if view.placerBar then return view.placerBar end
+	local bar = CreateFrame("Frame", nil, view)
+	bar:SetPoint("TOP", view.port, "TOP", 0, -6)
+	bar:SetSize(660, 38)
+	bar:SetFrameLevel(view:GetFrameLevel() + 30)
+	bar:EnableMouse(true)
+	Look:Panel(bar, { inset = 0, alpha = 0.92 })
+	bar.text = Look:Font(bar:CreateFontString(nil, "OVERLAY"), 12)
+	bar.text:SetPoint("LEFT", 10, 0)
+	bar.text:SetPoint("RIGHT", -240, 0)
+	bar.text:SetJustifyH("LEFT")
+	bar.text:SetWordWrap(false)
+	local function Btn(label, x, fn)
+		local b = CreateFrame("Button", nil, bar, "UIPanelButtonTemplate")
+		b:SetSize(70, 24)
+		b:SetPoint("RIGHT", x, 0)
+		b:SetText(label)
+		b:SetScript("OnClick", fn)
+		return b
+	end
+	Btn(L["Done"], -8, function() mod:ToggleBossPlacer() end)
+	Btn(L["Undo"], -82, function() mod.BossPlacerUndo() end)
+	Btn(L["Skip"], -156, function() mod.BossPlacerNext() end)
+	mod.padRoots[#mod.padRoots + 1] = bar      -- (the gamepad's cursor presses its buttons: Gamepad.lua)
+	view.placerBar = bar
+	return bar
+end
+
+local function PlacerShow()
+	local pl = view.placer
+	if not pl then return end
+	local name = pl.names[pl.at]
+	if name then
+		local p = BossAt(view.inst, name)
+		local where = p and (" |cff998866" .. L["(placed: click to move it)"] .. "|r") or ""
+		PlacerBar().text:SetText(("|cffffd100%d / %d|r  %s%s  |cff998866%s|r"):format(pl.at, #pl.names, name, where,
+			L["click where it is; right-click skips"]))
+	else
+		PlacerBar().text:SetText("|cffffd100" .. L["Every boss gone through: Done, or Undo"] .. "|r")
+	end
+	RedrawPins()
+end
+
+local function Placed(make)
+	local key = InstKey(view.inst)
+	mod.db.bossPlaced = mod.db.bossPlaced or {}
+	if make and not mod.db.bossPlaced[key] then mod.db.bossPlaced[key] = {} end
+	return mod.db.bossPlaced[key]
+end
+
+local function PlacerClick()
+	local pl = view.placer
+	local name = pl and pl.names[pl.at]
+	local px, py = PageAt()
+	if not (name and px) then return end
+	local mine = Placed(true)
+	pl.undo[#pl.undo + 1] = { at = pl.at, name = name, was = mine[name] }
+	mine[name] = { view.floor, Round4(px), Round4(py) }
+	pl.last = name
+	Sound("U_CHAT_SCROLL_BUTTON")
+	pl.at = pl.at + 1
+	PlacerShow()
+end
+
+function mod.BossPlacerNext()
+	local pl = view and view.placer
+	if not pl or pl.at > #pl.names then return end
+	pl.undo[#pl.undo + 1] = { at = pl.at, skip = true }
+	pl.at = pl.at + 1
+	PlacerShow()
+end
+
+function mod.BossPlacerUndo()
+	local pl = view and view.placer
+	local u = pl and tremove(pl.undo)
+	if not u then return end
+	if not u.skip then
+		local mine = Placed(true)
+		mine[u.name] = u.was
+		if not next(mine) then mod.db.bossPlaced[InstKey(view.inst)] = nil end
+	end
+	pl.at, pl.last = u.at, nil
+	PlacerShow()
+end
+
+-- /openmap bosses: the placer on the dungeon's map shown, or off
+function mod:ToggleBossPlacer()
+	if view and view.placer then
+		view.placer = nil
+		if view.placerBar then view.placerBar:Hide() end
+		RedrawPins()
+		ns:Print(L["Boss places saved in OpenMapDB (worldmap, bossPlaced) once you /reload or log out; tools/map-dungeons/bosses.py --import adds them to OpenMap's data."])
+		return
+	end
+	if not (view and view:IsShown() and view.inst) or (view.floors[view.floor] or {}).blank then
+		ns:Print(L["Open a dungeon's map first: /openmap bosses places its bosses on it."])
+		return
+	end
+	EndMarkup(false)
+	local names = BossNames(view.inst)
+	if #names == 0 then
+		ns:Print(L["The game lists no bosses for it."])
+		return
+	end
+	if not mod.db.dungeonBosses then mod.db.dungeonBosses = true end   -- (placing them: shown)
+	view.placer = { names = names, at = 1, undo = {} }
+	view.hint:Hide()
+	PlacerBar():Show()
+	PlacerShow()
+end
+mod.BossPlacing = function() return view and view.placer and true or false end
+mod.BossPlacerClick = function() PlacerClick() end
+
+mod.RefreshDungeonCard = function() Recolour() RefreshCard() FillSide() mod.RedrawBossPins() end   -- (settings changed: mod:Refresh)
 
 -- /openmap dungeons: which map each entrance opens (none: the client has no map of it by that name)
 function mod:DungeonDiag()
@@ -1957,7 +2197,10 @@ function mod:DungeonOptions(opts, get, set, off)
 		set = function(_, v) mod.SetDungeonMaps(v) end,
 		desc = L["OpenMap's maps of dungeons and raids: Blizzard's where the client has one, the ones drawn for WoW Forever's where it has none. Off: inside a dungeon the map stays the world map, and an entrance's card opens over it instead."] }
 	opts.dungeonBosses = { type = "toggle", name = L["Dungeon maps: bosses"], order = 31.1, width = "full", get = get, set = set, disabled = off,
-		desc = L["A dungeon's map lists its bosses, in the game's order."] }
+		desc = L["A dungeon's map lists its bosses, in the game's order, and pins where they are."] }
+	opts.dungeonMinimap = { type = "toggle", name = L["Dungeon maps from the minimap"], order = 31.03, width = "full", get = get, disabled = off,
+		set = function(info, v) set(info, v) if view and view:IsShown() then CloseView() end end,
+		desc = L["Where OpenMap has one, a dungeon's map built from the game's own minimap pictures (what the minimap draws inside) instead of its drawn map. Dungeons with no other map use it anyway."] }
 	opts.dungeonLevels = { type = "toggle", name = L["Dungeon level ranges"], order = 31.05, width = "full", get = get, set = set, disabled = off,
 		desc = L["Each dungeon entrance's level range under its icon, coloured for your level."] }
 	opts.dungeonQuests = { type = "toggle", name = L["Dungeon maps: quests"], order = 31.2, width = "full", get = get, set = set, disabled = off,
