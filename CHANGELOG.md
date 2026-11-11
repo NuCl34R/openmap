@@ -49,6 +49,9 @@
 - **No flight master at Powderfuse Port**: the map showed one there, but there's none in the game
   yet; the port is reached by its boat, which stays on the map (#121, #132).
 
+- **Map size in OpenMap's menu is greyed out with Move Any**, as it is in Options: Move Any sizes
+  the map then, and the menu's slider moved without changing anything (perhaps #136).
+
 ## v0.8.3 (2026-11-09)
 
 ### New

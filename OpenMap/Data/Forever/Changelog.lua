@@ -16,6 +16,7 @@ ns.MapChangelog = {
 		"|cff6e2c0a\"Ctrl-click drops a pin\" off leaves Ctrl-click to other addons|r: with it off, a Ctrl-click zoomed the map and went no further, so Map Pin Enhanced's own Ctrl-click did nothing (#19).",
 		"|cff6e2c0aOne map marker per friend or guildmate|r: different realm labels could make the same character count twice in a zone badge or show more than one shared-location dot (#104, #115). By puschie286.",
 		"|cff6e2c0aNo flight master at Powderfuse Port|r: the map showed one there, but there's none in the game yet; the port is reached by its boat, which stays on the map (#121, #132).",
+		"|cff6e2c0aMap size in OpenMap's menu is greyed out with Move Any|r, as it is in Options: Move Any sizes the map then, and the menu's slider moved without changing anything (perhaps #136).",
 	} },
 	{ version = "v0.8.3", date = "2026-11-09", heads = { [1] = "New", [5] = "Improved", [9] = "Fixed", }, items = {
 		"|cff6e2c0aTurn off OpenMap's dungeon maps|r (Options and the menu's On the map tab): off, clicking an entrance shows its card over the world map, and opening the map inside a dungeon shows the world map, so another dungeon map addon (NeedRoll, Dungeon Journal ...) can show its own. By ZiiMs.",
