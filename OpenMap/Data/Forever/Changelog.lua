@@ -4,7 +4,10 @@
 local _, ns = ...
 
 ns.MapChangelog = {
-	{ version = "Unreleased", date = "", heads = { [1] = "Improved", [2] = "Fixed", }, items = {
+	{ version = "Unreleased", date = "", heads = { [1] = "New", [4] = "Improved", [5] = "Fixed", }, items = {
+		"|cff6e2c0aBosses pinned on dungeon maps|r: a numbered pin where each boss is, on its floor, numbered as the Bosses tab lists them, with its name on the tooltip (click: its loot in NeedRoll). Placed from Blizzard's own dungeon journal for 153 bosses so far; \"Dungeon maps: bosses\" turns them off with the list (#90, #93).",
+		"|cff6e2c0a/openmap bosses places the rest yourself|r: on a dungeon's map, click where the boss named in the bar is (right-click skips one, shift-click takes the last back). Your places show at once and are kept with your settings.",
+		"|cff6e2c0aDungeon maps from the minimap|r (Options, off): a dungeon's map built from the game's own minimap pictures of its rooms, a picture per floor, instead of its drawn map: The Hall of Thanes and Ruins of Lordaeron for now.",
 		"|cff6e2c0aYour party and raid get a gold-bordered dot|r on the stitched map, everywhere, so they can't be mistaken for a guild member's dot. Someone the game won't place is shown faintly in the middle of their zone, with \"Somewhere in\" on the tooltip. By KonigTX.",
 		"|cff6e2c0a\"Your arrow\" off also hides the yellow location ping|r when the world map opens or changes zones. Turning it on again restores the normal arrow and ping; party markers stay visible (#78). By Luquatic.",
 		"|cff6e2c0a\"Party and raid members\" off means off|r: Blizzard's own blips for your group are hidden too, not only OpenMap's dots (#77, found by Luquatic).",

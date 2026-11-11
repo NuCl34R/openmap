@@ -2,6 +2,21 @@
 
 ## Unreleased
 
+### New
+
+- **Bosses pinned on dungeon maps**: a numbered pin where each boss is, on its floor, numbered as
+  the Bosses tab lists them, with its name on the tooltip (click: its loot in NeedRoll). Placed from
+  Blizzard's own dungeon journal for 153 bosses so far; "Dungeon maps: bosses" turns them off with
+  the list (#90, #93).
+
+- **/openmap bosses places the rest yourself**: on a dungeon's map, click where the boss named in
+  the bar is (right-click skips one, shift-click takes the last back). Your places show at once and
+  are kept with your settings.
+
+- **Dungeon maps from the minimap** (Options, off): a dungeon's map built from the game's own
+  minimap pictures of its rooms, a picture per floor, instead of its drawn map: The Hall of Thanes
+  and Ruins of Lordaeron for now.
+
 ### Improved
 
 - **Your party and raid get a gold-bordered dot** on the stitched map, everywhere, so they can't be
