@@ -138,15 +138,95 @@ steps = L.eval("""function(ns, scenario)
         -- (Options' padMap turned on while OpenMap waits: its map at once, the Gamepad UI still on)
         local m = ns.modules.worldmap
         if m.enabled or not m.padWaits then ERRORS[#ERRORS + 1] = "padmap: OpenMap didn't wait for the Gamepad UI first" end
+        local function check(ok, msg) if not ok then ERRORS[#ERRORS + 1] = "padmap: " .. msg end end
+        -- padMap turned on in combat: the map stays Blizzard's until it's over (set up out of combat), and
+        -- not at all if it was turned off again meanwhile
+        IN_COMBAT = true
+        m.db.padMap = true
+        local okc, ec = pcall(m.SetPadMap, true)
+        check(okc, "padMap on in combat: " .. tostring(ec))
+        RunTimers(2)
+        check(not m.enabled and m.padWaits, "OpenMap took the map in combat")
+        m.db.padMap = false
+        pcall(m.SetPadMap, false)
+        IN_COMBAT = false
+        FireEvent("PLAYER_REGEN_ENABLED")
+        RunTimers(2)
+        check(not m.enabled and m.padWaits, "OpenMap took the map after padMap was turned off again in combat")
+        -- padMap turned on out of combat: its map at once, the Gamepad UI still on
         m.db.padMap = true
         local ok3, e3 = pcall(m.SetPadMap, true)
-        if not ok3 then ERRORS[#ERRORS + 1] = "padmap: " .. tostring(e3) end
+        check(ok3, tostring(e3))
         RunTimers(2)
-        if not m.enabled or m.padWaits then ERRORS[#ERRORS + 1] = "padmap: OpenMap didn't take the map with padMap on" end
+        check(m.enabled and not m.padWaits, "OpenMap didn't take the map with padMap on")
         if m.PadKeys then
             local ok4, e4 = pcall(m.PadKeys)
-            if not ok4 then ERRORS[#ERRORS + 1] = "padmap: the keys: " .. tostring(e4) end
+            check(ok4, "the keys: " .. tostring(e4))
         end
+        -- waiting again (as when the Gamepad UI comes back), padMap turned on in combat and combat ending
+        m.enabled, m.padWaits = false, true
+        IN_COMBAT = true
+        pcall(m.SetPadMap, true)
+        IN_COMBAT = false
+        FireEvent("PLAYER_REGEN_ENABLED")
+        RunTimers(2)
+        check(m.enabled and not m.padWaits, "OpenMap didn't take the map when combat ended with padMap on")
+
+        -- The controller's buttons (Gamepad.lua's PadKeys) on a map of our own: the stub's isn't the expected
+        -- kind, so Setup never wired it. Bindings are recorded: key -> the secure button that clicks for it.
+        local binds, clears = {}, 0
+        SetOverrideBindingClick = function(_, _, key, name) binds[key] = name end
+        ClearOverrideBindings = function() binds = {} clears = clears + 1 end
+        GAMEPAD_FACE_RIGHT, GAMEPAD_DPAD_TOP, GAMEPAD_DPAD_BOTTOM = "PADB", "PADUP", "PADDOWN"
+        local closeBtn, minBtn, maxBtn = CreateFrame("Button", "FakePadClose"), CreateFrame("Button", "FakePadMin"), CreateFrame("Button", "FakePadMax")
+        local fake = CreateFrame("Frame", "FakePadMap")
+        local maximized = false
+        fake.worldMapFooter = { isShown = true, ShowAndActivateBindings = function() end, HideAndDeactivateBindings = function() end, Refresh = function() end }
+        fake.BorderFrame = { CloseButton = closeBtn, MaximizeMinimizeFrame = { MinimizeButton = minBtn, MaximizeButton = maxBtn } }
+        fake.IsMaximized = function() return maximized end
+        fake.Maximize = function() maximized = true end
+        fake.Minimize = function() maximized = false end
+        local details = CreateFrame("Frame", "FakePadDetails")
+        details:Hide()
+        QuestMapFrame = { DetailsFrame = details }
+        local okg, eg = pcall(m.SetupGamepad, m, fake)
+        check(okg, "SetupGamepad: " .. tostring(eg))
+        RunTimers(1)
+        local function target(name) local b = _G[name] return b and b:GetAttribute("clickbutton") end
+        m.PadKeys()
+        check(binds[GAMEPAD_FACE_RIGHT] == "OpenMapPadBack" and target("OpenMapPadBack") == closeBtn, "B isn't the map's close button")
+        check(binds[GAMEPAD_DPAD_BOTTOM] == "OpenMapPadFull" and target("OpenMapPadFull") == maxBtn and not binds[GAMEPAD_DPAD_TOP], "the D-pad's down isn't full screen")
+        fake:Maximize()
+        check(binds[GAMEPAD_FACE_RIGHT] == "OpenMapPadBack" and target("OpenMapPadBack") == minBtn, "B in full screen isn't the minimize button")
+        check(binds[GAMEPAD_DPAD_TOP] == "OpenMapPadSmall" and target("OpenMapPadSmall") == minBtn and not binds[GAMEPAD_DPAD_BOTTOM], "the D-pad's up isn't leaving full screen")
+        fake:Minimize()
+        -- a quest's details opening is Blizzard's own B (back to the list), closing gives B back to the map
+        details:Show()
+        check(not binds[GAMEPAD_FACE_RIGHT], "B stayed OpenMap's with a quest's details open")
+        details:Hide()
+        check(binds[GAMEPAD_FACE_RIGHT] == "OpenMapPadBack", "B wasn't the map's again once the quest's details closed")
+        -- in combat the bindings can't change: left alone, set again when it ends
+        local before = clears
+        IN_COMBAT = true
+        fake:Hide()
+        check(clears == before and binds[GAMEPAD_FACE_RIGHT], "the bindings changed in combat")
+        IN_COMBAT = false
+        FireEvent("PLAYER_REGEN_ENABLED")
+        check(next(binds) == nil, "the map hid in combat and its bindings stayed after it")
+        fake:Show()
+        fake.worldMapFooter:ShowAndActivateBindings()   -- (what the game's map footer does as the map shows: PadKeys follows it)
+        check(binds[GAMEPAD_FACE_RIGHT] == "OpenMapPadBack", "no bindings with the map shown again")
+        -- the Gamepad UI going off hands every button back
+        InputUtil.IsGamepadUIEnabled = function() return false end
+        FireEvent("INPUT_DEVICE_INTERFACE_TRANSITION", 0, 1)
+        check(next(binds) == nil, "the bindings stayed with the Gamepad UI off")
+        InputUtil.IsGamepadUIEnabled = function() return true end
+        m.PadKeys()
+        check(binds[GAMEPAD_FACE_RIGHT] == "OpenMapPadBack", "no bindings with the Gamepad UI back on")
+        -- and so does padMap turned off
+        m.db.padMap = false
+        pcall(m.SetPadMap, false)
+        check(next(binds) == nil, "the bindings stayed with padMap off")
     end
 end""")
 

@@ -1,5 +1,15 @@
 # OpenMap changelog
 
+## Unreleased
+
+### Fixed
+
+- **With the controller (Options' "OpenMap's map with the controller"), turning it on in combat now
+  works.** It left OpenMap waiting for the Gamepad UI to go, and the map stayed Blizzard's until you
+  swapped input devices; now the map is OpenMap's once combat ends (and not at all if you turned
+  the option off again meanwhile). B and the D-pad are also set again whenever a quest's details open
+  or close, so B goes back to the quest list there and closes the map otherwise.
+
 ## v0.8.4 (2026-11-11)
 
 ### New

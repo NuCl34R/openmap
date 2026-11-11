@@ -1345,13 +1345,20 @@ local function StyleChanged()
 	end
 end
 
--- Options' padMap turned on or off: on, while OpenMap waits for the Gamepad UI to go, its map at once;
--- off with the Gamepad UI on and the map OpenMap's, only a reload gives it back
+-- Options' padMap turned on or off: on, while OpenMap waits for the Gamepad UI to go, its map at once
+-- (in combat, once it's over: set up out of combat, as at login); off with the Gamepad UI on and the
+-- map OpenMap's, only a reload gives it back
+local padMapOwner = {}
 function mod.SetPadMap(on)
 	if on and mod.padWaits and not InCombatLockdown() then
 		mod.padWaits = nil
 		mod.enabled = true
 		Start()
+	elseif on and mod.padWaits then
+		ns.RegisterEvent(padMapOwner, "PLAYER_REGEN_ENABLED", function()
+			ns.UnregisterEvent(padMapOwner, "PLAYER_REGEN_ENABLED")
+			if mod.db.padMap then mod.SetPadMap(true) end   -- (not turned off again meanwhile)
+		end)
 	elseif not on and started and PadUI() then
 		ns:Print(ns.L["The Gamepad UI is on: /reload so OpenMap leaves the world map to Blizzard (until then the game may block closing the map with the controller)."])
 	end
