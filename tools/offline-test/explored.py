@@ -231,5 +231,42 @@ class FoundTests(unittest.TestCase):
         self.assertTrue(self.found(0.6, 0.6))
 
 
+class DimTilesTests(unittest.TestCase):
+    """Darkened up close (Stitch.lua's Shade.Hide.Tiles): the shade drawn through each unexplored piece's
+    own art (its alpha the shade's shape, soft-edged as at normal zoom: in rectangles it was hard-edged,
+    #101, #129), only the unexplored pieces', each tile where Shade.Pieces draws it, its whole file the mask"""
+
+    def setUp(self):
+        self.lua = LuaRuntime(unpack_returned_tuples=True)
+        self.lua.execute("""
+            Shade = { Hide = {} }
+            function Pow2(n) local p = 1 while p < n do p = p * 2 end return p end
+            list = {
+                { files = { 11, 12, 13, 14 }, x = 10, y = 20, w = 300, h = 200, piece = { unexplored = true } },
+                { files = { 21 }, x = 400, y = 50, w = 100, h = 100, piece = { unexplored = false } },
+            }
+            function ForEachPiece(mapID, fn)
+                for _, e in ipairs(list) do fn(e.files, e.x, e.y, e.w, e.h, 0, e.piece) end
+            end
+        """)
+        self.lua.execute(chunk("Shade.Hide.Tiles"))
+        self.tiles = self.lua.eval("""function()
+            local p = { left = 1000, top = 2000, sx = 2, sy = 3, layer = { tileWidth = 256, tileHeight = 256 } }
+            return Shade.Hide.Tiles(1421, p)
+        end""")()
+
+    def test_only_the_unexplored_pieces_tiles(self):
+        files = sorted(t.file for t in self.tiles.values())
+        self.assertEqual(files, [11, 12])        # (300 x 200: two tiles across, one down; 21 explored)
+
+    def test_placed_as_the_pieces_copies_are(self):
+        t = {t.file: t for t in self.tiles.values()}
+        self.assertEqual((t[11].x, t[11].y, t[11].w, t[11].h), (1000 + 10 * 2, 2000 + 20 * 3, 256 * 2, 200 * 3))
+        self.assertEqual((t[12].x, t[12].w), (1000 + (10 + 256) * 2, 44 * 2))
+        # (its mask the whole file: the next power of two at the edge, not the part shown)
+        self.assertEqual((t[12].fw, t[12].fh), (64 * 2, 256 * 3))
+        self.assertEqual((t[11].fw, t[11].fh), (256 * 2, 256 * 3))
+
+
 if __name__ == "__main__":
     unittest.main()

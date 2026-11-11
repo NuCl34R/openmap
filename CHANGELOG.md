@@ -13,6 +13,10 @@
 - **Ragefire Chasm shows with "Only places you've found"** once you've found Orgrimmar: an entrance
   inside a city is found with the city, whose own map has nothing to explore (#113).
 
+- **"Darken unexplored areas" keeps its soft edges up close**: once the minimap's detail shows, the
+  shade was hard-edged rectangles, and it changed as the minimap came in; it now has each unexplored
+  area's own shape, as further out (#101, #129).
+
 ## v0.8.4 (2026-11-11)
 
 ### New
