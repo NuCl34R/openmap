@@ -341,6 +341,102 @@ class FriendsTests(unittest.TestCase):
         self.run_(2)
         self.assertEqual(self.lua.eval("#pins"), 0)
 
+    def same_guild_friend(self):
+        # The same character comes back under two Forever realm labels.
+        self.lua.execute("""
+            ns.Client = "Forever"
+            GetNormalizedRealmName = function() return "CAMWOWEU5Realm4PvP" end
+            memberGuid = "Player-1-0002"
+            guild = { { "Guildie Oak-CAMWOWEU5Realm4PvP", 30, "Elwynn Forest", true, "MAGE", memberGuid } }
+            friendList = { { name = "Guildie Oak-CAMWOWEU5Realm12PvP", guid = memberGuid,
+                connected = true, level = 30, area = "Elwynn Forest", className = "Mage" } }
+            local account = { characterName = "Guildie Oak", realmName = "CAMWOWEU5Realm12PvP", playerGuid = memberGuid,
+                isOnline = true, clientProgram = "WoW", characterLevel = 30, areaName = "Elwynn Forest",
+                className = "Mage", gameAccountID = 17 }
+            BNGetNumFriends = function() return 1 end
+            C_BattleNet = { GetFriendAccountInfo = function() return { gameAccountInfo = account } end,
+                GetGameAccountInfoByID = function(id) if id == 17 then return account end end }
+            IsInGroup = function() return grouped == true end
+            C_PartyInfo = { IsGUIDInGroup = function(guid) return IsInGroup() and guid == memberGuid end }
+        """)
+        self.run_(8)
+
+    def test_same_guild_friend_has_one_badge_with_either_switch(self):
+        self.same_guild_friend()
+        self.assertEqual(self.zone_badges(), "1429:1")
+        self.lua.execute("mod.db.guild = false mod.RefreshFriends()")
+        self.assertEqual(self.zone_badges(), "1429:1")
+        self.lua.execute("mod.db.guild, mod.db.friends = true, false mod.RefreshFriends()")
+        self.assertEqual(self.zone_badges(), "1429:1")
+
+    def test_same_display_name_does_not_merge_distinct_guids(self):
+        self.same_guild_friend()
+        self.lua.execute("""
+            guild[1][1] = "Guildie Oak-CAMWOWEU5Realm18PvP"
+            friendList[2] = { name = "Guildie Oak-CAMWOWEU5Realm6PvP", guid = "Player-1-0003",
+                connected = true, level = 30, area = "Elwynn Forest", className = "Mage" }
+            Fire("GUILD_ROSTER_UPDATE")
+        """)
+        self.run_(3)
+        self.assertEqual(self.zone_badges(), "1429:2")
+
+    def test_same_guild_friend_badge_is_hidden_in_group(self):
+        self.same_guild_friend()
+        self.lua.execute("""
+            mod.db.guild = false
+            grouped = true
+            Fire("GROUP_ROSTER_UPDATE")
+        """)
+        self.run_(3)
+        self.assertEqual(self.zone_badges(), "")
+        self.lua.execute('grouped = false Fire("GROUP_ROSTER_UPDATE")')
+        self.run_(3)
+        self.assertEqual(self.zone_badges(), "1429:1")
+
+    def test_shared_guild_location_replaces_friend_alias_badge(self):
+        self.same_guild_friend()
+        self.lua.execute("""
+            mod.db.guild = false
+            Fire("CHAT_MSG_ADDON", "OpenMapLoc", "L1\\t1429\\t0.3\\t0.4\\tMAGE\\t30", "GUILD",
+                "Guildie Oak-CAMWOWEU5Realm4PvP")
+        """)
+        self.run_(2)
+        self.assertEqual((self.lua.eval("#pins"), self.zone_badges()), (1, ""))
+
+    def test_cached_location_guid_survives_a_missing_roster_guid(self):
+        self.same_guild_friend()
+        self.lua.execute('Fire("BN_CHAT_MSG_ADDON", "OpenMapLoc", "L1\\t1429\\t0.7\\t0.8\\tMAGE\\t30", nil, 17)')
+        self.run_(2)
+        self.lua.execute("""
+            friendList = {}
+            C_BattleNet.GetGameAccountInfoByID(17).playerGuid = nil
+            Fire("BN_FRIEND_INFO_CHANGED")
+        """)
+        self.run_(3)
+        self.assertEqual((self.lua.eval("#pins"), self.zone_badges()), (1, ""))
+
+        self.lua.execute('grouped = true Fire("GROUP_ROSTER_UPDATE")')
+        self.run_(3)
+        self.assertEqual((self.lua.eval("#pins"), self.zone_badges()), (0, ""))
+
+    def test_same_guild_friend_uses_latest_shared_location_once(self):
+        self.same_guild_friend()
+        self.lua.execute("""
+            Fire("CHAT_MSG_ADDON", "OpenMapLoc", "L1\\t1429\\t0.3\\t0.4\\tMAGE\\t30", "GUILD",
+                "Guildie Oak-CAMWOWEU5Realm4PvP")
+        """)
+        self.run_(2)
+        self.lua.execute('Fire("BN_CHAT_MSG_ADDON", "OpenMapLoc", "L1\\t1429\\t0.7\\t0.8\\tMAGE\\t30", nil, 17)')
+        self.run_(2)
+        self.assertEqual(self.lua.eval("#pins"), 1)
+        self.assertEqual(self.lua.eval("pins[1].p.x"), 0.7)
+        self.assertEqual(self.lua.eval("pins[1].p.y"), 0.8)
+        self.assertEqual(self.zone_badges(), "")
+
+        self.lua.execute('Fire("BN_CHAT_MSG_ADDON", "OpenMapLoc", "L0", nil, 17)')
+        self.run_(2)
+        self.assertEqual((self.lua.eval("#pins"), self.zone_badges()), (0, "1429:1"))
+
 
 if __name__ == "__main__":
     unittest.main()
