@@ -518,5 +518,7 @@
  "Every boss gone through: Done, or Undo": "Tous les boss parcourus : Terminé, ou Annuler",
  "Skip": "Passer",
  "Boss places saved in OpenMapDB (worldmap, bossPlaced) once you /reload or log out; tools/map-dungeons/bosses.py --import adds them to OpenMap's data.": "Les positions des boss sont enregistrées dans OpenMapDB (worldmap, bossPlaced) après un /reload ou une déconnexion ; tools/map-dungeons/bosses.py --import les ajoute aux données d'OpenMap.",
- "Open a dungeon's map first: /openmap bosses places its bosses on it.": "Ouvrez d'abord la carte d'un donjon : /openmap bosses y place ses boss."
+ "Open a dungeon's map first: /openmap bosses places its bosses on it.": "Ouvrez d'abord la carte d'un donjon : /openmap bosses y place ses boss.",
+ "Dungeon maps from the minimap": "Cartes de donjon de la minicarte",
+ "Where OpenMap has one, a dungeon's map built from the game's own minimap pictures (what the minimap draws inside) instead of its drawn map. Dungeons with no other map use it anyway.": "Quand OpenMap en a une, la carte d'un donjon faite à partir des images de la minicarte du jeu (ce que la minicarte affiche à l'intérieur) au lieu de sa carte dessinée. Les donjons sans autre carte l'utilisent de toute façon."
 }

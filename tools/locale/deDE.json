@@ -518,5 +518,7 @@
  "Every boss gone through: Done, or Undo": "Alle Bosse durchgegangen: Fertig oder Rückgängig",
  "Skip": "Überspringen",
  "Boss places saved in OpenMapDB (worldmap, bossPlaced) once you /reload or log out; tools/map-dungeons/bosses.py --import adds them to OpenMap's data.": "Bossorte werden in OpenMapDB (worldmap, bossPlaced) gespeichert, sobald du /reload eingibst oder dich ausloggst; tools/map-dungeons/bosses.py --import übernimmt sie in OpenMaps Daten.",
- "Open a dungeon's map first: /openmap bosses places its bosses on it.": "Öffne zuerst die Karte eines Dungeons: /openmap bosses setzt seine Bosse darauf."
+ "Open a dungeon's map first: /openmap bosses places its bosses on it.": "Öffne zuerst die Karte eines Dungeons: /openmap bosses setzt seine Bosse darauf.",
+ "Dungeon maps from the minimap": "Dungeonkarten aus der Minikarte",
+ "Where OpenMap has one, a dungeon's map built from the game's own minimap pictures (what the minimap draws inside) instead of its drawn map. Dungeons with no other map use it anyway.": "Wo OpenMap eine hat, die Karte eines Dungeons aus den Minikartenbildern des Spiels (was die Minikarte drinnen zeigt) statt seiner gezeichneten Karte. Dungeons ohne andere Karte nutzen sie ohnehin."
 }

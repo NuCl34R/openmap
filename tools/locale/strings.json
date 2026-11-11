@@ -15,7 +15,7 @@
  {
   "en": "%d bosses",
   "where": [
-   "Map/Dungeons.lua:1230"
+   "Map/Dungeons.lua:1238"
   ]
  },
  {
@@ -75,7 +75,7 @@
  {
   "en": "(placed: click to move it)",
   "where": [
-   "Map/Dungeons.lua:2047"
+   "Map/Dungeons.lua:2060"
   ]
  },
  {
@@ -154,13 +154,13 @@
  {
   "en": "A dungeon's map has a Quests tab: with Questie, the quests for it that you can take, marked done or in your log; with Dungeon Journal or NeedRoll, a button that opens them there.",
   "where": [
-   "Map/Dungeons.lua:2191"
+   "Map/Dungeons.lua:2207"
   ]
  },
  {
   "en": "A dungeon's map lists its bosses, in the game's order, and pins where they are.",
   "where": [
-   "Map/Dungeons.lua:2187"
+   "Map/Dungeons.lua:2200"
   ]
  },
  {
@@ -306,26 +306,26 @@
  {
   "en": "Back",
   "where": [
-   "Map/Dungeons.lua:1049",
-   "Map/Dungeons.lua:1527"
+   "Map/Dungeons.lua:1057",
+   "Map/Dungeons.lua:1535"
   ]
  },
  {
   "en": "Back to %s",
   "where": [
-   "Map/Dungeons.lua:1049"
+   "Map/Dungeons.lua:1057"
   ]
  },
  {
   "en": "Back to the world map, where you were",
   "where": [
-   "Map/Dungeons.lua:351"
+   "Map/Dungeons.lua:359"
   ]
  },
  {
   "en": "Back to the world map, where you were (or right-click the map, or scroll out)",
   "where": [
-   "Map/Dungeons.lua:1531"
+   "Map/Dungeons.lua:1539"
   ]
  },
  {
@@ -413,20 +413,20 @@
  {
   "en": "Boss places saved in OpenMapDB (worldmap, bossPlaced) once you /reload or log out; tools/map-dungeons/bosses.py --import adds them to OpenMap's data.",
   "where": [
-   "Map/Dungeons.lua:2104"
+   "Map/Dungeons.lua:2117"
   ]
  },
  {
   "en": "Bosses",
   "where": [
-   "Map/Dungeons.lua:488",
-   "Map/Dungeons.lua:1628"
+   "Map/Dungeons.lua:496",
+   "Map/Dungeons.lua:1636"
   ]
  },
  {
   "en": "Bosses, quests and loot are in the tabs at the map's edge",
   "where": [
-   "Map/Dungeons.lua:1063"
+   "Map/Dungeons.lua:1071"
   ]
  },
  {
@@ -456,7 +456,7 @@
  {
   "en": "Cancel",
   "where": [
-   "Map/Dungeons.lua:771",
+   "Map/Dungeons.lua:779",
    "Map/Paint.lua:205"
   ]
  },
@@ -532,7 +532,7 @@
  {
   "en": "Clear",
   "where": [
-   "Map/Dungeons.lua:802",
+   "Map/Dungeons.lua:810",
    "Map/Paint.lua:529",
    "Map/Paint.lua:534",
    "Map/Paint.lua:538",
@@ -581,45 +581,45 @@
  {
   "en": "Click to open its map",
   "where": [
-   "Map/Dungeons.lua:1234",
+   "Map/Dungeons.lua:1242",
    "Map/Stitch.lua:1118"
   ]
  },
  {
   "en": "Click to pick one",
   "where": [
-   "Map/Dungeons.lua:1232"
+   "Map/Dungeons.lua:1240"
   ]
  },
  {
   "en": "Click to pick one and open its map",
   "where": [
-   "Map/Dungeons.lua:1236"
+   "Map/Dungeons.lua:1244"
   ]
  },
  {
   "en": "Click to see it in NeedRoll",
   "where": [
-   "Map/Dungeons.lua:1782"
+   "Map/Dungeons.lua:1790"
   ]
  },
  {
   "en": "Click to see loot in NeedRoll",
   "where": [
-   "Map/Dungeons.lua:1728",
-   "Map/Dungeons.lua:1952"
+   "Map/Dungeons.lua:1736",
+   "Map/Dungeons.lua:1965"
   ]
  },
  {
   "en": "Click to see what's inside",
   "where": [
-   "Map/Dungeons.lua:1232"
+   "Map/Dungeons.lua:1240"
   ]
  },
  {
   "en": "Click to see what's inside (no map of it yet)",
   "where": [
-   "Map/Dungeons.lua:1234"
+   "Map/Dungeons.lua:1242"
   ]
  },
  {
@@ -667,7 +667,7 @@
  {
   "en": "Clicking a dungeon entrance opens",
   "where": [
-   "Map/Dungeons.lua:2196"
+   "Map/Dungeons.lua:2212"
   ]
  },
  {
@@ -704,7 +704,7 @@
  {
   "en": "Completed",
   "where": [
-   "Map/Dungeons.lua:1781",
+   "Map/Dungeons.lua:1789",
    "Map/Quests.lua:47"
   ]
  },
@@ -821,8 +821,8 @@
  {
   "en": "Done",
   "where": [
-   "Map/Dungeons.lua:801",
-   "Map/Dungeons.lua:2033",
+   "Map/Dungeons.lua:809",
+   "Map/Dungeons.lua:2046",
    "Map/Paint.lua:542",
    "Map/Pins.lua:558",
    "Map/Sketch.lua:521",
@@ -895,7 +895,7 @@
  {
   "en": "Draw on this dungeon's map (right-drag pans)",
   "where": [
-   "Map/Dungeons.lua:792"
+   "Map/Dungeons.lua:800"
   ]
  },
  {
@@ -938,26 +938,26 @@
  {
   "en": "Dungeon",
   "where": [
-   "Map/Dungeons.lua:540",
+   "Map/Dungeons.lua:548",
    "Map/Nav.lua:289"
   ]
  },
  {
   "en": "Dungeon Journal",
   "where": [
-   "Map/Dungeons.lua:2193"
+   "Map/Dungeons.lua:2209"
   ]
  },
  {
   "en": "Dungeon Journal has no page for this dungeon.",
   "where": [
-   "Map/Dungeons.lua:1754"
+   "Map/Dungeons.lua:1762"
   ]
  },
  {
   "en": "Dungeon Journal has this dungeon's quests: where each one starts, what it asks and what it gives.",
   "where": [
-   "Map/Dungeons.lua:1751"
+   "Map/Dungeons.lua:1759"
   ]
  },
  {
@@ -975,26 +975,32 @@
  {
   "en": "Dungeon level ranges",
   "where": [
-   "Map/Dungeons.lua:2188"
+   "Map/Dungeons.lua:2204"
   ]
  },
  {
   "en": "Dungeon maps",
   "where": [
-   "Map/Dungeons.lua:2183",
+   "Map/Dungeons.lua:2196",
    "Map/Panel.lua:236"
+  ]
+ },
+ {
+  "en": "Dungeon maps from the minimap",
+  "where": [
+   "Map/Dungeons.lua:2201"
   ]
  },
  {
   "en": "Dungeon maps: bosses",
   "where": [
-   "Map/Dungeons.lua:2186"
+   "Map/Dungeons.lua:2199"
   ]
  },
  {
   "en": "Dungeon maps: quests",
   "where": [
-   "Map/Dungeons.lua:2190"
+   "Map/Dungeons.lua:2206"
   ]
  },
  {
@@ -1006,7 +1012,7 @@
  {
   "en": "Dungeon quests from",
   "where": [
-   "Map/Dungeons.lua:2192"
+   "Map/Dungeons.lua:2208"
   ]
  },
  {
@@ -1031,7 +1037,7 @@
  {
   "en": "Each dungeon entrance's level range under its icon, coloured for your level.",
   "where": [
-   "Map/Dungeons.lua:2189"
+   "Map/Dungeons.lua:2205"
   ]
  },
  {
@@ -1067,7 +1073,7 @@
  {
   "en": "Every boss gone through: Done, or Undo",
   "where": [
-   "Map/Dungeons.lua:2051"
+   "Map/Dungeons.lua:2064"
   ]
  },
  {
@@ -1209,13 +1215,13 @@
  {
   "en": "Floor %d",
   "where": [
-   "Map/Dungeons.lua:370"
+   "Map/Dungeons.lua:378"
   ]
  },
  {
   "en": "Floors",
   "where": [
-   "Map/Dungeons.lua:488"
+   "Map/Dungeons.lua:496"
   ]
  },
  {
@@ -1242,7 +1248,7 @@
  {
   "en": "For loot, we recommend |cffffd100NeedRoll|r, by mikebvs: what every boss drops, what you've collected, and a wishlist, made for WoW Forever.",
   "where": [
-   "Map/Dungeons.lua:1797"
+   "Map/Dungeons.lua:1805"
   ]
  },
  {
@@ -1280,7 +1286,7 @@
  {
   "en": "Get it from CurseForge (click, then Ctrl-C):",
   "where": [
-   "Map/Dungeons.lua:1798"
+   "Map/Dungeons.lua:1806"
   ]
  },
  {
@@ -1449,7 +1455,7 @@
  {
   "en": "In your quest log",
   "where": [
-   "Map/Dungeons.lua:1781"
+   "Map/Dungeons.lua:1789"
   ]
  },
  {
@@ -1467,13 +1473,13 @@
  {
   "en": "Its Dungeon Journal page",
   "where": [
-   "Map/Dungeons.lua:2197"
+   "Map/Dungeons.lua:2213"
   ]
  },
  {
   "en": "Its map",
   "where": [
-   "Map/Dungeons.lua:2197"
+   "Map/Dungeons.lua:2213"
   ]
  },
  {
@@ -1559,7 +1565,7 @@
  {
   "en": "Loot",
   "where": [
-   "Map/Dungeons.lua:488"
+   "Map/Dungeons.lua:496"
   ]
  },
  {
@@ -1596,7 +1602,7 @@
  {
   "en": "Map by %s",
   "where": [
-   "Map/Dungeons.lua:244"
+   "Map/Dungeons.lua:252"
   ]
  },
  {
@@ -1768,13 +1774,13 @@
  {
   "en": "NeedRoll lists dungeon quests too: open it and pick this dungeon.",
   "where": [
-   "Map/Dungeons.lua:1757"
+   "Map/Dungeons.lua:1765"
   ]
  },
  {
   "en": "NeedRoll lists this dungeon's loot: what every boss drops, what you've collected, and a wishlist.",
   "where": [
-   "Map/Dungeons.lua:1792"
+   "Map/Dungeons.lua:1800"
   ]
  },
  {
@@ -1798,7 +1804,7 @@
  {
   "en": "Next",
   "where": [
-   "Map/Dungeons.lua:757",
+   "Map/Dungeons.lua:765",
    "Map/Report.lua:207"
   ]
  },
@@ -1921,8 +1927,8 @@
  {
   "en": "Open NeedRoll",
   "where": [
-   "Map/Dungeons.lua:1758",
-   "Map/Dungeons.lua:1793"
+   "Map/Dungeons.lua:1766",
+   "Map/Dungeons.lua:1801"
   ]
  },
  {
@@ -1934,14 +1940,14 @@
  {
   "en": "Open a dungeon's map first: /openmap bosses places its bosses on it.",
   "where": [
-   "Map/Dungeons.lua:2108"
+   "Map/Dungeons.lua:2121"
   ]
  },
  {
   "en": "Open in Dungeon Journal",
   "where": [
-   "Map/Dungeons.lua:1735",
-   "Map/Dungeons.lua:1752"
+   "Map/Dungeons.lua:1743",
+   "Map/Dungeons.lua:1760"
   ]
  },
  {
@@ -2008,7 +2014,7 @@
  {
   "en": "OpenMap's maps of dungeons and raids: Blizzard's where the client has one, the ones drawn for WoW Forever's where it has none. Off: inside a dungeon the map stays the world map, and an entrance's card opens over it instead.",
   "where": [
-   "Map/Dungeons.lua:2185"
+   "Map/Dungeons.lua:2198"
   ]
  },
  {
@@ -2020,7 +2026,7 @@
  {
   "en": "Or right-click the map, or press Escape",
   "where": [
-   "Map/Dungeons.lua:352"
+   "Map/Dungeons.lua:360"
   ]
  },
  {
@@ -2077,7 +2083,7 @@
  {
   "en": "Placed by you (/openmap bosses)",
   "where": [
-   "Map/Dungeons.lua:1951"
+   "Map/Dungeons.lua:1964"
   ]
  },
  {
@@ -2132,7 +2138,7 @@
  {
   "en": "Questie lists no quests for it that you can take.",
   "where": [
-   "Map/Dungeons.lua:1765"
+   "Map/Dungeons.lua:1773"
   ]
  },
  {
@@ -2144,9 +2150,9 @@
  {
   "en": "Quests",
   "where": [
-   "Map/Dungeons.lua:488",
-   "Map/Dungeons.lua:539",
-   "Map/Dungeons.lua:1637"
+   "Map/Dungeons.lua:496",
+   "Map/Dungeons.lua:547",
+   "Map/Dungeons.lua:1645"
   ]
  },
  {
@@ -2166,9 +2172,9 @@
  {
   "en": "Raid",
   "where": [
-   "Map/Dungeons.lua:1226",
-   "Map/Dungeons.lua:1274",
-   "Map/Dungeons.lua:1702",
+   "Map/Dungeons.lua:1234",
+   "Map/Dungeons.lua:1282",
+   "Map/Dungeons.lua:1710",
    "Map/Nav.lua:289"
   ]
  },
@@ -2194,8 +2200,8 @@
  {
   "en": "Reading Questie's quests...",
   "where": [
-   "Map/Dungeons.lua:1640",
-   "Map/Dungeons.lua:1764"
+   "Map/Dungeons.lua:1648",
+   "Map/Dungeons.lua:1772"
   ]
  },
  {
@@ -2303,7 +2309,7 @@
  {
   "en": "Saved too (OpenMapDB: worldmap, entrances) once you /reload or log out.",
   "where": [
-   "Map/Dungeons.lua:2177"
+   "Map/Dungeons.lua:2190"
   ]
  },
  {
@@ -2322,7 +2328,7 @@
  {
   "en": "See the Loot tab for loot",
   "where": [
-   "Map/Dungeons.lua:1728"
+   "Map/Dungeons.lua:1736"
   ]
  },
  {
@@ -2381,7 +2387,7 @@
  {
   "en": "Shift-click: where it is, on NeedRoll's map",
   "where": [
-   "Map/Dungeons.lua:1729"
+   "Map/Dungeons.lua:1737"
   ]
  },
  {
@@ -2412,7 +2418,7 @@
  {
   "en": "Skip",
   "where": [
-   "Map/Dungeons.lua:2035"
+   "Map/Dungeons.lua:2048"
   ]
  },
  {
@@ -2443,7 +2449,7 @@
  {
   "en": "Stand in the portal and say which: /openmap entrance Dire Maul - East (the name as OpenMap lists it).",
   "where": [
-   "Map/Dungeons.lua:2150"
+   "Map/Dungeons.lua:2163"
   ]
  },
  {
@@ -2573,7 +2579,7 @@
  {
   "en": "The first installed",
   "where": [
-   "Map/Dungeons.lua:2193"
+   "Map/Dungeons.lua:2209"
   ]
  },
  {
@@ -2585,8 +2591,8 @@
  {
   "en": "The game lists no bosses for it.",
   "where": [
-   "Map/Dungeons.lua:1733",
-   "Map/Dungeons.lua:2114"
+   "Map/Dungeons.lua:1741",
+   "Map/Dungeons.lua:2127"
   ]
  },
  {
@@ -2628,7 +2634,7 @@
  {
   "en": "The quest log can't be opened or closed in combat.",
   "where": [
-   "Map/Dungeons.lua:563",
+   "Map/Dungeons.lua:571",
    "Map/Panel.lua:125",
    "Map/Window.lua:429"
   ]
@@ -2667,7 +2673,7 @@
  {
   "en": "There's no map of this dungeon to show here.",
   "where": [
-   "Map/Dungeons.lua:313"
+   "Map/Dungeons.lua:321"
   ]
  },
  {
@@ -2679,7 +2685,7 @@
  {
   "en": "This dungeon's loot is in the game's Adventure Guide.",
   "where": [
-   "Map/Dungeons.lua:1795"
+   "Map/Dungeons.lua:1803"
   ]
  },
  {
@@ -2752,9 +2758,9 @@
  {
   "en": "Undo",
   "where": [
-   "Map/Dungeons.lua:772",
-   "Map/Dungeons.lua:808",
-   "Map/Dungeons.lua:2034",
+   "Map/Dungeons.lua:780",
+   "Map/Dungeons.lua:816",
+   "Map/Dungeons.lua:2047",
    "Map/Paint.lua:527",
    "Map/Sketch.lua:502"
   ]
@@ -2860,16 +2866,22 @@
   ]
  },
  {
+  "en": "Where OpenMap has one, a dungeon's map built from the game's own minimap pictures (what the minimap draws inside) instead of its drawn map. Dungeons with no other map use it anyway.",
+  "where": [
+   "Map/Dungeons.lua:2203"
+  ]
+ },
+ {
   "en": "Where the Quests tab's quests come from, when you have more than one of these addons. The first installed: Questie, then Dungeon Journal, then NeedRoll.",
   "where": [
-   "Map/Dungeons.lua:2195"
+   "Map/Dungeons.lua:2211"
   ]
  },
  {
   "en": "Where you are isn't on the world map here.",
   "where": [
-   "Map/Dungeons.lua:2159",
-   "Map/Dungeons.lua:2171"
+   "Map/Dungeons.lua:2172",
+   "Map/Dungeons.lua:2184"
   ]
  },
  {
@@ -2893,19 +2905,19 @@
  {
   "en": "With Dungeon Journal installed, an entrance can open that dungeon's page in it instead of its map (its map still opens where Dungeon Journal has no page for it).",
   "where": [
-   "Map/Dungeons.lua:2198"
+   "Map/Dungeons.lua:2214"
   ]
  },
  {
   "en": "With Questie, Dungeon Journal or NeedRoll, this dungeon's quests are here.",
   "where": [
-   "Map/Dungeons.lua:1760"
+   "Map/Dungeons.lua:1768"
   ]
  },
  {
   "en": "With a gamepad, that map opens once you're out of combat.",
   "where": [
-   "Map/Dungeons.lua:1088"
+   "Map/Dungeons.lua:1096"
   ]
  },
  {
@@ -2917,7 +2929,7 @@
  {
   "en": "WoW Forever has no map of this dungeon yet.",
   "where": [
-   "Map/Dungeons.lua:312"
+   "Map/Dungeons.lua:320"
   ]
  },
  {
@@ -3097,7 +3109,7 @@
  {
   "en": "click where it is; right-click skips",
   "where": [
-   "Map/Dungeons.lua:2049"
+   "Map/Dungeons.lua:2062"
   ]
  },
  {
@@ -3115,8 +3127,8 @@
  {
   "en": "done",
   "where": [
-   "Map/Dungeons.lua:1505",
-   "Map/Dungeons.lua:1770"
+   "Map/Dungeons.lua:1513",
+   "Map/Dungeons.lua:1778"
   ]
  },
  {
@@ -3152,7 +3164,7 @@
  {
   "en": "from %d",
   "where": [
-   "Map/Dungeons.lua:1780"
+   "Map/Dungeons.lua:1788"
   ]
  },
  {
@@ -3170,8 +3182,8 @@
  {
   "en": "in your log",
   "where": [
-   "Map/Dungeons.lua:1505",
-   "Map/Dungeons.lua:1770"
+   "Map/Dungeons.lua:1513",
+   "Map/Dungeons.lua:1778"
   ]
  },
  {
@@ -3273,7 +3285,7 @@
  {
   "en": "|cffffd100Right-click|r or |cffffd100Esc|r to go back to the world map",
   "where": [
-   "Map/Dungeons.lua:1061"
+   "Map/Dungeons.lua:1069"
   ]
  },
  {
@@ -3285,7 +3297,7 @@
  {
   "en": "|cffffd100Step 1 of 2:|r draw where it's wrong (right-drag pans)",
   "where": [
-   "Map/Dungeons.lua:748"
+   "Map/Dungeons.lua:756"
   ]
  }
 ]

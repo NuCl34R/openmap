@@ -518,5 +518,7 @@
  "Every boss gone through: Done, or Undo": "모든 우두머리 완료: 완료 또는 실행 취소",
  "Skip": "건너뛰기",
  "Boss places saved in OpenMapDB (worldmap, bossPlaced) once you /reload or log out; tools/map-dungeons/bosses.py --import adds them to OpenMap's data.": "우두머리 위치는 /reload 또는 로그아웃 시 OpenMapDB (worldmap, bossPlaced)에 저장됩니다. tools/map-dungeons/bosses.py --import로 OpenMap 데이터에 추가할 수 있습니다.",
- "Open a dungeon's map first: /openmap bosses places its bosses on it.": "먼저 던전 지도를 여세요. 그다음 /openmap bosses 명령으로 우두머리를 배치합니다."
+ "Open a dungeon's map first: /openmap bosses places its bosses on it.": "먼저 던전 지도를 여세요. 그다음 /openmap bosses 명령으로 우두머리를 배치합니다.",
+ "Dungeon maps from the minimap": "미니맵으로 만든 던전 지도",
+ "Where OpenMap has one, a dungeon's map built from the game's own minimap pictures (what the minimap draws inside) instead of its drawn map. Dungeons with no other map use it anyway.": "OpenMap에 있는 경우, 그린 지도 대신 게임의 미니맵 그림(미니맵이 실내에서 보여주는 것)으로 만든 던전 지도를 사용합니다. 다른 지도가 없는 던전은 항상 이것을 사용합니다."
 }

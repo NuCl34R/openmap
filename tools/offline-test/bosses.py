@@ -19,7 +19,7 @@ DATA = ROOT / "OpenMap" / "Data" / "Forever"
 def load():
     lua = LuaRuntime(unpack_returned_tuples=True)
     ns = lua.eval("{ Media = { tex = '' } }")
-    for name in ("Places.lua", "DungeonMaps.lua", "DungeonDrawn.lua", "DungeonBosses.lua"):
+    for name in ("Places.lua", "DungeonMaps.lua", "DungeonDrawn.lua", "DungeonMinimap.lua", "DungeonBosses.lua"):
         fn = lua.eval("function(src, ns) return assert(loadstring(src))('OpenMap', ns) end")
         fn((DATA / name).read_text(encoding="utf-8"), ns)
     return ns
@@ -33,9 +33,10 @@ class Bosses(unittest.TestCase):
             if (ROOT / "tools" / "map-dungeons" / "bosses.json").exists() else {}
         n = 0
         for key, bosses in ns.MapDungeonBosses.items():
-            floors = ns.MapDungeonMaps[key] or ns.MapDungeonDrawn[key]
+            base = int(key[8:]) if isinstance(key, str) and key.startswith("minimap:") else key
+            floors = ns.MapDungeonMinimap[base] if base != key else (ns.MapDungeonMaps[key] or ns.MapDungeonDrawn[key])
             self.assertTrue(floors, "%s: bosses for a dungeon with no map" % key)
-            listed = set((places.bosses[key] or {}).values()) if isinstance(key, int) else set()
+            listed = set((places.bosses[base] or {}).values()) if isinstance(base, int) else set()
             listed |= set(placed.get(str(key), {}))
             for name, p in bosses.items():
                 n += 1

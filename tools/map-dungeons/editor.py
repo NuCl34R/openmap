@@ -6,6 +6,10 @@
 # bosses.json and the journals into Data/Forever/DungeonBosses.lua (then /reload in game).
 # The in-game placer (/openmap bosses) does the same from inside the game; bosses.py --import brings
 # its places in, and they show here too.
+# Minimap floors: for a dungeon whose files the install can read, its map built from the game's
+# minimap pictures (minimap.py): its rooms by height, the floors to cut them into (a height range
+# each, its terrain or not), a preview of each; Save & build writes minimap.json and runs minimap.py,
+# then bosses.py.
 #
 # usage: python -P tools/map-dungeons/editor.py <cache dir> [World of Warcraft folder] [--port 8765]
 #   (the cache dir is bosses.py's; the World of Warcraft folder, or OPENMAP_WOW, is where Blizzard's
@@ -19,6 +23,7 @@ sys.path.insert(0, os.path.join(ROOT, "tools"))
 sys.path.insert(0, os.path.join(ROOT, "tools", "casc"))
 import clients
 
+sys.path.insert(0, HERE)
 DATA = clients.data("forever")
 TEX = clients.tex("forever")
 PLACED = os.path.join(HERE, "bosses.json")
@@ -62,7 +67,7 @@ def save_placed(placed):
 
 class State:
     def __init__(self, cache, wow):
-        self.cache, self.wow, self.casc, self.pics = cache, wow, None, {}
+        self.cache, self.wow, self.casc, self.pics, self.dungeons_mm = cache, wow, None, {}, {}
         self.lock = threading.Lock()
         self.reload()
 
@@ -71,7 +76,11 @@ class State:
         self.pics.clear()
 
     def floors(self, key):
-        """(kind, floors) as Dungeons.lua's FloorsOf picks them: Blizzard's, the drawn, the minimap's"""
+        """(kind, floors) as Dungeons.lua's FloorsOf picks them: Blizzard's, the drawn, the minimap's;
+        "minimap:<mapID>": the one built from the minimap pictures"""
+        if isinstance(key, str) and key.startswith("minimap:"):
+            m = self.data["MapDungeonMinimap"].get(int(key[8:]))
+            return ("minimap", m) if m else (None, [])
         for kind, t in (("blizzard", self.data["MapDungeonMaps"]), ("drawn", self.data["MapDungeonDrawn"]),
                         ("minimap", self.data["MapDungeonMinimap"])):
             if key in t: return kind, t[key]
@@ -91,9 +100,14 @@ class State:
                     order.append(key)
         placed = load_placed()
         out = []
+        for key in list(order):             # (a map built from the minimap pictures: beside its other one)
+            if isinstance(key, int) and key in self.data["MapDungeonMinimap"] and key in self.data["MapDungeonMaps"] | self.data["MapDungeonDrawn"]:
+                order.insert(order.index(key) + 1, "minimap:%d" % key)
+                names["minimap:%d" % key] = names[key] + " (minimap)"
         for key in order:
             kind, fl = self.floors(key)
-            bosses = list((places.get("bosses", {}).get(key) or [])) if isinstance(key, int) else []
+            base = int(key[8:]) if isinstance(key, str) and key.startswith("minimap:") else key
+            bosses = list((places.get("bosses", {}).get(base) or [])) if isinstance(base, int) else []
             hand = placed.get(str(key), {})
             shipped = self.data["MapDungeonBosses"].get(key, {})
             for n in list(hand) + list(shipped):
@@ -125,6 +139,34 @@ class State:
         self.pics[ck] = buf.getvalue()
         return self.pics[ck]
 
+    def minimap(self, mid):
+        """minimap.py's Dungeon for an instance map (its rooms), kept; or an error's words"""
+        import minimap
+        if mid not in self.dungeons_mm:
+            if not self.wow: return "no World of Warcraft folder given"
+            try:
+                self.dungeons_mm[mid] = minimap.load(self.cache, self.wow, mid)
+            except SystemExit as e:
+                self.dungeons_mm[mid] = str(e)
+        return self.dungeons_mm[mid]
+
+    def minimap_info(self, mid):
+        import minimap
+        d = self.minimap(mid)
+        config = json.load(open(minimap.CONFIG, encoding="utf-8")) if os.path.exists(minimap.CONFIG) else {}
+        if isinstance(d, str): return {"error": d, "config": config.get(str(mid))}
+        return {"terrain_tiles": len(d.tiles), "groups": d.survey(), "config": config.get(str(mid))}
+
+    def minimap_preview(self, mid, floor):
+        import minimap
+        d = self.minimap(mid)
+        if isinstance(d, str): raise ValueError(d)
+        img, rect = d.draw(floor, px=1)
+        page, _ = minimap.page_of(img, rect)
+        buf = io.BytesIO()
+        page.crop((0, 0, PIC_W, PIC_H)).save(buf, "PNG")
+        return buf.getvalue()
+
     def tile(self, t):
         from PIL import Image
         if isinstance(t, str) and t.startswith("TEX:"):     # (one of OpenMap's own textures)
@@ -148,6 +190,7 @@ PAGE = r"""<!doctype html>
 <style>
 :root { color-scheme: dark; --bg:#1b1712; --panel:#26201a; --line:#4a3d2e; --gold:#ffd100; --text:#e8dcc4; --dim:#9b8b70; }
 * { box-sizing: border-box; }
+[hidden] { display:none !important; }
 body { margin:0; background:var(--bg); color:var(--text); font:14px/1.4 system-ui, sans-serif; display:flex; height:100vh; }
 #list { width:260px; overflow:auto; border-right:1px solid var(--line); background:var(--panel); }
 #list div { padding:6px 10px; cursor:pointer; display:flex; justify-content:space-between; gap:6px; }
@@ -173,12 +216,22 @@ button:hover { border-color:var(--gold); } button.on { background:#5a4526; color
 #side .b button { padding:0 6px; font-size:12px; }
 #msg { color:var(--dim); font-size:12px; margin-left:auto; }
 pre { white-space:pre-wrap; font-size:12px; color:var(--dim); }
+#mm { flex:1; overflow:auto; padding:12px; }
+#mm .f { border:1px solid var(--line); border-radius:6px; padding:8px; margin:0 0 10px; }
+#mm .f input[type=text] { width:200px; } #mm .f input[type=number] { width:80px; }
+#mm input { background:#15110d; color:var(--text); border:1px solid var(--line); border-radius:3px; padding:2px 4px; }
+#mm img { display:block; max-width:700px; width:100%; margin-top:6px; background:#000; }
+#mmrooms { color:var(--dim); font-size:12px; margin-top:12px; }
 .help { color:var(--dim); font-size:12px; margin:4px 0 10px; }
 </style></head><body>
 <div id="list"></div>
 <div id="main">
  <div id="bar"><h1 id="title">Pick a dungeon</h1><span id="floors"></span>
-  <button id="labels">Names</button><button id="save">Save</button><button id="build">Save &amp; build data</button><span id="msg"></span></div>
+  <button id="labels">Names</button><button id="save">Save</button><button id="build">Save &amp; build data</button>
+  <button id="mmtab">Minimap floors</button><span id="msg"></span></div>
+ <div id="mm" hidden><div class="help" id="mmhelp"></div><div id="mmfloors"></div>
+  <button id="mmadd">Add floor</button> <button id="mmsave">Save &amp; build minimap maps</button> <span id="mmmsg"></span>
+  <div id="mmrooms"></div></div>
  <div id="work"><div id="stage"><div id="pic"></div></div>
   <div id="side"><div class="help">Pick a boss, then click where it is on its floor. Drag a pin to move it.
   Blue pins are set by hand (bosses.json), red ones come from the journals. Save keeps them; build turns them into
@@ -206,7 +259,7 @@ function renderList() {
 function esc(s) { return String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])) }
 function pick(d, keepFloor) {
   cur = d; if (!keepFloor) { floor = 1; sel = d.bosses.find(n => !d.pins[n]) || null; }
-  $('title').textContent = d.name + (d.kind ? '  (' + d.kind + ')' : '  (no map yet)');
+  $('title').textContent = d.name + (!d.kind ? '  (no map yet)' : String(d.key).startsWith('minimap:') ? '' : '  (' + d.kind + ')');
   $('floors').innerHTML = '';
   d.floors.forEach((f, i) => {
     const b = document.createElement('button');
@@ -283,6 +336,63 @@ $('build').onclick = async () => {
   await load();
 };
 $('labels').onclick = () => { names = !names; $('labels').className = names ? 'on' : ''; renderPic(); };
+// minimap floors: the dungeon's rooms by height, the floors to cut them into, a preview of each
+let mm = null;
+function baseKey() { const k = String(cur.key); return k.startsWith('minimap:') ? +k.slice(8) : cur.key; }
+$('mmtab').onclick = async () => {
+  if (!cur) return;
+  const show = $('mm').hidden; $('mm').hidden = !show; $('work').hidden = show; $('mmtab').className = show ? 'on' : '';
+  if (!show) return;
+  if (typeof baseKey() !== 'number') { $('mmhelp').textContent = 'This dungeon has no map ID in the tables yet: its files can\'t be found.'; return; }
+  $('mmhelp').textContent = 'Reading the dungeon\'s rooms from the install…'; $('mmfloors').innerHTML = ''; $('mmrooms').innerHTML = '';
+  mm = await (await fetch('/api/minimap/' + baseKey())).json();
+  if (mm.error) { $('mmhelp').textContent = mm.error; return; }
+  mm.floors = (mm.config && mm.config.floors) || [];
+  $('mmhelp').textContent = `${mm.groups.length} rooms with minimap pictures, ${mm.terrain_tiles} terrain tiles. ` +
+    'Cut them into floors by height (a room is on a floor when its floor height is in the range); tick terrain for a dungeon that\'s outdoors. ' +
+    'Floors that share a crop line up when you page between them.';
+  const zs = mm.groups.map(g => Math.round(g.z0)); const bins = {};
+  zs.forEach(z => { const b = Math.floor(z / 10) * 10; bins[b] = (bins[b] || 0) + 1; });
+  $('mmrooms').textContent = 'Rooms by floor height (yards: count): ' + Object.keys(bins).map(Number).sort((a, b) => a - b).map(b => b + ': ' + bins[b]).join(',  ');
+  renderFloors();
+};
+function renderFloors() {
+  const box = $('mmfloors'); box.innerHTML = '';
+  mm.floors.forEach((f, i) => {
+    const el = document.createElement('div'); el.className = 'f';
+    const z = f.z || ['', ''];
+    el.innerHTML = `<b>Floor ${i + 1}</b> name <input type="text" value="${esc(f.name || '')}" data-k="name">
+      height from <input type="number" value="${z[0]}" data-k="z0"> to <input type="number" value="${z[1]}" data-k="z1">
+      <label><input type="checkbox" ${f.terrain ? 'checked' : ''} data-k="terrain"> terrain</label>
+      crop <input type="text" value="${f.rect ? f.rect.join(', ') : ''}" placeholder="auto: its rooms" data-k="rect">
+      <button data-a="up">↑</button> <button data-a="del">Remove</button> <button data-a="prev">Preview</button><img hidden>`;
+    el.querySelectorAll('input').forEach(inp => inp.onchange = () => {
+      const k = inp.dataset.k;
+      if (k === 'name') f.name = inp.value;
+      if (k === 'terrain') f.terrain = inp.checked;
+      if (k === 'z0' || k === 'z1') {
+        const a = el.querySelector('[data-k=z0]').value, b = el.querySelector('[data-k=z1]').value;
+        if (a === '' && b === '') delete f.z; else f.z = [a === '' ? -9999 : +a, b === '' ? 9999 : +b];
+      }
+      if (k === 'rect') { const v = inp.value.split(',').map(x => parseFloat(x)).filter(x => !isNaN(x)); if (v.length === 4) f.rect = v; else delete f.rect; }
+    });
+    el.querySelector('[data-a=del]').onclick = () => { mm.floors.splice(i, 1); renderFloors(); };
+    el.querySelector('[data-a=up]').onclick = () => { if (i) { mm.floors.splice(i - 1, 0, mm.floors.splice(i, 1)[0]); renderFloors(); } };
+    el.querySelector('[data-a=prev]').onclick = async () => {
+      const img = el.querySelector('img'); img.hidden = false; img.alt = 'drawing…';
+      const r = await fetch('/api/minimap/' + baseKey() + '/preview', { method: 'POST', body: JSON.stringify(f) });
+      if (r.ok) img.src = URL.createObjectURL(await r.blob()); else img.alt = await r.text();
+    };
+    box.appendChild(el);
+  });
+}
+$('mmadd').onclick = () => { mm.floors.push({ name: '' }); renderFloors(); };
+$('mmsave').onclick = async () => {
+  $('mmmsg').textContent = 'building… (a minute or two)';
+  const r = await fetch('/api/minimap/' + baseKey(), { method: 'POST', body: JSON.stringify({ name: cur.name.replace(/ \(minimap\)$/, ''), floors: mm.floors }) });
+  const out = await r.json(); $('out').textContent = out.output || ''; $('mmmsg').textContent = out.ok ? 'built: /reload in game' : 'build failed (see the output in the Bosses view)';
+  await load();
+};
 $('labels').className = 'on';
 addEventListener('beforeunload', e => { if (Object.keys(dirty).length) { e.preventDefault(); e.returnValue = ''; } });
 load();
@@ -311,6 +421,9 @@ def make_handler(state):
             if path == "/api/dungeons":
                 with state.lock:
                     return self.send(200, json.dumps(state.dungeons()))
+            if path.startswith("/api/minimap/"):
+                with state.lock:
+                    return self.send(200, json.dumps(state.minimap_info(int(path.rsplit("/", 1)[1]))))
             if path.startswith("/api/floor/"):
                 key, n = unquote(path[len("/api/floor/"):]).rsplit("/", 1)
                 key = int(key) if key.isdigit() else key
@@ -339,6 +452,37 @@ def make_handler(state):
                 except Exception as e:
                     return self.send(400, "bad request: %s" % e, "text/plain")
                 return self.send(200, "{}")
+            if self.path.startswith("/api/minimap/") and self.path.endswith("/preview"):
+                try:
+                    with state.lock:
+                        png = state.minimap_preview(int(self.path.split("/")[3]), json.loads(body or b"{}"))
+                except Exception as e:
+                    return self.send(400, "couldn't draw it: %s" % e, "text/plain")
+                return self.send(200, png, "image/png")
+            if self.path.startswith("/api/minimap/"):
+                import minimap
+                mid = self.path.rsplit("/", 1)[1]
+                try:
+                    entry = json.loads(body or b"{}")
+                    floors = [{k: f[k] for k in ("name", "z", "terrain", "rect", "groups") if f.get(k) not in (None, "", False)}
+                              for f in entry.get("floors", [])]
+                except Exception as e:
+                    return self.send(400, "bad request: %s" % e, "text/plain")
+                config = json.load(open(minimap.CONFIG, encoding="utf-8")) if os.path.exists(minimap.CONFIG) else {}
+                if floors: config[mid] = {"name": entry.get("name", ""), "floors": floors}
+                else: config.pop(mid, None)
+                with open(minimap.CONFIG, "w", encoding="utf-8", newline="\n") as fh:
+                    fh.write("{\n" + ",\n".join(" %s: %s" % (json.dumps(k), json.dumps(config[k], ensure_ascii=False))
+                                                 for k in sorted(config, key=int)) + "\n}\n")
+                out, ok = "", True
+                for script, extra in (("minimap.py", [state.wow]), ("bosses.py", [])):
+                    r = subprocess.run([sys.executable, "-P", os.path.join(HERE, script), state.cache] + extra,
+                                       capture_output=True, text=True, encoding="utf-8", errors="replace")
+                    out += r.stdout + r.stderr
+                    ok = ok and r.returncode == 0
+                with state.lock:
+                    state.reload()
+                return self.send(200, json.dumps({"ok": ok, "output": out[-6000:]}))
             if self.path == "/api/build":
                 r = subprocess.run([sys.executable, "-P", os.path.join(HERE, "bosses.py"), state.cache],
                                    capture_output=True, text=True, encoding="utf-8", errors="replace")

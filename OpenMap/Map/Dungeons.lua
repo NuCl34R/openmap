@@ -17,6 +17,7 @@ local Look, Safe, L = ns.Look, ns.Safe, ns.L
 local d = mod.defaults
 d.dungeonMaps = true            -- the maps of dungeons and raids (off: the world map, and an entrance's card)
 d.dungeonBosses = true          -- the card lists a dungeon's bosses
+d.dungeonMinimap = false        -- dungeons' maps from the game's minimap pictures, where there are (else only where there's no other)
 d.dungeonQuests = true          -- and its quests (questSource)
 d.questSource = "auto"          -- the quests from: "questie", "journal" (Dungeon Journal), "needroll"; "auto": the first there
 d.entranceClick = "map"         -- clicking an entrance: "map" (its map here) or "journal" (its Dungeon Journal page, where it has one)
@@ -195,11 +196,18 @@ local function Atlas(tex, name, turn, ownSize)
 end
 
 -- Blizzard's map of it, else one drawn for WoW Forever's own dungeons (Data/DungeonDrawn.lua: by
--- mapID, or by name for one the game's tables have no mapID for yet, Places.lua's 0)
+-- mapID, or by name for one the game's tables have no mapID for yet, Places.lua's 0), else one built
+-- from the game's minimap pictures (Data/DungeonMinimap.lua; first, with Options' "from the minimap").
+-- Its second return says which: "blizzard", "drawn" or "minimap"
 local function FloorsOf(inst)
-	local drawn = ns.MapDungeonDrawn
-	return ns.MapDungeonMaps and ns.MapDungeonMaps[inst[1]]
-		or drawn and (drawn[inst[1]] or inst[1] == 0 and drawn[inst[2]] or nil)
+	local drawn, mini = ns.MapDungeonDrawn, ns.MapDungeonMinimap
+	local m = mini and inst[1] ~= 0 and mini[inst[1]]
+	if m and mod.db.dungeonMinimap then return m, "minimap" end
+	local b = ns.MapDungeonMaps and ns.MapDungeonMaps[inst[1]]
+	if b then return b, "blizzard" end
+	local d = drawn and (drawn[inst[1]] or inst[1] == 0 and drawn[inst[2]] or nil)
+	if d then return d, "drawn" end
+	if m then return m, "minimap" end
 end
 local BLANK = { { blank = true } }    -- (the floors of a dungeon the client has no map of: one blank page)
 
@@ -1031,11 +1039,11 @@ end
 local function OpenView(inst, pin)
 	local t0 = debugprofilestop and debugprofilestop()
 	-- (none in the client, WoW Forever's own dungeons: a blank page, its side panel as any other's)
-	local floors = FloorsOf(inst)
+	local floors, source = FloorsOf(inst)
 	if not floors or #floors == 0 then floors = BLANK end
 	if not view then BuildView() end
 	portalCard = nil
-	view.inst, view.floors = inst, floors
+	view.inst, view.floors, view.source = inst, floors, source
 	local first = 1
 	for i, f in ipairs(floors) do
 		if f.wing == inst[2] or (f.name and f.name == WING_FLOORS[inst[2]]) then first = i break end
@@ -1918,7 +1926,12 @@ end
 
 local PIN_SIZE = 22
 
-local function InstKey(inst) return inst and (inst[1] ~= 0 and inst[1] or inst[2]) end   -- (as Kept's)
+-- (as Kept's; a map built from the minimap pictures has its own floors, so its own places: "minimap:<mapID>")
+local function InstKey(inst)
+	local key = inst and (inst[1] ~= 0 and inst[1] or inst[2])
+	if key and view and view.source == "minimap" and view.inst == inst then return "minimap:" .. key end
+	return key
+end
 
 -- the game's bosses of the instance shown, in its order, and any placed by hand that it doesn't list
 local function BossNames(inst)
@@ -2185,6 +2198,9 @@ function mod:DungeonOptions(opts, get, set, off)
 		desc = L["OpenMap's maps of dungeons and raids: Blizzard's where the client has one, the ones drawn for WoW Forever's where it has none. Off: inside a dungeon the map stays the world map, and an entrance's card opens over it instead."] }
 	opts.dungeonBosses = { type = "toggle", name = L["Dungeon maps: bosses"], order = 31.1, width = "full", get = get, set = set, disabled = off,
 		desc = L["A dungeon's map lists its bosses, in the game's order, and pins where they are."] }
+	opts.dungeonMinimap = { type = "toggle", name = L["Dungeon maps from the minimap"], order = 31.03, width = "full", get = get, disabled = off,
+		set = function(info, v) set(info, v) if view and view:IsShown() then CloseView() end end,
+		desc = L["Where OpenMap has one, a dungeon's map built from the game's own minimap pictures (what the minimap draws inside) instead of its drawn map. Dungeons with no other map use it anyway."] }
 	opts.dungeonLevels = { type = "toggle", name = L["Dungeon level ranges"], order = 31.05, width = "full", get = get, set = set, disabled = off,
 		desc = L["Each dungeon entrance's level range under its icon, coloured for your level."] }
 	opts.dungeonQuests = { type = "toggle", name = L["Dungeon maps: quests"], order = 31.2, width = "full", get = get, set = set, disabled = off,

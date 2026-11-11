@@ -518,5 +518,7 @@
  "Every boss gone through: Done, or Undo": "Все боссы пройдены: Готово или Отменить",
  "Skip": "Пропустить",
  "Boss places saved in OpenMapDB (worldmap, bossPlaced) once you /reload or log out; tools/map-dungeons/bosses.py --import adds them to OpenMap's data.": "Места боссов сохраняются в OpenMapDB (worldmap, bossPlaced) после /reload или выхода из игры; tools/map-dungeons/bosses.py --import добавляет их в данные OpenMap.",
- "Open a dungeon's map first: /openmap bosses places its bosses on it.": "Сначала откройте карту подземелья: /openmap bosses отмечает на ней боссов."
+ "Open a dungeon's map first: /openmap bosses places its bosses on it.": "Сначала откройте карту подземелья: /openmap bosses отмечает на ней боссов.",
+ "Dungeon maps from the minimap": "Карты подземелий по миникарте",
+ "Where OpenMap has one, a dungeon's map built from the game's own minimap pictures (what the minimap draws inside) instead of its drawn map. Dungeons with no other map use it anyway.": "Если у OpenMap она есть, карта подземелья, собранная из изображений миникарты самой игры (то, что миникарта показывает внутри), вместо нарисованной карты. Подземелья без другой карты используют её в любом случае."
 }

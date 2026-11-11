@@ -518,5 +518,7 @@
  "Every boss gone through: Done, or Undo": "Todos os chefes percorridos: Concluído, ou Desfazer",
  "Skip": "Pular",
  "Boss places saved in OpenMapDB (worldmap, bossPlaced) once you /reload or log out; tools/map-dungeons/bosses.py --import adds them to OpenMap's data.": "As posições dos chefes são salvas em OpenMapDB (worldmap, bossPlaced) ao usar /reload ou sair; tools/map-dungeons/bosses.py --import as adiciona aos dados do OpenMap.",
- "Open a dungeon's map first: /openmap bosses places its bosses on it.": "Abra primeiro o mapa de uma masmorra: /openmap bosses posiciona os chefes nele."
+ "Open a dungeon's map first: /openmap bosses places its bosses on it.": "Abra primeiro o mapa de uma masmorra: /openmap bosses posiciona os chefes nele.",
+ "Dungeon maps from the minimap": "Mapas de masmorra do minimapa",
+ "Where OpenMap has one, a dungeon's map built from the game's own minimap pictures (what the minimap draws inside) instead of its drawn map. Dungeons with no other map use it anyway.": "Onde o OpenMap tiver um, o mapa de uma masmorra feito com as imagens do minimapa do próprio jogo (o que o minimapa mostra lá dentro) em vez do mapa desenhado. Masmorras sem outro mapa o usam de qualquer forma."
 }

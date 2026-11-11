@@ -518,5 +518,7 @@
  "Every boss gone through: Done, or Undo": "Todos los jefes recorridos: Hecho, o Deshacer",
  "Skip": "Omitir",
  "Boss places saved in OpenMapDB (worldmap, bossPlaced) once you /reload or log out; tools/map-dungeons/bosses.py --import adds them to OpenMap's data.": "Las posiciones de los jefes se guardan en OpenMapDB (worldmap, bossPlaced) al hacer /reload o cerrar sesión; tools/map-dungeons/bosses.py --import las añade a los datos de OpenMap.",
- "Open a dungeon's map first: /openmap bosses places its bosses on it.": "Abre primero el mapa de una mazmorra: /openmap bosses coloca sus jefes en él."
+ "Open a dungeon's map first: /openmap bosses places its bosses on it.": "Abre primero el mapa de una mazmorra: /openmap bosses coloca sus jefes en él.",
+ "Dungeon maps from the minimap": "Mapas de mazmorra del minimapa",
+ "Where OpenMap has one, a dungeon's map built from the game's own minimap pictures (what the minimap draws inside) instead of its drawn map. Dungeons with no other map use it anyway.": "Donde OpenMap tenga uno, el mapa de una mazmorra hecho con las imágenes del minimapa del propio juego (lo que el minimapa muestra dentro) en vez de su mapa dibujado. Las mazmorras sin otro mapa lo usan de todos modos."
 }
