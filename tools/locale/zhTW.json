@@ -23,7 +23,6 @@
  "A circle: drag from its middle out.": "圓圈：從圓心向外拖曳。",
  "A code to copy and paste anywhere: another player adds it with their OpenMap (Pins, Import).": "可複製貼到任何地方的代碼：其他玩家可用他們的 OpenMap 加入（「地圖標記」中的「匯入」）。",
  "A dungeon's map has a Quests tab: with Questie, the quests for it that you can take, marked done or in your log; with Dungeon Journal or NeedRoll, a button that opens them there.": "地城地圖有一個「任務」分頁：使用 Questie 時，列出你可接的該地城任務，並標示已完成或已在任務日誌中；使用 Dungeon Journal 或 NeedRoll 時，則提供在其中開啟的按鈕。",
- "A dungeon's map lists its bosses, in the game's order.": "地城地圖會依遊戲中的順序列出其首領。",
  "A raid mark: click to set it down. Right-click this button for another mark.": "團隊標記：點擊即可放置。右鍵點擊此按鈕可換一個標記。",
  "A smaller brush": "較小的筆刷",
  "A star puts that action or setting on the map as a button of its own.": "點星號可將該動作或設定做成按鈕，放到地圖上。",
@@ -511,5 +510,13 @@
  "zooming about four times smoother, found and measured": "縮放流暢約四倍，由其發現並測量",
  "Click: track this quest, zoom to it and show it in the quest log": "點擊：追蹤此任務、放大到它並在任務日誌中顯示",
  "Click: track this quest and zoom to it": "點擊：追蹤此任務並放大到它",
- "friends on other numbered realms on the map": "在地圖上顯示其他編號伺服器的好友"
+ "friends on other numbered realms on the map": "在地圖上顯示其他編號伺服器的好友",
+ "A dungeon's map lists its bosses, in the game's order, and pins where they are.": "地城地圖依遊戲順序列出首領，並標出他們的位置。",
+ "Placed by you (/openmap bosses)": "由你放置（/openmap bosses）",
+ "(placed: click to move it)": "（已放置：點擊可移動）",
+ "click where it is; right-click skips": "點擊其所在位置；右鍵跳過",
+ "Every boss gone through: Done, or Undo": "所有首領已過一遍：完成，或復原",
+ "Skip": "跳過",
+ "Boss places saved in OpenMapDB (worldmap, bossPlaced) once you /reload or log out; tools/map-dungeons/bosses.py --import adds them to OpenMap's data.": "首領位置會在你 /reload 或登出後儲存到 OpenMapDB（worldmap, bossPlaced）；tools/map-dungeons/bosses.py --import 會將其加入 OpenMap 的資料。",
+ "Open a dungeon's map first: /openmap bosses places its bosses on it.": "請先打開地城地圖：/openmap bosses 會在上面放置首領。"
 }

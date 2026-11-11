@@ -42,6 +42,7 @@ AI coding agents: read [AGENTS.md](../AGENTS.md) too.
    python -P tools/offline-test/explored.py # unexplored land hidden up close (Stitch.lua)
    python -P tools/offline-test/chart.py    # the sea chart's layout: Chart.lua as tools/map-chart/layout.py
    python -P tools/offline-test/friends.py  # friends and guild on the map: what Friends.lua hears and sends
+   python -P tools/offline-test/bosses.py   # boss pins' data: each on one of its dungeon's floors, on the picture
    ```
    `lint.py` catches single backslashes in texture paths, decimal escapes (`"Map\947"` is
    a load error that takes the whole file down), calls to functions that don't exist, and

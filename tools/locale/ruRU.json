@@ -23,7 +23,6 @@
  "A circle: drag from its middle out.": "Круг: тяните от центра наружу.",
  "A code to copy and paste anywhere: another player adds it with their OpenMap (Pins, Import).": "Код, который можно скопировать и вставить куда угодно: другой игрок добавит его в своем OpenMap (Метки, Импорт).",
  "A dungeon's map has a Quests tab: with Questie, the quests for it that you can take, marked done or in your log; with Dungeon Journal or NeedRoll, a button that opens them there.": "На карте подземелья есть вкладка «Задания»: с Questie — доступные вам задания этого подземелья с отметкой, выполнено ли задание или есть ли оно в журнале; с Dungeon Journal или NeedRoll — кнопка, открывающая их там.",
- "A dungeon's map lists its bosses, in the game's order.": "На карте подземелья перечислены его боссы в том же порядке, что и в игре.",
  "A raid mark: click to set it down. Right-click this button for another mark.": "Метка цели: щелкните, чтобы поставить ее. Щелкните по этой кнопке правой кнопкой мыши, чтобы выбрать другую метку.",
  "A smaller brush": "Кисть поменьше",
  "A star puts that action or setting on the map as a button of its own.": "Звездочка выносит это действие или настройку на карту отдельной кнопкой.",
@@ -511,5 +510,13 @@
  "zooming about four times smoother, found and measured": "масштабирование примерно в четыре раза плавнее: найдено и измерено",
  "Click: track this quest, zoom to it and show it in the quest log": "Щелчок: отслеживать задание, приблизить и показать в журнале заданий",
  "Click: track this quest and zoom to it": "Щелчок: отслеживать задание и приблизить",
- "friends on other numbered realms on the map": "друзья с других пронумерованных миров на карте"
+ "friends on other numbered realms on the map": "друзья с других пронумерованных миров на карте",
+ "A dungeon's map lists its bosses, in the game's order, and pins where they are.": "Карта подземелья перечисляет его боссов в порядке игры и отмечает, где они находятся.",
+ "Placed by you (/openmap bosses)": "Отмечено вами (/openmap bosses)",
+ "(placed: click to move it)": "(отмечено: щелкните, чтобы переместить)",
+ "click where it is; right-click skips": "щелкните, где он находится; правый щелчок — пропустить",
+ "Every boss gone through: Done, or Undo": "Все боссы пройдены: Готово или Отменить",
+ "Skip": "Пропустить",
+ "Boss places saved in OpenMapDB (worldmap, bossPlaced) once you /reload or log out; tools/map-dungeons/bosses.py --import adds them to OpenMap's data.": "Места боссов сохраняются в OpenMapDB (worldmap, bossPlaced) после /reload или выхода из игры; tools/map-dungeons/bosses.py --import добавляет их в данные OpenMap.",
+ "Open a dungeon's map first: /openmap bosses places its bosses on it.": "Сначала откройте карту подземелья: /openmap bosses отмечает на ней боссов."
 }
