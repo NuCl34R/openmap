@@ -525,5 +525,10 @@
  "Where OpenMap has one, a dungeon's map built from the game's own minimap pictures (what the minimap draws inside) instead of its drawn map. Dungeons with no other map use it anyway.": "Если у OpenMap она есть, карта подземелья, собранная из изображений миникарты самой игры (то, что миникарта показывает внутри), вместо нарисованной карты. Подземелья без другой карты используют её в любом случае.",
  "the yellow ping hidden with your arrow": "жёлтый сигнал скрывается вместе с вашей стрелкой",
  "one marker per friend or guildmate, and none left over when they join your group": "одна метка на друга или члена гильдии, и ни одной лишней, когда они вступают в вашу группу",
- "the controller map option turned on in combat, and B by a quest's details": "включение карты для контроллера в бою и кнопка B в описании задания"
+ "the controller map option turned on in combat, and B by a quest's details": "включение карты для контроллера в бою и кнопка B в описании задания",
+ "With the controller, the D-pad's right opens the quest log.": "С контроллером журнал заданий открывается нажатием вправо на крестовине.",
+ "That isn't available with the Gamepad UI yet.": "С интерфейсом контроллера это пока недоступно.",
+ "OpenMap's map with a controller (the Gamepad UI)": "Карта OpenMap с контроллером (интерфейс контроллера)",
+ "OpenMap's map with the Gamepad UI (test)": "Карта OpenMap с интерфейсом геймпада (тест)",
+ "With the game's Gamepad UI on, OpenMap draws its map over Blizzard's and leaves Blizzard's map as it is, so the controller's buttons keep working. Off: Blizzard's map while the Gamepad UI is on. Still being tried out: if something doesn't work, turn this off and /reload.": "Когда включён интерфейс геймпада, OpenMap рисует свою карту поверх карты Blizzard и не трогает карту Blizzard, поэтому кнопки контроллера продолжают работать. Выкл.: карта Blizzard, пока включён интерфейс геймпада. Ещё испытывается: если что-то не работает, выключите это и введите /reload."
 }

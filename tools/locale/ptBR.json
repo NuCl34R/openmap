@@ -525,5 +525,10 @@
  "Where OpenMap has one, a dungeon's map built from the game's own minimap pictures (what the minimap draws inside) instead of its drawn map. Dungeons with no other map use it anyway.": "Onde o OpenMap tiver um, o mapa de uma masmorra feito com as imagens do minimapa do próprio jogo (o que o minimapa mostra lá dentro) em vez do mapa desenhado. Masmorras sem outro mapa o usam de qualquer forma.",
  "the yellow ping hidden with your arrow": "o sinal amarelo oculto junto com sua seta",
  "one marker per friend or guildmate, and none left over when they join your group": "um marcador por amigo ou membro da guilda, e nenhum sobrando quando entram no seu grupo",
- "the controller map option turned on in combat, and B by a quest's details": "a opção do mapa com controle ligada em combate, e o B nos detalhes de uma missão"
+ "the controller map option turned on in combat, and B by a quest's details": "a opção do mapa com controle ligada em combate, e o B nos detalhes de uma missão",
+ "With the controller, the D-pad's right opens the quest log.": "Com o controle, a direita do direcional abre o Registro de Missões.",
+ "That isn't available with the Gamepad UI yet.": "Isso ainda não está disponível com a interface de controle.",
+ "OpenMap's map with a controller (the Gamepad UI)": "O mapa do OpenMap com controle (a interface de controle)",
+ "OpenMap's map with the Gamepad UI (test)": "Mapa do OpenMap com a interface de controle (teste)",
+ "With the game's Gamepad UI on, OpenMap draws its map over Blizzard's and leaves Blizzard's map as it is, so the controller's buttons keep working. Off: Blizzard's map while the Gamepad UI is on. Still being tried out: if something doesn't work, turn this off and /reload.": "Com a interface de controle do jogo ligada, o OpenMap desenha seu mapa sobre o da Blizzard e deixa o mapa da Blizzard como está, para que os botões do controle continuem funcionando. Desligado: o mapa da Blizzard enquanto a interface de controle estiver ligada. Ainda em teste: se algo não funcionar, desligue isto e use /reload."
 }

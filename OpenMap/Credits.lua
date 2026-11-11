@@ -31,6 +31,7 @@ ns.Credits = {
 		{ "Luquatic", L["the yellow ping hidden with your arrow"] },
 		{ "puschie286", L["one marker per friend or guildmate, and none left over when they join your group"] },
 		{ "k4m1", L["the controller map option turned on in combat, and B by a quest's details"] },
+		{ "FlyingPenguin98", L["OpenMap's map with a controller (the Gamepad UI)"] },
 	} },
 	{ L["Map art"], {
 		{ "Blizzard Entertainment", L["the map art is the game's own"] },

@@ -525,5 +525,10 @@
  "Where OpenMap has one, a dungeon's map built from the game's own minimap pictures (what the minimap draws inside) instead of its drawn map. Dungeons with no other map use it anyway.": "Dove OpenMap ne ha una, la mappa di una spedizione creata dalle immagini della minimappa del gioco (ciò che la minimappa mostra all'interno) al posto della mappa disegnata. Le spedizioni senza altra mappa la usano comunque.",
  "the yellow ping hidden with your arrow": "il segnale giallo nascosto con la tua freccia",
  "one marker per friend or guildmate, and none left over when they join your group": "un indicatore per amico o membro della gilda, e nessuno di troppo quando entrano nel tuo gruppo",
- "the controller map option turned on in combat, and B by a quest's details": "l'opzione della mappa col controller attivata in combattimento, e B nei dettagli di una missione"
+ "the controller map option turned on in combat, and B by a quest's details": "l'opzione della mappa col controller attivata in combattimento, e B nei dettagli di una missione",
+ "With the controller, the D-pad's right opens the quest log.": "Con il controller, la croce direzionale a destra apre il Registro missioni.",
+ "That isn't available with the Gamepad UI yet.": "Non è ancora disponibile con l'interfaccia per gamepad.",
+ "OpenMap's map with a controller (the Gamepad UI)": "La mappa di OpenMap con il controller (l'interfaccia per gamepad)",
+ "OpenMap's map with the Gamepad UI (test)": "Mappa di OpenMap con l'interfaccia controller (test)",
+ "With the game's Gamepad UI on, OpenMap draws its map over Blizzard's and leaves Blizzard's map as it is, so the controller's buttons keep working. Off: Blizzard's map while the Gamepad UI is on. Still being tried out: if something doesn't work, turn this off and /reload.": "Con l'interfaccia controller del gioco attiva, OpenMap disegna la sua mappa sopra quella di Blizzard e lascia la mappa di Blizzard com'è, così i pulsanti del controller continuano a funzionare. Disattivato: la mappa di Blizzard finché l'interfaccia controller è attiva. Ancora in prova: se qualcosa non funziona, disattivalo e usa /reload."
 }

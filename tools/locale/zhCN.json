@@ -525,5 +525,10 @@
  "Where OpenMap has one, a dungeon's map built from the game's own minimap pictures (what the minimap draws inside) instead of its drawn map. Dungeons with no other map use it anyway.": "若 OpenMap 有，则使用由游戏自身小地图图片（小地图在室内显示的内容）生成的地下城地图，而不是手绘地图。没有其他地图的地下城总会使用它。",
  "the yellow ping hidden with your arrow": "黄色提示随你的箭头一起隐藏",
  "one marker per friend or guildmate, and none left over when they join your group": "每位好友或公会成员只有一个标记，加入你的队伍后不再残留",
- "the controller map option turned on in combat, and B by a quest's details": "战斗中开启手柄地图选项，以及任务详情中的 B 键"
+ "the controller map option turned on in combat, and B by a quest's details": "战斗中开启手柄地图选项，以及任务详情中的 B 键",
+ "With the controller, the D-pad's right opens the quest log.": "使用手柄时，按方向键右打开任务日志。",
+ "That isn't available with the Gamepad UI yet.": "手柄界面暂不支持此功能。",
+ "OpenMap's map with a controller (the Gamepad UI)": "用手柄使用OpenMap地图（手柄界面）",
+ "OpenMap's map with the Gamepad UI (test)": "在手柄界面中使用 OpenMap 地图（测试）",
+ "With the game's Gamepad UI on, OpenMap draws its map over Blizzard's and leaves Blizzard's map as it is, so the controller's buttons keep working. Off: Blizzard's map while the Gamepad UI is on. Still being tried out: if something doesn't work, turn this off and /reload.": "开启游戏的手柄界面时，OpenMap 会在暴雪地图上绘制自己的地图，并保持暴雪地图不变，因此手柄按键可以继续使用。关闭：手柄界面开启时使用暴雪地图。仍在测试中：如果有功能不正常，请关闭此项并输入 /reload。"
 }
