@@ -1,5 +1,56 @@
 # OpenMap changelog
 
+## v0.8.5 (2026-11-12)
+
+### New
+
+- **OpenMap's map with a controller** (the game's Gamepad UI; a test, off until you turn it on in
+  Options: "OpenMap's map with the Gamepad UI (test)"): the seamless map with the Gamepad UI on, where
+  OpenMap leaves the world map to Blizzard. OpenMap draws its map over
+  Blizzard's and leaves Blizzard's map as it is, so the controller's buttons keep working and closing
+  the map with B is no longer blocked. The left stick moves the cursor (at the edge it pans), the right
+  stick zooms about it, A zooms into a zone or presses the icon or button under the cursor, X zooms
+  out or closes what's open, and pressing the left stick puts the waypoint there. On it: dungeons,
+  boats, flight masters and their routes, your pins and the waypoint, your party, Questie's icons
+  (with their tooltips), townsfolk and mob paths, other addons' icons (TomTom, gatherers), dungeon
+  maps with their bosses, quests and loot, and the OpenMap menu with search, Find me, map pins, the
+  quill (A puts the pen down, A lifts it) and Report a problem. Questie's icons no longer slow the map
+  down there either. The D-pad's right opens the quest log, as on Blizzard's map. Off (the default):
+  Blizzard's map with the Gamepad UI, as before. If you play with a controller, try it and tell us
+  how it goes (#57). By FlyingPenguin98.
+
+- **WoW Forever's newest dungeons on the map**: Krol'dok Stronghold, Alcaz Prison, Blackmaw Hold and
+  Shaper's Terrace have their entrance pins (#142), and they and The Drowned City list their bosses.
+  By puschie286.
+
+- **Reopen the map on your zone** (the menu's More tab, Reopen map: "Center on your zone"): the map
+  opens on the whole zone you're in, in the middle, wherever you stand in it (#143).
+
+### Fixed
+
+- **Ragefire Chasm shows with "Only places you've found"** once you've found Orgrimmar: an entrance
+  inside a city is found with the city, whose own map has nothing to explore (#113).
+
+- **The Drowned City's map opens inside it**: opening the map in one of WoW Forever's own dungeons
+  that the game's tables didn't list yet (The Drowned City, Krol'dok Stronghold, Shaper's Terrace) showed
+  the world map instead of its drawn map. With puschie286.
+
+- **"Darken unexplored areas" keeps its soft edges up close**: once the minimap's detail shows, the
+  shade was hard-edged rectangles, and it changed as the minimap came in; it now has each unexplored
+  area's own shape, as further out (#101, #129).
+
+- **Cave maps whole**: Blizzard's cave maps showed only the parts their pale floors give away, cut off
+  along a straight line near the page's foot (Maraudon's entrance, Wailing Caverns', Night Web's
+  Hollow ...); the caves' own rooms now say where they are, as was meant (#141).
+
+- **No white diamonds at cave mouths**: one of the game's own cave minimap pictures has a white block
+  baked in over its tunnel's mouth, which showed up close at two caves in the Hinterlands (and one in
+  Kalimdor); OpenMap now draws a mended copy (#114).
+
+- **/openmap forgetflights** forgets the flight paths OpenMap remembers as learned for the character,
+  for one counted wrongly (route planners read the list); the next flight master's map learns the
+  real ones again (#153).
+
 ## v0.8.4 (2026-11-11)
 
 ### New

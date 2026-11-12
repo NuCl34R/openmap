@@ -68,7 +68,6 @@
  "Caves and dungeon entrances": "동굴 및 던전 입구",
  "Caves underground": "지하 동굴",
  "Center on player": "플레이어 중심",
- "Choose one behavior. Center on player: always open on you. Center on player, keep zoom: open on you, at the zoom you closed the map at. Always remember: restore your previous position and zoom, even after changing zones. Remember while visible: restore only if your current location is inside the previous view, even across zone boundaries. Otherwise, open on you. Maps opened for a quest still show the quest's area.": "하나를 선택하십시오. 플레이어 중심: 항상 내 위치에서 엽니다. 플레이어 중심, 확대 유지: 내 위치에서 열되, 지도를 닫을 때의 확대 배율을 유지합니다. 항상 기억: 지역을 옮긴 후에도 이전 위치와 확대 배율을 복원합니다. 보이는 동안 기억: 현재 위치가 이전 화면 안에 있을 때만 복원합니다(지역 경계를 넘어도 마찬가지입니다). 그렇지 않으면 내 위치에서 엽니다. 퀘스트 때문에 연 지도는 여전히 퀘스트 지역을 보여 줍니다.",
  "Center on player, keep zoom": "플레이어 중심, 확대 유지",
  "Circle": "원",
  "Class trainers": "직업 상급자",
@@ -524,5 +523,14 @@
  "Dungeon maps from the minimap": "미니맵으로 만든 던전 지도",
  "Where OpenMap has one, a dungeon's map built from the game's own minimap pictures (what the minimap draws inside) instead of its drawn map. Dungeons with no other map use it anyway.": "OpenMap에 있는 경우, 그린 지도 대신 게임의 미니맵 그림(미니맵이 실내에서 보여주는 것)으로 만든 던전 지도를 사용합니다. 다른 지도가 없는 던전은 항상 이것을 사용합니다.",
  "the yellow ping hidden with your arrow": "내 화살표와 함께 숨겨지는 노란색 알림",
- "one marker per friend or guildmate, and none left over when they join your group": "친구나 길드원마다 표시 하나, 파티에 들어오면 남는 표시 없음"
+ "the controller map option turned on in combat, and B by a quest's details": "전투 중 컨트롤러 지도 옵션 켜기, 그리고 퀘스트 세부 정보에서의 B 버튼",
+ "With the controller, the D-pad's right opens the quest log.": "게임패드에서는 방향 패드 오른쪽으로 퀘스트 목록을 엽니다.",
+ "That isn't available with the Gamepad UI yet.": "게임패드 사용자 인터페이스에서는 아직 사용할 수 없습니다.",
+ "OpenMap's map with a controller (the Gamepad UI)": "게임패드로 쓰는 OpenMap 지도 (게임패드 사용자 인터페이스)",
+ "OpenMap's map with the Gamepad UI (test)": "게임패드 UI에서 OpenMap 지도 (테스트)",
+ "With the game's Gamepad UI on, OpenMap draws its map over Blizzard's and leaves Blizzard's map as it is, so the controller's buttons keep working. Off: Blizzard's map while the Gamepad UI is on. Still being tried out: if something doesn't work, turn this off and /reload.": "게임의 게임패드 UI가 켜져 있으면 OpenMap이 블리자드 지도 위에 자신의 지도를 그리고 블리자드 지도는 그대로 두므로 컨트롤러 버튼이 계속 작동합니다. 끄면: 게임패드 UI가 켜져 있는 동안 블리자드 지도를 사용합니다. 아직 시험 중입니다. 문제가 있으면 이 옵션을 끄고 /reload 하세요.",
+ "Center on your zone": "내 지역 중앙",
+ "Choose one behavior. Center on player: always open on you. Center on player, keep zoom: open on you, at the zoom you closed the map at. Center on your zone: open on the whole zone you're in, wherever you are in it. Always remember: restore your previous position and zoom, even after changing zones. Remember while visible: restore only if your current location is inside the previous view, even across zone boundaries. Otherwise, open on you. Maps opened for a quest still show the quest's area.": "하나를 선택하십시오. 플레이어 중심: 항상 내 위치에서 엽니다. 플레이어 중심, 확대 유지: 내 위치에서 열되, 지도를 닫을 때의 확대 배율을 유지합니다. 내 지역 중앙: 지역 안 어디에 있든 내가 있는 지역 전체를 보여 줍니다. 항상 기억: 지역을 옮긴 후에도 이전 위치와 확대 배율을 복원합니다. 보이는 동안 기억: 현재 위치가 이전 화면 안에 있을 때만 복원합니다(지역 경계를 넘어도 마찬가지입니다). 그렇지 않으면 내 위치에서 엽니다. 퀘스트 때문에 연 지도는 여전히 퀘스트 지역을 보여 줍니다.",
+ "one marker per friend or guildmate, none left over when they join your group, and the newest dungeons' entrances": "친구나 길드원마다 표시 하나, 파티에 들어오면 남는 표시 없음, 그리고 최신 던전 입구",
+ "Learned flight paths forgotten for this character: talk to a flight master to learn the ones you have again.": "이 캐릭터의 배운 비행 경로를 잊었습니다. 비행 조련사와 대화하면 가진 경로를 다시 배웁니다."
 }

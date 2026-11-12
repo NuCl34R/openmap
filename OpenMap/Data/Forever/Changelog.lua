@@ -4,6 +4,17 @@
 local _, ns = ...
 
 ns.MapChangelog = {
+	{ version = "v0.8.5", date = "2026-11-12", heads = { [1] = "New", [4] = "Fixed", }, items = {
+		"|cff6e2c0aOpenMap's map with a controller|r (the game's Gamepad UI; a test, off until you turn it on in Options: \"OpenMap's map with the Gamepad UI (test)\"): the seamless map with the Gamepad UI on, where OpenMap leaves the world map to Blizzard. OpenMap draws its map over Blizzard's and leaves Blizzard's map as it is, so the controller's buttons keep working and closing the map with B is no longer blocked. The left stick moves the cursor (at the edge it pans), the right stick zooms about it, A zooms into a zone or presses the icon or button under the cursor, X zooms out or closes what's open, and pressing the left stick puts the waypoint there. On it: dungeons, boats, flight masters and their routes, your pins and the waypoint, your party, Questie's icons (with their tooltips), townsfolk and mob paths, other addons' icons (TomTom, gatherers), dungeon maps with their bosses, quests and loot, and the OpenMap menu with search, Find me, map pins, the quill (A puts the pen down, A lifts it) and Report a problem. Questie's icons no longer slow the map down there either. The D-pad's right opens the quest log, as on Blizzard's map. Off (the default): Blizzard's map with the Gamepad UI, as before. If you play with a controller, try it and tell us how it goes (#57). By FlyingPenguin98.",
+		"|cff6e2c0aWoW Forever's newest dungeons on the map|r: Krol'dok Stronghold, Alcaz Prison, Blackmaw Hold and Shaper's Terrace have their entrance pins (#142), and they and The Drowned City list their bosses. By puschie286.",
+		"|cff6e2c0aReopen the map on your zone|r (the menu's More tab, Reopen map: \"Center on your zone\"): the map opens on the whole zone you're in, in the middle, wherever you stand in it (#143).",
+		"|cff6e2c0aRagefire Chasm shows with \"Only places you've found\"|r once you've found Orgrimmar: an entrance inside a city is found with the city, whose own map has nothing to explore (#113).",
+		"|cff6e2c0aThe Drowned City's map opens inside it|r: opening the map in one of WoW Forever's own dungeons that the game's tables didn't list yet (The Drowned City, Krol'dok Stronghold, Shaper's Terrace) showed the world map instead of its drawn map. With puschie286.",
+		"|cff6e2c0a\"Darken unexplored areas\" keeps its soft edges up close|r: once the minimap's detail shows, the shade was hard-edged rectangles, and it changed as the minimap came in; it now has each unexplored area's own shape, as further out (#101, #129).",
+		"|cff6e2c0aCave maps whole|r: Blizzard's cave maps showed only the parts their pale floors give away, cut off along a straight line near the page's foot (Maraudon's entrance, Wailing Caverns', Night Web's Hollow ...); the caves' own rooms now say where they are, as was meant (#141).",
+		"|cff6e2c0aNo white diamonds at cave mouths|r: one of the game's own cave minimap pictures has a white block baked in over its tunnel's mouth, which showed up close at two caves in the Hinterlands (and one in Kalimdor); OpenMap now draws a mended copy (#114).",
+		"|cff6e2c0a/openmap forgetflights|r forgets the flight paths OpenMap remembers as learned for the character, for one counted wrongly (route planners read the list); the next flight master's map learns the real ones again (#153).",
+	} },
 	{ version = "v0.8.4", date = "2026-11-11", heads = { [1] = "New", [4] = "Improved", [5] = "Fixed", }, items = {
 		"|cff6e2c0aBosses pinned on dungeon maps|r: a numbered pin where each boss is, on its floor, numbered as the Bosses tab lists them, with its name on the tooltip (click: its loot in NeedRoll). Placed from Blizzard's own dungeon journal for 153 bosses so far; \"Dungeon maps: bosses\" turns them off with the list (#90, #93).",
 		"|cff6e2c0a/openmap bosses places the rest yourself|r: on a dungeon's map, click where the boss named in the bar is (right-click skips one, shift-click takes the last back). Your places show at once and are kept with your settings.",
@@ -66,10 +77,5 @@ ns.MapChangelog = {
 		"|cff6e2c0aThe OpenMap menu fits a short screen|r: on a TV at a big UI scale the Look tab ran off the bottom.",
 		"|cff6e2c0aFlight masters are named in your own language|r: on a client that isn't English, the map's flight masters kept the game's tables' English names (hovering one said \"Stormwind, Elwynn\" while the flight master in game names it in your language). They're now named as the game names them, and a flight's measured time is found again on a route (the times were keyed by the English names).",
 		"|cff6e2c0aThe map opened inside a dungeon shows that dungeon's map|r (Ragefire Chasm, Deadmines ...): it showed the world map with no one on it, as WoW Forever has no map of its dungeons. Its map only opened from the entrance on the world map.",
-	} },
-	{ version = "v0.7.5-beta", date = "2026-10-23", heads = { [1] = "Fixed", }, items = {
-		"|cff6e2c0aThe map's art is there at once when you open it|r: since 0.7.4 the zones showed blank parchment for a moment each time the map opened.",
-		"|cff6e2c0aClicking a quest on the map keeps the map as it is|r: the quest is tracked and the map zooms in on it, full screen or windowed. It opened the quest's details, which Blizzard shows in the windowed map, so a full-screen map left full screen. With the quest log open beside the map, its details show there too.",
-		"|cff6e2c0aHiding your pins hides their drawings too|r (the menu's Pins, right-clicked): what you drew on a pin stayed on the map without it.",
 	} },
 }

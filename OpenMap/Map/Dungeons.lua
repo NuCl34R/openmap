@@ -51,6 +51,12 @@ local shownMap, lastMap         -- the map the window shows, and the one before 
 local function MapsOn() return mod.db.dungeonMaps ~= false end   -- (Options' Dungeon maps)
 mod.DungeonMapsOn = MapsOn
 
+-- PadView.lua's controller view on: Blizzard's map is never changed from here then (that's OpenMap's code
+-- changing it, which taints the Gamepad UI), so a dungeon opens in OpenMap's own view of it (its floors'
+-- pictures, ns.MapDungeonMaps), not on Blizzard's map; and the side panel stays out of the quest log
+-- (opening or docking into it would be OpenMap's doing too)
+local function PadView() return mod.PadViewOn and mod.PadViewOn() or false end
+
 local function Places() return ns.MapPlaces or {} end
 
 -- an entrance's place on Azeroth's map (normalized): from world yards on its continent, or a spot on
@@ -557,6 +563,7 @@ local function BuildView()
 		b.hover = b:CreateTexture(nil, "HIGHLIGHT")
 		for _, tex in ipairs({ b.bg, b.selected, b.hover }) do tex:SetPoint("CENTER") end
 		b:SetScript("OnClick", function(self)
+			if PadView() then return end
 			local log = map.QuestLog
 			if log and log:IsVisible() then
 				if view.dockTab == self.key then return end
@@ -650,12 +657,22 @@ local MARK_STEP = 3             -- px the cursor moves before the pen adds a poi
 local MARK_MAX = 300            -- points in one line
 local MARK_INK = { 0.92, 0.18, 0.14 }
 
+-- what's kept per dungeon was by name for WoW Forever's own that the game's tables had no mapID for (0):
+-- they have their instance's now (#149), so a name's entry goes to its mapID, once (`all`: the sketch's
+-- dungeons, or the bosses placed)
+local function ByMapID(all, inst)
+	if all and inst and inst[1] ~= 0 and all[inst[2]] ~= nil and all[inst[1]] == nil then
+		all[inst[1]], all[inst[2]] = all[inst[2]], nil
+	end
+end
+
 -- the quill's drawings on this dungeon's map (the sketch's dungeons, by the instance's map ID)
 local function Kept(make)
 	local sk = mod.db.sketch
 	local inst = view.inst
 	local key = inst and (inst[1] ~= 0 and inst[1] or inst[2])   -- (0: WoW Forever's own, by name)
 	if not (sk and key) then return end
+	ByMapID(sk.dungeons, inst)
 	if make then sk.dungeons = sk.dungeons or {} end
 	local all = sk.dungeons
 	if make and not all[key] then all[key] = {} end
@@ -990,7 +1007,7 @@ DockNow = function()
 		return
 	end
 	local log = map.QuestLog
-	local open = view:IsShown() and log and log:IsVisible() and true or false
+	local open = not PadView() and view:IsShown() and log and log:IsVisible() and true or false
 	side:ClearAllPoints()
 	view.port:SetPoint("BOTTOMRIGHT", 0, 0)
 	if open then
@@ -1006,7 +1023,15 @@ DockNow = function()
 		side:SetPoint("TOPRIGHT", 0, -HEAD_H)
 		side:SetPoint("BOTTOMRIGHT")
 		side:SetWidth(SIDE_W)
-		side:Hide()
+		if PadView() and view:IsShown() then
+			-- (the controller view: never in the quest log, so beside the picture, in the view itself)
+			view.port:SetPoint("BOTTOMRIGHT", -SIDE_W, 0)
+			Lift(side, view:GetFrameLevel() + 15)
+			side:Show()
+			LayoutView()
+		else
+			side:Hide()
+		end
 	end
 	if not view:IsShown() then tabs:Hide() return end
 	PlaceTabs(open)
@@ -1017,6 +1042,7 @@ end
 -- the log put away too: one brings it back, at that tab
 PlaceTabs = function(open)
 	local tabs, log = view.sideTabs, map.QuestLog
+	if PadView() then tabs:Hide() return end
 	if mod.PlaceDungeonTabsFrame then mod.PlaceDungeonTabsFrame(tabs)
 	else
 		tabs:ClearAllPoints()
@@ -1131,7 +1157,7 @@ end
 local function Open(inst, pin)
 	if chooser then chooser:Hide() end
 	if mod.db.entranceClick == "journal" and OpenJournal(inst) then return end
-	local id = MapsOn() and DungeonMap(inst)
+	local id = MapsOn() and not PadView() and DungeonMap(inst)
 	if id then
 		if PadWaits() then return end
 		local u, v, zoom = mod.ViewNow()
@@ -1177,6 +1203,7 @@ end
 -- a dungeon's is: the game's own map of it in the window, the world as it was on the way back out
 function mod.OpenAwayMap(mapID)
 	if not C_Map.GetMapInfo(mapID) then return false end
+	if PadView() then return false end
 	if PadWaits() then return true end
 	local u, v, zoom = mod.ViewNow()
 	away[mapID] = true
@@ -1187,8 +1214,15 @@ end
 
 local function Back()
 	if view and view:IsShown() then CloseView() return end
-	if map and not mod.IsStitched() and not PadWaits() then map:NavigateToParentMap() end
+	if map and not mod.IsStitched() and not PadWaits() and not PadView() then map:NavigateToParentMap() end
 end
+
+-- for PadView.lua: Blizzard's map known here (its SetupDungeons, the usual map's, isn't run then: nothing of
+-- it hooked), an entrance pressed, the view closed
+function mod.PadDungeonHost(worldMap)
+	if not map then map, sc = worldMap, worldMap.ScrollContainer end
+end
+function mod.CloseDungeonView() CloseView() end
 
 -- Options' and the menu's Dungeon maps: off, a dungeon's map that's up goes back to the world map
 function mod.SetDungeonMaps(on)
@@ -1951,6 +1985,7 @@ end
 
 -- a boss's place: { floor, x, y }, the placer's over the shipped one; nil where it has none
 local function BossAt(inst, name)
+	ByMapID(mod.db.bossPlaced, inst)
 	local key = InstKey(inst)
 	local mine = mod.db.bossPlaced and mod.db.bossPlaced[key]
 	if mine and mine[name] then return mine[name], true end
@@ -2214,15 +2249,21 @@ function mod:DungeonOptions(opts, get, set, off)
 		desc = L["With Dungeon Journal installed, an entrance can open that dungeon's page in it instead of its map (its map still opens where Dungeon Journal has no page for it)."] }
 end
 
--- the dungeon you're in, as Places.lua has it (nil: not in one, or one it doesn't list)
+-- the dungeon you're in, as Places.lua has it (nil: not in one, or one it doesn't list); one with no
+-- entrance yet (unplaced) too. (WoW Forever's own the tables had no mapID for were never found: The
+-- Drowned City's map didn't open inside it; they have their instance's mapID now, #149)
 local function InstanceHere()
 	if not IsInInstance or not IsInInstance() then return end
 	local instID = select(8, GetInstanceInfo())
-	if not instID then return end
-	for _, g in ipairs(Places().instances or {}) do
+	if not instID or instID == 0 then return end   -- (0: no instance, never one of the name-keyed)
+	local places = Places()
+	for _, g in ipairs(places.instances or {}) do
 		for _, inst in ipairs(g[4]) do
 			if inst[1] == instID then return inst end
 		end
+	end
+	for _, inst in ipairs(places.unplaced or {}) do
+		if inst[1] == instID then return inst end
 	end
 end
 

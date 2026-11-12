@@ -68,7 +68,6 @@
  "Caves and dungeon entrances": "洞穴和地下城入口",
  "Caves underground": "地下洞穴",
  "Center on player": "以玩家为中心",
- "Choose one behavior. Center on player: always open on you. Center on player, keep zoom: open on you, at the zoom you closed the map at. Always remember: restore your previous position and zoom, even after changing zones. Remember while visible: restore only if your current location is inside the previous view, even across zone boundaries. Otherwise, open on you. Maps opened for a quest still show the quest's area.": "选择一种方式。以玩家为中心：总是以你为中心打开。以玩家为中心并保留缩放：以你为中心打开，并使用你关闭地图时的缩放。总是记住：恢复上次的位置和缩放，即使你换了区域。在视野内时记住：仅当你当前的位置在上次的视野内时才恢复，即使跨越了区域边界；否则以你为中心打开。为任务打开的地图仍会显示任务区域。",
  "Center on player, keep zoom": "以玩家为中心，保留缩放",
  "Circle": "圆圈",
  "Class trainers": "职业训练师",
@@ -524,5 +523,14 @@
  "Dungeon maps from the minimap": "由小地图生成的地下城地图",
  "Where OpenMap has one, a dungeon's map built from the game's own minimap pictures (what the minimap draws inside) instead of its drawn map. Dungeons with no other map use it anyway.": "若 OpenMap 有，则使用由游戏自身小地图图片（小地图在室内显示的内容）生成的地下城地图，而不是手绘地图。没有其他地图的地下城总会使用它。",
  "the yellow ping hidden with your arrow": "黄色提示随你的箭头一起隐藏",
- "one marker per friend or guildmate, and none left over when they join your group": "每位好友或公会成员只有一个标记，加入你的队伍后不再残留"
+ "the controller map option turned on in combat, and B by a quest's details": "战斗中开启手柄地图选项，以及任务详情中的 B 键",
+ "With the controller, the D-pad's right opens the quest log.": "使用手柄时，按方向键右打开任务日志。",
+ "That isn't available with the Gamepad UI yet.": "手柄界面暂不支持此功能。",
+ "OpenMap's map with a controller (the Gamepad UI)": "用手柄使用OpenMap地图（手柄界面）",
+ "OpenMap's map with the Gamepad UI (test)": "在手柄界面中使用 OpenMap 地图（测试）",
+ "With the game's Gamepad UI on, OpenMap draws its map over Blizzard's and leaves Blizzard's map as it is, so the controller's buttons keep working. Off: Blizzard's map while the Gamepad UI is on. Still being tried out: if something doesn't work, turn this off and /reload.": "开启游戏的手柄界面时，OpenMap 会在暴雪地图上绘制自己的地图，并保持暴雪地图不变，因此手柄按键可以继续使用。关闭：手柄界面开启时使用暴雪地图。仍在测试中：如果有功能不正常，请关闭此项并输入 /reload。",
+ "Center on your zone": "以你所在区域为中心",
+ "Choose one behavior. Center on player: always open on you. Center on player, keep zoom: open on you, at the zoom you closed the map at. Center on your zone: open on the whole zone you're in, wherever you are in it. Always remember: restore your previous position and zoom, even after changing zones. Remember while visible: restore only if your current location is inside the previous view, even across zone boundaries. Otherwise, open on you. Maps opened for a quest still show the quest's area.": "选择一种方式。以玩家为中心：总是以你为中心打开。以玩家为中心并保留缩放：以你为中心打开，并使用你关闭地图时的缩放。以你所在区域为中心：显示你所在的整个区域，无论你在区域中的哪里。总是记住：恢复上次的位置和缩放，即使你换了区域。在视野内时记住：仅当你当前的位置在上次的视野内时才恢复，即使跨越了区域边界；否则以你为中心打开。为任务打开的地图仍会显示任务区域。",
+ "one marker per friend or guildmate, none left over when they join your group, and the newest dungeons' entrances": "每位好友或公会成员只有一个标记，加入你的队伍后不再残留，以及最新地下城的入口",
+ "Learned flight paths forgotten for this character: talk to a flight master to learn the ones you have again.": "已为此角色忘记已学会的飞行路线：与飞行管理员交谈即可重新学会你已有的路线。"
 }

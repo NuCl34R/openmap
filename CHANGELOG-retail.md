@@ -1,5 +1,27 @@
 # OpenMap changelog
 
+## v0.8.5 (2026-11-12)
+
+### New
+
+- **OpenMap's map with a controller** (the game's Gamepad UI; a test, off until you turn it on in
+  Options: "OpenMap's map with the Gamepad UI (test)"): the seamless map with the Gamepad UI on, where
+  OpenMap leaves the world map to Blizzard. OpenMap draws its map over Blizzard's, so the
+  controller's buttons keep working and B closes the map. The left stick moves the cursor (at the
+  edge it pans), the right stick zooms about it, A zooms in or presses what's under the cursor, X
+  zooms out or closes what's open, and pressing the left stick puts the waypoint there. Off (the
+  default): Blizzard's map with the Gamepad UI, as before. If you play with a controller, try it and
+  tell us how it goes (#57). By FlyingPenguin98.
+
+- **Reopen the map on your zone** (the menu's More tab, Reopen map: "Center on your zone"): the map
+  opens on the whole zone you're in, in the middle, wherever you stand in it (#143).
+
+### Fixed
+
+- **"Darken unexplored areas" keeps its soft edges up close**: once the minimap's detail shows, the
+  shade was hard-edged rectangles; it now has each unexplored area's own shape, as further out
+  (#101, #129).
+
 ## v0.8.4 (2026-11-11)
 
 ### Improved
