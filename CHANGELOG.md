@@ -1,5 +1,11 @@
 # OpenMap changelog
 
+## Unreleased
+
+### Fixed
+
+- **Entrance pins for Krol'dok Stronghold, Alcaz Prison, Blackmaw Hold, and Shaper's Terrace** now show on the world map (#142).
+
 ## v0.8.4 (2026-11-11)
 
 ### New

@@ -4,6 +4,9 @@
 local _, ns = ...
 
 ns.MapChangelog = {
+	{ version = "Unreleased", date = "", heads = { [1] = "Fixed", }, items = {
+		"|cff6e2c0aEntrance pins for Krol'dok Stronghold, Alcaz Prison, Blackmaw Hold, and Shaper's Terrace|r now show on the world map (#142).",
+	} },
 	{ version = "v0.8.4", date = "2026-11-11", heads = { [1] = "New", [4] = "Improved", [5] = "Fixed", }, items = {
 		"|cff6e2c0aBosses pinned on dungeon maps|r: a numbered pin where each boss is, on its floor, numbered as the Bosses tab lists them, with its name on the tooltip (click: its loot in NeedRoll). Placed from Blizzard's own dungeon journal for 153 bosses so far; \"Dungeon maps: bosses\" turns them off with the list (#90, #93).",
 		"|cff6e2c0a/openmap bosses places the rest yourself|r: on a dungeon's map, click where the boss named in the bar is (right-click skips one, shift-click takes the last back). Your places show at once and are kept with your settings.",
@@ -66,10 +69,5 @@ ns.MapChangelog = {
 		"|cff6e2c0aThe OpenMap menu fits a short screen|r: on a TV at a big UI scale the Look tab ran off the bottom.",
 		"|cff6e2c0aFlight masters are named in your own language|r: on a client that isn't English, the map's flight masters kept the game's tables' English names (hovering one said \"Stormwind, Elwynn\" while the flight master in game names it in your language). They're now named as the game names them, and a flight's measured time is found again on a route (the times were keyed by the English names).",
 		"|cff6e2c0aThe map opened inside a dungeon shows that dungeon's map|r (Ragefire Chasm, Deadmines ...): it showed the world map with no one on it, as WoW Forever has no map of its dungeons. Its map only opened from the entrance on the world map.",
-	} },
-	{ version = "v0.7.5-beta", date = "2026-10-23", heads = { [1] = "Fixed", }, items = {
-		"|cff6e2c0aThe map's art is there at once when you open it|r: since 0.7.4 the zones showed blank parchment for a moment each time the map opened.",
-		"|cff6e2c0aClicking a quest on the map keeps the map as it is|r: the quest is tracked and the map zooms in on it, full screen or windowed. It opened the quest's details, which Blizzard shows in the windowed map, so a full-screen map left full screen. With the quest log open beside the map, its details show there too.",
-		"|cff6e2c0aHiding your pins hides their drawings too|r (the menu's Pins, right-clicked): what you drew on a pin stayed on the map without it.",
 	} },
 }

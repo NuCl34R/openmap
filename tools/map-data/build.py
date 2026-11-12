@@ -95,6 +95,17 @@ ENTRANCES = {
     "Excavation Site: Wetlands": [("map", 1437, 47.8, 56.2)],   # Wetlands
     "The Hall of Thanes": [("map", 1455, 27.7, 47.9)],          # Ironforge
     "Ruins of Lordaeron": [("map", 1458, 72.5, 11.4)],          # Undercity
+    # Launch dungeon approaches, checked against the entrance guides below.
+    # Krol'dok: the cave west of the gates, near the guide's 37.5, 37.2.
+    # https://conquestcapped.com/guides/wow-forever/wow-forever-kroldok-stronghold-guide/
+    "Krol'dok Stronghold": [("map", 2548, 37.5, 37.3)],           # Riverglades
+    # https://conquestcapped.com/guides/wow-forever/wow-forever-alcaz-prison-guide/
+    "Alcaz Prison": [("map", 1445, 75.3, 14.1)],                # Dustwallow Marsh
+    # The tunnel mouth is the approach to Blackmaw Hold.
+    # https://hackverso.com/en/wowforever/masmorras-raides/
+    "Blackmaw Hold": [("map", 1447, 38.6, 33.2)],               # Azshara
+    # https://consolepcgaming.com/wow-forever-shapers-terrace-entrance-guide/
+    "Shaper's Terrace": [("map", 1449, 48.1, 6.1)],             # Un'Goro Crater
 }
 
 def levels(name, raid):

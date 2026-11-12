@@ -16,6 +16,10 @@ local _, ns = ...
 ns.MapPlaces = {
 	instances = {
 		{ nil, 0.213, 0.278, { { 0, "The Drowned City", false, 35, 40 } }, map = 1434 },
+		{ nil, 0.375, 0.373, { { 0, "Krol'dok Stronghold", false, 40, 45 } }, map = 2548 },
+		{ nil, 0.753, 0.141, { { 0, "Alcaz Prison", false, 48, 53 } }, map = 1445 },
+		{ nil, 0.386, 0.332, { { 0, "Blackmaw Hold", false, 55, 60 } }, map = 1447 },
+		{ nil, 0.481, 0.061, { { 0, "Shaper's Terrace", false, 58, 60 } }, map = 1449 },
 		{ 0, -231.0, 1571.6, { { 33, "Shadowfang Keep", false, 18, 23 } } },
 		{ 0, -8762.4, 848.0, { { 34, "Stormwind Stockade", false, 23, 28 } } },
 		{ 0, -11207.8, 1681.2, { { 36, "Deadmines", false, 16, 21 } } },
@@ -44,10 +48,6 @@ ns.MapPlaces = {
 		{ nil, 0.277, 0.479, { { 3065, "The Hall of Thanes", false, 13, 18 } }, map = 1455 },
 	},
 	unplaced = {
-		{ 0, "Krol'dok Stronghold", false, 40, 45 },
-		{ 0, "Alcaz Prison", false, 48, 53 },
-		{ 0, "Blackmaw Hold", false, 55, 60 },
-		{ 0, "Shaper's Terrace", false, 58, 60 },
 	},
 	bosses = {
 		[33] = { "Rethilgore", "Razorclaw the Butcher", "Baron Silverlaine", "Commander Springvale", "Odo the Blindwatcher", "Fenrus the Devourer", "Wolf Master Nandos", "Archmage Arugal" },
