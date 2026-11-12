@@ -4,6 +4,11 @@
 local _, ns = ...
 
 ns.MapChangelog = {
+	{ version = "v0.8.5", date = "2026-11-12", heads = { [1] = "New", [3] = "Fixed", }, items = {
+		"|cff6e2c0aOpenMap's map with a controller|r (the game's Gamepad UI; a test, off until you turn it on in Options: \"OpenMap's map with the Gamepad UI (test)\"): the seamless map with the Gamepad UI on, where OpenMap leaves the world map to Blizzard. OpenMap draws its map over Blizzard's, so the controller's buttons keep working and B closes the map. The left stick moves the cursor (at the edge it pans), the right stick zooms about it, A zooms in or presses what's under the cursor, X zooms out or closes what's open, and pressing the left stick puts the waypoint there. Off (the default): Blizzard's map with the Gamepad UI, as before. If you play with a controller, try it and tell us how it goes (#57). By FlyingPenguin98.",
+		"|cff6e2c0aReopen the map on your zone|r (the menu's More tab, Reopen map: \"Center on your zone\"): the map opens on the whole zone you're in, in the middle, wherever you stand in it (#143).",
+		"|cff6e2c0a\"Darken unexplored areas\" keeps its soft edges up close|r: once the minimap's detail shows, the shade was hard-edged rectangles; it now has each unexplored area's own shape, as further out (#101, #129).",
+	} },
 	{ version = "v0.8.4", date = "2026-11-11", heads = { [1] = "Improved", [2] = "Fixed", }, items = {
 		"|cff6e2c0aYour party and raid get a gold-bordered dot|r on the stitched map, everywhere, so they can't be mistaken for a guild member's dot. Someone the game won't place is shown faintly in the middle of their zone, with \"Somewhere in\" on the tooltip. By KonigTX.",
 		"|cff6e2c0a\"Your arrow\" off also hides the yellow location ping|r when the world map opens or changes zones. Turning it on again restores the normal arrow and ping; party markers stay visible (#78). By Luquatic.",
@@ -51,11 +56,5 @@ ns.MapChangelog = {
 		"|cff6e2c0aFlight masters are named in your own language|r: on a client that isn't English, the map's flight masters kept the game's tables' English names. They're now named as the game names them, and a flight's measured time is found again on a route.",
 		"|cff6e2c0aThe map window can't go above the top of the screen|r, where its title bar couldn't be grabbed to bring it back. /openmap reset puts the window back to its size and place.",
 		"|cff6e2c0aThe OpenMap menu fits a short screen|r: on a TV at a big UI scale the Look tab ran off the bottom.",
-	} },
-	{ version = "v0.7.1-beta", date = "2026-10-21", heads = { [1] = "Fixed", }, items = {
-		"|cff6e2c0aThe map loads the zone you pan or zoom to again|r: with an addon adding map icons, it could stay on the zone you started on, so the zone you'd panned to showed none of their icons until you clicked it. Its setting, once Follow the view, is now |cff6e2c0aLoad the zone in view|r.",
-		"|cff6e2c0aFlight masters you've learned are in colour|r, all of them: OpenMap knew only the ones it had seen you visit since it was installed (and, on a client not in English, none). It now asks the game which you've found.",
-		"|cff6e2c0aRetail: your arrow and the map's icons where they are in the cities|r: in Stormwind, your arrow, Blizzard's flight master and the other icons on the city's map were drawn tens of yards from where they are (a player's report).",
-		"|cff6e2c0aWith Enhance QoL|r, OpenMap says once in chat to turn off its Mover > World Map: the two both size the map, and its scale goes wrong (a player's finding).",
 	} },
 }
