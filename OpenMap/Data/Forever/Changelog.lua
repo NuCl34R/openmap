@@ -4,6 +4,9 @@
 local _, ns = ...
 
 ns.MapChangelog = {
+	{ version = "Unreleased", date = "", heads = { [1] = "Fixed", }, items = {
+		"|cff6e2c0aQuestie's icons show on the first map you open|r: with Questie 12.8, a map opened on a zone showed none of Questie's icons (their tooltips still came up) until you'd zoomed out to the continent once: icons Questie placed before the map was first opened stayed under its art (#194, #193, #195).",
+	} },
 	{ version = "v0.8.6", date = "2026-11-12", heads = { [1] = "Improved", [2] = "Fixed", }, items = {
 		"|cff6e2c0aIcons stay shown while zooming|r: \"Fade icons while zooming\" is now off for everyone, as zooming is smooth enough with them shown; turn it on again in the menu's On the map tab if you prefer it.",
 		"|cff6e2c0aQuestie's icons show again with Questie 12.8|r: Questie 12.8 brings its map icons a new way (its own module, with a new name), which OpenMap didn't know, so they were left off the map; and each icon Questie drew again sank under the map's art, so they faded away one by one. Older Questie versions work as before (#18). With bv101rj. Questie 12.8 hides its objective icons (mobs to kill, items to loot) until you turn them on: /questie, Icon Options, Objectives.",
@@ -49,22 +52,5 @@ ns.MapChangelog = {
 		"|cff6e2c0aPanning no longer hitches|r: the map set up to 300 textures' files in a single frame where a pan brought new ground into view, and each set is a load and an upload, so that frame showed as a hitch of about 35 ms. It sets 60 a frame now; the art still fades in, a few frames later.",
 		"|cff6e2c0aThe map no longer stalls a moment after it opens|r: since 0.8.0 OpenMap keeps the map's art loaded while it's closed, then let go of it all in one frame a second into the opening, which the game unloaded at once (about a second's freeze). It now lets go of it a little at a time.",
 		"|cff6e2c0aZooming in notch by notch is smooth again|r: since 0.8.1 the blur came back all at once each time the map stopped, one long frame the next wheel notch landed on. It now waits out a pause between notches and comes back a few zones a frame. Questie's mob paths are worked out once the map stops, not on every frame of a zoom.",
-	} },
-	{ version = "v0.8.1", date = "2026-11-08", heads = { [1] = "New", [3] = "Improved", [7] = "Fixed", }, items = {
-		"|cff6e2c0aQuestie's mob paths on the stitched map|r, drawn over the art for the zones near the view as you zoom in (Questie's own were under the art, and only on the zone's own map).",
-		"|cff6e2c0aDarkening colour|r (Options, under Darkening): the colour unexplored areas are darkened with, picked with the game's colour picker; |cff6e2c0aDefault colour|r brings back the dark one.",
-		"|cff6e2c0aZooming is about four times smoother|r: OpenMap no longer lays out its hidden icons and its blur on every frame of a zoom (the blur comes back a moment after you stop). Found and measured by Peendars.",
-		"|cff6e2c0aFlight masters are easier to see on the map|r: bigger, with a dark outline, and the ones you haven't learned are no longer half see-through (they were lost on the parchment).",
-		"|cff6e2c0aCtrl-click drops a pin can be turned off|r (Options, and the menu's More tab): with Map Pin Enhanced a Ctrl-click dropped two pins, its own and OpenMap's. Off, the menu's Drop a pin still works.",
-		"|cff6e2c0aThe Drowned City's map is Santiago Reyes's updated version|r, which names more of its places (the Eternal Amphitheater and the Abyssal Dais).",
-		"|cff6e2c0aDungeon and cave maps show in every language|r: on the Latin American Spanish, Russian and Italian clients every dungeon map and Blizzard cave map was solid green squares, as the game doesn't have their art for those languages. OpenMap now brings that art itself. Found and first fixed by RADD95 (OpenMap TextureFix): with this version that addon isn't needed. (New textures: restart the game.)",
-		"|cff6e2c0aZone names in your client's language|r: on every client but English, the zones' prebuilt art lettered their English names over the map. Other languages now draw the zones from the client's own art (zooming is a little slower there, as with that art turned off).",
-		"|cff6e2c0aQuestie's icons show the first time you open the map|r: after a login they could be missing until the map was closed and opened again (Questie was still setting up when OpenMap looked).",
-		"|cff6e2c0aZygor's waypoint shows on the stitched map|r, in the right place and over the art (Zygor uses its own renamed copy of HereBeDragons, which OpenMap didn't know). Traced by robnoord.",
-		"|cff6e2c0aYour class's trainers are found on every language's client|r: on a French client (and the other non-English ones) every class trainer showed as a profession trainer.",
-		"|cff6e2c0aAn NPC who walks about shows once on the map|r: Girl with Puppies in Orgrimmar had a vendor icon at every point of her walk, dozens over the city. An NPC with many spawns in one zone (with Vendors and the other townsfolk on) now has one icon, in the middle of where it walks. Fixed by diegodiaz1256.",
-		"|cff6e2c0aThe map opened on Zephras Isle shows Zephras Isle|r, as its airship opens it: it showed the stitched world with no one on it.",
-		"|cff6e2c0aNo friends dot or badge for yourself|r: with Share where you are on, you could show on your own map as a guild member (the guild's roster can spell your realm differently).",
-		"|cff6e2c0aThe map opens at once inside a dungeon|r: each opening loaded the dungeon's map art again, a second or two (longer in dungeons with many floors, whose Floors tab shows every floor). OpenMap now keeps the art of the dungeon you're in loaded, as it does the world map's.",
 	} },
 }

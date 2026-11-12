@@ -537,6 +537,19 @@ local function HookQuestieOrder()
 	end)
 end
 
+-- Questie's icons on the map's pins now, lifted over the art: those it placed before there was art to
+-- lift them over (at login, before the map first opens: Questie 12.8 places them then, and redraws them
+-- only when the map changes, so a map opened on the same zone kept them under the art until a continent
+-- had been seen, #194), or while the map wasn't stitched
+local function LiftQuestie()
+	if not (questie.pins and S.artTop and mod.IsStitched() and map:IsShown()) then return end
+	for pin in map:EnumeratePinsByTemplate(questie.template or "HereBeDragonsPinsTemplateQuestie") do
+		local icon = pin.icon
+		if icon and icon.GetParent and icon:GetParent() == pin then Lift(icon, true) end
+	end
+end
+mod.LiftQuestie = LiftQuestie
+
 -- a copy taken over: "done"; its pool not there yet: "waiting" (tried again, PinRetry); a copy of a
 -- shape this can't take over: "unknown"
 local function SetUpPins(name, pins)
@@ -608,7 +621,9 @@ local function SetUpPins(name, pins)
 		provider.RefreshAllData = function(self, ...)
 			local before = self:GetMap() and self:GetMap():GetMapID()
 			if before ~= count.mapID then count.placed, count.ours, count.moved, count.mapID = 0, 0, 0, before end
-			return mod.TimeAfter(spec.questie and "Questie's icons placed" or "map pins placed", Refresh, self, ...)
+			local a, b, c = mod.TimeAfter(spec.questie and "Questie's icons placed" or "map pins placed", Refresh, self, ...)
+			if spec.questie then LiftQuestie() end   -- (the ones it kept from before: not handled again)
+			return a, b, c
 		end
 	end
 	-- (taken over with the map open, after the library placed its icons the game's way: again, ours)
@@ -1068,7 +1083,9 @@ function mod:SetupExtras(worldMap)
 	map:HookScript("OnShow", WarmLetGo)
 	hooksecurefunc(map, "SetAlpha", KeepFade)
 	SetUpAllPins()
-	map:HookScript("OnShow", function() mod.TimeAfter("pin libraries", SetUpAllPinsAndWait) end)     -- (a copy an addon loaded since brought)
+	map:HookScript("OnShow", function() mod.TimeAfter("pin libraries", SetUpAllPinsAndWait) end)
+	-- (Questie's icons placed before the map's art was built, or while it was closed: lifted once it's laid out)
+	map:HookScript("OnShow", function() C_Timer.After(0, LiftQuestie) C_Timer.After(0.5, LiftQuestie) end)     -- (a copy an addon loaded since brought)
 	ns.RegisterEvent(PinRetry, "ADDON_LOADED", function() SetUpAllPins() end)
 	HookQuestiePaths()                               -- (now: an older Questie's path stretches are kept as they're made)
 	map:HookScript("OnShow", function() HookQuestiePaths() if QPATH.hooked then QPATH.dirty = true QPATH.tick:Show() end end)

@@ -112,5 +112,57 @@ class FadeWhileZooming(unittest.TestCase):
         """)
 
 
+class QuestieLiftedOnOpen(unittest.TestCase):
+    """Questie's icons placed before the map's art was built (at login) are lifted over it when the map
+    opens (Extras.lua's LiftQuestie, #194): Questie 12.8 doesn't redraw them on a map opened on the same zone"""
+
+    def setUp(self):
+        self.lua = LuaRuntime(unpack_returned_tuples=True)
+        code = "\n".join([
+            part(r"\nlocal QUESTIE_BASE = [^\n]*\n"),
+            part(r"\nlocal function Lift\(icon, questie\).*?\nend\n"),
+            part(r"\nlocal function LiftQuestie\(\).*?\nend\n"),
+        ])
+        self.lua.execute("""
+            S = {}
+            mod = {}
+            stitched, shown = true, true
+            function mod.IsStitched() return stitched end
+            local function Frame(level)
+                local f = { level = level, fixed = true }
+                function f:GetFrameLevel() return self.level end
+                function f:SetFrameLevel(l) self.level = l end
+                function f:SetFixedFrameLevel(on) self.fixed = on end
+                function f:GetParent() return self.parent end
+                return f
+            end
+            pins = {}
+            for i = 1, 3 do
+                local pin = Frame(100)
+                local icon = Frame(2016 + i)
+                icon.parent, pin.icon = pin, icon
+                pins[i] = pin
+            end
+                        map = { IsShown = function() return shown end,
+                EnumeratePinsByTemplate = function(_, t) local i = 0 return function() i = i + 1 return pins[i] end end }
+            questie = { pins = {}, template = "HereBeDragonsPins-Questie-WorldMapPin" }
+        """ + code + "\nLiftAll = LiftQuestie\n")
+
+    def test_lifted_once_the_art_is_there(self):
+        self.lua.execute("LiftAll()")                       # (no art yet: left as they are)
+        self.assertEqual(self.lua.eval("pins[1].icon.level"), 2017)
+        self.lua.execute("S.artTop, S.iconLevel = 2083, 2091 LiftAll()")
+        self.assertEqual(self.lua.eval("pins[1].icon.level"), 2017 - 2015 + 2083 + 1)   # (over the art, in Questie's order)
+        self.assertEqual(self.lua.eval("pins[3].icon.level"), 2019 - 2015 + 2083 + 1)
+        self.lua.execute("LiftAll()")                       # (again: already over, unchanged)
+        self.assertEqual(self.lua.eval("pins[1].icon.level"), 2017 - 2015 + 2083 + 1)
+
+    def test_not_while_the_map_isnt_stitched_or_shown(self):
+        self.lua.execute("S.artTop, S.iconLevel = 2083, 2091 stitched = false LiftAll()")
+        self.assertEqual(self.lua.eval("pins[1].icon.level"), 2017)
+        self.lua.execute("stitched, shown = true, false LiftAll()")
+        self.assertEqual(self.lua.eval("pins[1].icon.level"), 2017)
+
+
 if __name__ == "__main__":
     unittest.main()

@@ -1,5 +1,13 @@
 # OpenMap changelog
 
+## Unreleased
+
+### Fixed
+
+- **Questie's icons show on the first map you open**: with Questie 12.8, a map opened on a zone showed
+  none of Questie's icons (their tooltips still came up) until you'd zoomed out to the continent once:
+  icons Questie placed before the map was first opened stayed under its art (#194, #193, #195).
+
 ## v0.8.6 (2026-11-12)
 
 ### Improved
