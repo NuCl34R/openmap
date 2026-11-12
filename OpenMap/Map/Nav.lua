@@ -494,6 +494,7 @@ local function RefreshGroup()
 			if u then
 				local pin = S.AddPin(groupSet, u, v, GroupLook(unit))
 				pin.unit, pin.zone = unit, zone
+				pin.openmapNoPress = true     -- (PadView.lua: nothing to press, the controller's A zooms in under it)
 				Ring(pin)
 				if zone then pin.Icon:SetAlpha(ROUGH_ALPHA) end
 				pin:SetScript("OnEnter", GroupEnter)
