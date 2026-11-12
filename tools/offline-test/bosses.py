@@ -46,5 +46,55 @@ class Bosses(unittest.TestCase):
         self.assertGreater(n, 100, "fewer bosses placed than the journals alone give")
 
 
+class InstanceHereTests(unittest.TestCase):
+    """the map opened inside a dungeon finds it (Dungeons.lua's InstanceHere, against Places.lua): by its
+    mapID, and WoW Forever's own the tables have no mapID for yet by their live one (Places.lua's sixth
+    field), with an entrance or not: The Drowned City's drawn map didn't open inside it"""
+
+    def setUp(self):
+        import re
+        self.lua = LuaRuntime(unpack_returned_tuples=True)
+        self.lua.execute("ns = { Media = { tex = '' } }")
+        run = self.lua.eval("function(src) return assert(loadstring(src))('OpenMap', ns) end")
+        run((DATA / "Places.lua").read_text(encoding="utf-8"))
+        src = (ROOT / "OpenMap" / "Map" / "Dungeons.lua").read_text(encoding="utf-8")
+        m = re.search(r"\nlocal function InstanceHere\(\).*?\nend\n", src, re.S)
+        self.assertIsNotNone(m, "InstanceHere in Dungeons.lua")
+        self.lua.execute("""
+            local ns = ns
+            here = nil
+            function IsInInstance() return here ~= nil end
+            function GetInstanceInfo() return "x", "party", 1, "", 5, 0, false, here end
+            local function Places() return ns.MapPlaces end
+        """ + m.group(0) + """
+            function Find(id) here = id local inst = InstanceHere() return inst and inst[2] end
+        """)
+
+    def test_by_map_id(self):
+        self.assertEqual(self.lua.eval("Find(36)"), "Deadmines")
+
+    def test_forevers_own_by_their_live_id(self):
+        self.assertEqual(self.lua.eval("Find(2970)"), "The Drowned City")
+        self.assertEqual(self.lua.eval("Find(3039)"), "Krol'dok Stronghold")    # (no entrance yet: unplaced)
+        self.assertEqual(self.lua.eval("Find(3001)"), "Shaper's Terrace")
+
+    def test_not_in_one(self):
+        self.assertIsNone(self.lua.eval("Find(nil)"))
+        self.assertIsNone(self.lua.eval("Find(0)"))                              # (0 never matches the name-keyed)
+
+    def test_every_drawn_map_by_name_has_a_live_id(self):
+        ns = load()
+        places = ns.MapPlaces
+        live = {}
+        for g in places.instances.values():
+            for inst in g[4].values():
+                live[inst[2]] = inst[6]
+        for inst in places.unplaced.values():
+            live[inst[2]] = inst[6]
+        for key in ns.MapDungeonDrawn.keys():
+            if isinstance(key, str):
+                self.assertTrue(live.get(key), "%s: a drawn map by name, but no live instance ID to find it inside" % key)
+
+
 if __name__ == "__main__":
     unittest.main()

@@ -2238,15 +2238,21 @@ function mod:DungeonOptions(opts, get, set, off)
 		desc = L["With Dungeon Journal installed, an entrance can open that dungeon's page in it instead of its map (its map still opens where Dungeon Journal has no page for it)."] }
 end
 
--- the dungeon you're in, as Places.lua has it (nil: not in one, or one it doesn't list)
+-- the dungeon you're in, as Places.lua has it (nil: not in one, or one it doesn't list). WoW Forever's own
+-- that its tables have no mapID for yet (0) by their live one (Places.lua's sixth field): The Drowned City's
+-- map didn't open inside it; one with no entrance yet (unplaced) too
 local function InstanceHere()
 	if not IsInInstance or not IsInInstance() then return end
 	local instID = select(8, GetInstanceInfo())
-	if not instID then return end
-	for _, g in ipairs(Places().instances or {}) do
+	if not instID or instID == 0 then return end   -- (0: no instance, never one of the name-keyed)
+	local places = Places()
+	for _, g in ipairs(places.instances or {}) do
 		for _, inst in ipairs(g[4]) do
-			if inst[1] == instID then return inst end
+			if inst[1] == instID or (inst[1] == 0 and inst[6] == instID) then return inst end
 		end
+	end
+	for _, inst in ipairs(places.unplaced or {}) do
+		if inst[1] == instID or (inst[1] == 0 and inst[6] == instID) then return inst end
 	end
 end
 

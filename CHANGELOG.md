@@ -33,6 +33,10 @@
 - **Ragefire Chasm shows with "Only places you've found"** once you've found Orgrimmar: an entrance
   inside a city is found with the city, whose own map has nothing to explore (#113).
 
+- **The Drowned City's map opens inside it**: opening the map in one of WoW Forever's own dungeons
+  that the game's tables didn't list yet (The Drowned City, Krol'dok Stronghold, Shaper's Terrace) showed
+  the world map instead of its drawn map.
+
 - **"Darken unexplored areas" keeps its soft edges up close**: once the minimap's detail shows, the
   shade was hard-edged rectangles, and it changed as the minimap came in; it now has each unexplored
   area's own shape, as further out (#101, #129).

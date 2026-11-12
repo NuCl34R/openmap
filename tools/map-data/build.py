@@ -79,6 +79,12 @@ for r in table("LFGDungeons"):
 # WoW Forever's own dungeons: their level ranges as Forever lists them (the WoW Forever team's
 # dungeon list, October 2026). Some aren't in this build's tables yet; none has an entrance in
 # them (the Map table gives no ghost's return point): they show on the map once ENTRANCES has one.
+# ... and the instance map IDs the game gives those this build's tables don't have yet (the Map table of
+# build 1.60.1.70888, the live client's: wago.tools/db2/Map/csv?build=1.60.1.70888), so the map opened
+# inside one finds it (Dungeons.lua's InstanceHere: GetInstanceInfo's). Their mapID stays 0 here, the
+# drawn maps and what's kept per dungeon being by name; the live ID is a sixth field
+LIVE_IDS = {"The Drowned City": 2970, "Krol'dok Stronghold": 3039, "Alcaz Prison": 2994, "Blackmaw Hold": 2974,
+            "Shaper's Terrace": 3001}
 FOREVER = [("The Hall of Thanes", 13, 18), ("Ruins of Lordaeron", 15, 20), ("Excavation Site: Wetlands", 24, 29),
            ("City of Dalaran", 28, 33), ("The Drowned City", 35, 40), ("Krol'dok Stronghold", 40, 45),
            ("Alcaz Prison", 48, 53), ("Blackmaw Hold", 55, 60), ("Shaper's Terrace", 58, 60)]
@@ -296,7 +302,9 @@ if not FOREVER_CLIENT:
 
 def item(i):
     lv = lambda v: "nil" if v is None else str(v)
-    return "{ %d, %s, %s, %s, %s }" % (i["id"], lua_str(i["name"]), "true" if i["raid"] else "false", lv(i["min"]), lv(i["max"]))
+    live = LIVE_IDS.get(i["name"]) if i["id"] == 0 and FOREVER_CLIENT else None
+    return "{ %d, %s, %s, %s, %s%s }" % (i["id"], lua_str(i["name"]), "true" if i["raid"] else "false", lv(i["min"]), lv(i["max"]),
+                                         ", %d" % live if live else "")
 
 with open(os.path.join(DATA, "Places.lua"), "w", encoding="utf-8", newline="\n") as f:
     f.write("-- Places on the map, in world yards per continent (0 Eastern Kingdoms, 1 Kalimdor).\n")
@@ -304,6 +312,7 @@ with open(os.path.join(DATA, "Places.lua"), "w", encoding="utf-8", newline="\n")
     f.write("--     (the entrance: where a ghost returns; entrances close together share one; a wing\n")
     f.write("--     of a dungeon is an instance of its own, by the group finder's name for it); or\n")
     f.write("--     { nil, x, y, { ... }, map = uiMapID }: a spot on that zone's map (0..1), where players find it\n")
+    f.write("--     (mapID 0: not in this build's tables; then a sixth field, the instance's map ID in the live client's)\n")
     f.write("--   unplaced[i] = { mapID (0: not in the tables), name, raid, minLevel, maxLevel }: no entrance yet\n")
     f.write("--   bosses[mapID] = { name, ... } in the game's order\n")
     f.write("--   transports[i] = { \"boat\" | \"zeppelin\" | \"airship\", route, continent, x, y, toContinent, toX, toY }\n")

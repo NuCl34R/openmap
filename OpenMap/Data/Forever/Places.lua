@@ -3,6 +3,7 @@
 --     (the entrance: where a ghost returns; entrances close together share one; a wing
 --     of a dungeon is an instance of its own, by the group finder's name for it); or
 --     { nil, x, y, { ... }, map = uiMapID }: a spot on that zone's map (0..1), where players find it
+--     (mapID 0: not in this build's tables; then a sixth field, the instance's map ID in the live client's)
 --   unplaced[i] = { mapID (0: not in the tables), name, raid, minLevel, maxLevel }: no entrance yet
 --   bosses[mapID] = { name, ... } in the game's order
 --   transports[i] = { "boat" | "zeppelin" | "airship", route, continent, x, y, toContinent, toX, toY }
@@ -15,7 +16,7 @@ local _, ns = ...
 
 ns.MapPlaces = {
 	instances = {
-		{ nil, 0.213, 0.278, { { 0, "The Drowned City", false, 35, 40 } }, map = 1434 },
+		{ nil, 0.213, 0.278, { { 0, "The Drowned City", false, 35, 40, 2970 } }, map = 1434 },
 		{ 0, -231.0, 1571.6, { { 33, "Shadowfang Keep", false, 18, 23 } } },
 		{ 0, -8762.4, 848.0, { { 34, "Stormwind Stockade", false, 23, 28 } } },
 		{ 0, -11207.8, 1681.2, { { 36, "Deadmines", false, 16, 21 } } },
@@ -44,10 +45,10 @@ ns.MapPlaces = {
 		{ nil, 0.277, 0.479, { { 3065, "The Hall of Thanes", false, 13, 18 } }, map = 1455 },
 	},
 	unplaced = {
-		{ 0, "Krol'dok Stronghold", false, 40, 45 },
-		{ 0, "Alcaz Prison", false, 48, 53 },
-		{ 0, "Blackmaw Hold", false, 55, 60 },
-		{ 0, "Shaper's Terrace", false, 58, 60 },
+		{ 0, "Krol'dok Stronghold", false, 40, 45, 3039 },
+		{ 0, "Alcaz Prison", false, 48, 53, 2994 },
+		{ 0, "Blackmaw Hold", false, 55, 60, 2974 },
+		{ 0, "Shaper's Terrace", false, 58, 60, 3001 },
 	},
 	bosses = {
 		[33] = { "Rethilgore", "Razorclaw the Butcher", "Baron Silverlaine", "Commander Springvale", "Odo the Blindwatcher", "Fenrus the Devourer", "Wolf Master Nandos", "Archmage Arugal" },
