@@ -6,6 +6,10 @@
 
 - **Entrance pins for Krol'dok Stronghold, Alcaz Prison, Blackmaw Hold, and Shaper's Terrace** now show on the world map (#142).
 
+- **Five Forever dungeon pins show boss counts** for Krol'dok Stronghold, Alcaz Prison,
+  Blackmaw Hold, Shaper's Terrace, and The Drowned City. OpenMap also recognizes these
+  instances when you open the map from inside.
+
 ## v0.8.4 (2026-11-11)
 
 ### New

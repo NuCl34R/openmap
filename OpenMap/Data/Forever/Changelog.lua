@@ -6,6 +6,7 @@ local _, ns = ...
 ns.MapChangelog = {
 	{ version = "Unreleased", date = "", heads = { [1] = "Fixed", }, items = {
 		"|cff6e2c0aEntrance pins for Krol'dok Stronghold, Alcaz Prison, Blackmaw Hold, and Shaper's Terrace|r now show on the world map (#142).",
+		"|cff6e2c0aFive Forever dungeon pins show boss counts|r for Krol'dok Stronghold, Alcaz Prison, Blackmaw Hold, Shaper's Terrace, and The Drowned City. OpenMap also recognizes these instances when you open the map from inside.",
 	} },
 	{ version = "v0.8.4", date = "2026-11-11", heads = { [1] = "New", [4] = "Improved", [5] = "Fixed", }, items = {
 		"|cff6e2c0aBosses pinned on dungeon maps|r: a numbered pin where each boss is, on its floor, numbered as the Bosses tab lists them, with its name on the tooltip (click: its loot in NeedRoll). Placed from Blizzard's own dungeon journal for 153 bosses so far; \"Dungeon maps: bosses\" turns them off with the list (#90, #93).",
