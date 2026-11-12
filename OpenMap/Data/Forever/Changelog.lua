@@ -4,7 +4,7 @@
 local _, ns = ...
 
 ns.MapChangelog = {
-	{ version = "Unreleased", date = "", heads = { [1] = "Fixed", }, items = {
+	{ version = "v0.8.6", date = "2026-11-12", heads = { [1] = "Fixed", }, items = {
 		"|cff6e2c0aQuestie's icons show again with Questie 12.8|r: Questie 12.8 brings its map icons a new way (its own module, with a new name), which OpenMap didn't know, so they didn't show on the map at all. Older Questie versions work as before (#18).",
 	} },
 	{ version = "v0.8.5", date = "2026-11-12", heads = { [1] = "New", [4] = "Fixed", }, items = {
