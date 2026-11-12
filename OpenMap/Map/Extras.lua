@@ -675,6 +675,26 @@ function mod.QuestieStatus()
 	return registered, shown, questie.placed, questie.ours, questie.moved
 end
 
+-- for /openmap status: Questie's icons by kind (its data's Type: available, complete, monster, item,
+-- object ...), all it has and those on the map now, as "kind all/on map"
+function mod.QuestieKinds()
+	if not questie.pins then return nil end
+	local all, on = {}, {}
+	for icon in pairs(questie.pins.worldmapPins or {}) do
+		local t = type(icon) == "table" and type(icon.data) == "table" and tostring(icon.data.Type or "?") or "?"
+		all[t] = (all[t] or 0) + 1
+	end
+	for pin in map:EnumeratePinsByTemplate(questie.template or "HereBeDragonsPinsTemplateQuestie") do
+		local icon = pin.icon
+		local t = type(icon) == "table" and type(icon.data) == "table" and tostring(icon.data.Type or "?") or "?"
+		on[t] = (on[t] or 0) + 1
+	end
+	local out = {}
+	for t, n in pairs(all) do out[#out + 1] = ("%s %d/%d"):format(t, n, on[t] or 0) end
+	table.sort(out)
+	return table.concat(out, ", ")
+end
+
 -- for /openmap status: what became of Questie's icons on the map's pins (an icon placed, then gone):
 -- pins with no icon, an icon taken off its pin (parented elsewhere), hidden, see-through, or under the art
 function mod.QuestieLost()

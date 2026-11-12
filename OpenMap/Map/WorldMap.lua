@@ -1537,6 +1537,8 @@ function mod:Diag()
 		ns:Print("Questie: %d map icons, %d on this map (%d placed by Questie, %d of those moved to Forever's positions, %d placed by OpenMap), map %d.",
 			registered, shown, placed, moved, ours, map:GetMapID() or 0)
 	end
+	local kinds = mod.QuestieKinds and mod.QuestieKinds()
+	if kinds then ns:Print("Questie's icons by kind (all / on this map): %s.", kinds) end
 	local lost = mod.QuestieLost and mod.QuestieLost()
 	if lost then
 		ns:Print("Questie's pins: %d; pin hidden %d, no icon %d, icon off its pin %d, icon hidden %d, see-through %d, under the art %d.",
