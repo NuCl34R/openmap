@@ -19,7 +19,7 @@ d.coords = true
 d.zoneLevels = true
 d.moveFade = 0                  -- how much the map fades while you move (0 to 0.9)
 d.mapFpsCap = 0                 -- the frame rate at most while the map shows (the game's maxFPS, held then; 0: off)
-d.zoomHidePins = true           -- other addons' icons (Questie's ...) hidden while the map zooms
+d.zoomHidePins = false          -- other addons' icons (Questie's ...) hidden while the map zooms (off from v0.8.6)
 
 local map, sc, bar
 local labelProvider                     -- Blizzard's area label
@@ -463,6 +463,28 @@ local PIN_LIBS = {
 }
 local DEFAULT_TEMPLATE = "HereBeDragonsPinsTemplate"
 
+-- Questie 12.8 and later: its copy is one of its own modules (QuestieLoader's HBDPins), not in LibStub,
+-- with a template of its own (pins.worldmapPinTemplate); read from Questie's module list, so an older
+-- Questie isn't given an empty one (ImportModule makes what it doesn't find)
+local QUESTIE_MODULE = "Questie's HBDPins"
+local function QuestieModule()
+	local loader = _G.QuestieLoader
+	local modules = type(loader) == "table" and rawget(loader, "_modules")
+	local pins = type(modules) == "table" and rawget(modules, "HBDPins")
+	if type(pins) == "table" and type(pins.worldmapProvider) == "table" then return pins end
+end
+mod.QuestieModule = QuestieModule   -- (PadView.lua's too)
+mod.QUESTIE_MODULE = QUESTIE_MODULE
+
+-- what a copy is: PIN_LIBS' entry, Questie's module's (its template its own), else HereBeDragons' own
+local function PinSpec(name, pins)
+	if name == QUESTIE_MODULE then
+		local t = pins and pins.worldmapPinTemplate
+		return { template = type(t) == "string" and t or "HereBeDragonsPins-Questie-WorldMapPin", questie = true }
+	end
+	return PIN_LIBS[name] or { template = DEFAULT_TEMPLATE }
+end
+
 -- the pin template a copy registered: its own, or (a copy whose template's name this doesn't know) the
 -- one pool here that looks like HereBeDragons', Questie's or not as the copy is (PR #22, Ironship's)
 local function PoolTemplate(spec)
@@ -498,10 +520,27 @@ local function NoteAdds(pins)
 	return at
 end
 
+-- Questie sets an icon's frame level again (QuestieMap.utils.SetDrawOrder: from QUESTIE_BASE) right after
+-- handing it to the library, so after OpenMap lifted it: the icons placed sank under the art one by one as
+-- Questie redrew them (Questie 12.8, #18). Lifted again each time, while on the map's pin
+local function HookQuestieOrder()
+	if questie.orderHooked then return end
+	local loader = _G.QuestieLoader
+	local modules = type(loader) == "table" and rawget(loader, "_modules")
+	local qmap = type(modules) == "table" and rawget(modules, "QuestieMap")
+	local utils = type(qmap) == "table" and qmap.utils
+	if type(utils) ~= "table" or type(utils.SetDrawOrder) ~= "function" then return end
+	questie.orderHooked = true
+	hooksecurefunc(utils, "SetDrawOrder", function(frame)
+		local pin = type(frame) == "table" and frame.GetParent and frame:GetParent()
+		if pin and pin.icon == frame and pin.owningMap == map and mod.IsStitched() then Lift(frame, true) end
+	end)
+end
+
 -- a copy taken over: "done"; its pool not there yet: "waiting" (tried again, PinRetry); a copy of a
 -- shape this can't take over: "unknown"
 local function SetUpPins(name, pins)
-	local spec = PIN_LIBS[name] or { template = DEFAULT_TEMPLATE }
+	local spec = PinSpec(name, pins)
 	local provider = pins and pins.worldmapProvider
 	if type(provider) ~= "table" or type(provider.HandlePin) ~= "function" then return "unknown" end
 	if provider.openmapPins then return "done" end
@@ -511,7 +550,7 @@ local function SetUpPins(name, pins)
 	provider.openmapPins = true
 	pinTemplates[template] = true
 	local count = spec.questie and questie or { placed = 0, ours = 0, moved = 0 }
-	if spec.questie then questie.pins = pins end
+	if spec.questie then questie.pins, questie.template = pins, template HookQuestieOrder() end
 	local HandlePin = provider.HandlePin
 	provider.HandlePin = function(self, icon, data, ...)
 		-- (an older Questie's path stretch: not put on the stitched map at all, OpenMap draws the paths
@@ -590,20 +629,24 @@ end
 -- every copy of the pins library loaded so far (an addon loaded later: as it loads, or as the map opens).
 -- opening: a map opening, counted for one whose pool never comes (OPEN_TRIES)
 local function SetUpAllPins(opening)
-	if not LibStub or not LibStub.IterateLibraries then return end
-	for name, lib in LibStub:IterateLibraries() do
-		if type(name) == "string" and (name:match("^HereBeDragons.*%-Pins%-2%.0$") or PIN_LIBS[name]) then
-			local state = SetUpPins(name, lib)
-			if state == "unknown" then
-				Tell(name)
-			elseif state == "waiting" then
-				pending[name] = (pending[name] or 0) + (opening == true and 1 or 0)
-				if pending[name] > OPEN_TRIES then Tell(name) end
-			else
-				pending[name] = nil
-			end
+	local function One(name, lib)
+		local state = SetUpPins(name, lib)
+		if state == "unknown" then
+			Tell(name)
+		elseif state == "waiting" then
+			pending[name] = (pending[name] or 0) + (opening == true and 1 or 0)
+			if pending[name] > OPEN_TRIES then Tell(name) end
+		else
+			pending[name] = nil
 		end
 	end
+	if LibStub and LibStub.IterateLibraries then
+		for name, lib in LibStub:IterateLibraries() do
+			if type(name) == "string" and (name:match("^HereBeDragons.*%-Pins%-2%.0$") or PIN_LIBS[name]) then One(name, lib) end
+		end
+	end
+	local q = QuestieModule()
+	if q then One(QUESTIE_MODULE, q) end
 end
 
 -- a copy still waiting for its pool (Questie still setting up as the map first opened after a login,
@@ -628,8 +671,57 @@ function mod.QuestieStatus()
 	if not questie.pins then return nil end
 	local registered, shown = 0, 0
 	for _ in pairs(questie.pins.worldmapPins or {}) do registered = registered + 1 end
-	for _ in map:EnumeratePinsByTemplate("HereBeDragonsPinsTemplateQuestie") do shown = shown + 1 end
+	for _ in map:EnumeratePinsByTemplate(questie.template or "HereBeDragonsPinsTemplateQuestie") do shown = shown + 1 end
 	return registered, shown, questie.placed, questie.ours, questie.moved
+end
+
+-- for /openmap status: Questie's icons by kind (its data's Type: available, complete, monster, item,
+-- object ...), all it has and those on the map now, as "kind all/on map"
+function mod.QuestieKinds()
+	if not questie.pins then return nil end
+	local all, on = {}, {}
+	for icon in pairs(questie.pins.worldmapPins or {}) do
+		local t = type(icon) == "table" and type(icon.data) == "table" and tostring(icon.data.Type or "?") or "?"
+		all[t] = (all[t] or 0) + 1
+	end
+	for pin in map:EnumeratePinsByTemplate(questie.template or "HereBeDragonsPinsTemplateQuestie") do
+		local icon = pin.icon
+		local t = type(icon) == "table" and type(icon.data) == "table" and tostring(icon.data.Type or "?") or "?"
+		on[t] = (on[t] or 0) + 1
+	end
+	local out = {}
+	for t, n in pairs(all) do out[#out + 1] = ("%s %d/%d"):format(t, n, on[t] or 0) end
+	table.sort(out)
+	return table.concat(out, ", ")
+end
+
+-- for /openmap status: what became of Questie's icons on the map's pins (an icon placed, then gone):
+-- pins with no icon, an icon taken off its pin (parented elsewhere), hidden, see-through, or under the art
+function mod.QuestieLost()
+	if not questie.pins then return nil end
+	local n = { pins = 0, pinHidden = 0, noIcon = 0, offPin = 0, hidden = 0, faint = 0, under = 0, visible = 0,
+		size = 0, scale = 0, pinScale = 0, level = 0 }
+	local top = S.artTop or 0
+	for pin in map:EnumeratePinsByTemplate(questie.template or "HereBeDragonsPinsTemplateQuestie") do
+		n.pins = n.pins + 1
+		local icon = pin.icon
+		if not pin:IsShown() then n.pinHidden = n.pinHidden + 1 end
+		if not icon then
+			n.noIcon = n.noIcon + 1
+		else
+			if icon:GetParent() ~= pin then n.offPin = n.offPin + 1 end
+			if not icon:IsShown() then n.hidden = n.hidden + 1 end
+			if (icon:GetEffectiveAlpha() or 1) < 0.1 then n.faint = n.faint + 1 end
+			if icon.GetFrameLevel and icon:GetFrameLevel() <= top then n.under = n.under + 1 end
+			if icon:IsVisible() then n.visible = n.visible + 1 end
+			-- (sizes on screen: the icon's width times its effective scale over UIParent's)
+			n.size = n.size + (icon:GetWidth() or 0) * (icon:GetEffectiveScale() or 1) / (UIParent:GetEffectiveScale() or 1)
+			n.scale = n.scale + (icon:GetEffectiveScale() or 1) / (UIParent:GetEffectiveScale() or 1)
+			n.pinScale = n.pinScale + (pin:GetScale() or 1)
+			n.level = math.max(n.level, icon:GetFrameLevel() or 0)
+		end
+	end
+	return n
 end
 
 --------------------------------------------------------------------------------

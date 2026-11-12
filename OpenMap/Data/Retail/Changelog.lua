@@ -4,6 +4,9 @@
 local _, ns = ...
 
 ns.MapChangelog = {
+	{ version = "v0.8.6", date = "2026-11-12", heads = { [1] = "Improved", }, items = {
+		"|cff6e2c0aIcons stay shown while zooming|r: \"Fade icons while zooming\" is now off for everyone, as zooming is smooth enough with them shown; turn it on again in the menu's On the map tab if you prefer it.",
+	} },
 	{ version = "v0.8.5", date = "2026-11-12", heads = { [1] = "New", [3] = "Fixed", }, items = {
 		"|cff6e2c0aOpenMap's map with a controller|r (the game's Gamepad UI; a test, off until you turn it on in Options: \"OpenMap's map with the Gamepad UI (test)\"): the seamless map with the Gamepad UI on, where OpenMap leaves the world map to Blizzard. OpenMap draws its map over Blizzard's, so the controller's buttons keep working and B closes the map. The left stick moves the cursor (at the edge it pans), the right stick zooms about it, A zooms in or presses what's under the cursor, X zooms out or closes what's open, and pressing the left stick puts the waypoint there. Off (the default): Blizzard's map with the Gamepad UI, as before. If you play with a controller, try it and tell us how it goes (#57). By FlyingPenguin98.",
 		"|cff6e2c0aReopen the map on your zone|r (the menu's More tab, Reopen map: \"Center on your zone\"): the map opens on the whole zone you're in, in the middle, wherever you stand in it (#143).",
@@ -44,17 +47,5 @@ ns.MapChangelog = {
 		"|cff6e2c0aAn NPC who walks about shows once on the map|r: Girl with Puppies in Orgrimmar had a vendor icon at every point of her walk, dozens over the city. An NPC with many spawns in one zone (with Vendors and the other townsfolk on) now has one icon, in the middle of where it walks. Fixed by diegodiaz1256.",
 		"|cff6e2c0aNo friends dot or badge for yourself|r: with Share where you are on, you could show on your own map as a guild member (the guild's roster can spell your realm differently).",
 		"|cff6e2c0aThe map opens at once inside a dungeon|r: each opening loaded the dungeon's map art again, a second or two (longer in dungeons with many floors, whose Floors tab shows every floor). OpenMap now keeps the art of the dungeon you're in loaded, as it does the world map's.",
-	} },
-	{ version = "v0.8.0-beta", date = "2026-11-07", heads = { [1] = "New", [2] = "Improved", [4] = "Fixed", }, items = {
-		"|cff6e2c0aFriends and guild on the map|r (Options: Friends and guild): your guild members and friends on your realm who are online show on the stitched map, a badge on the zone each is in with who's there. Those who use OpenMap and turn on |cff6e2c0aShare where you are|r show as a class-coloured dot where they stand, updated every few seconds while they move. The map asks once whether to share; it's off unless you say yes, goes only to your guild and your friends, and never from inside a dungeon, raid or battleground.",
-		"|cff6e2c0aA new OpenMap icon, drawn by zloyeb|r: a map scroll in a gold ring, in the AddOns list, on the minimap button, in the map's menu and its portrait (it borrowed the game's Eastern Kingdoms icon).",
-		"|cff6e2c0aOpenMap is back on GitHub|r, at github.com/openmap-world/openmap: Report a problem opens a report there again, and What's new and the AddOns list link to it.",
-		"|cff6e2c0a\"Center on player, keep zoom\" opens at your zoom straight away|r: having moved since the map closed, it opened on the zone's whole map for a moment and then jumped to the zoom kept.",
-		"|cff6e2c0aThe map opens with its art already there|r: the game let go of the map's art while it was closed, and each opening loaded it again (blank parchment for a moment). OpenMap now keeps it loaded while the map is closed; /openmap warm turns that off.",
-		"|cff6e2c0aThe map closes in combat again|r: with the map open as a fight started, neither Escape nor M closed it (since 0.7.0). The windowed map no longer stays open beside an NPC's window, which is what blocked it.",
-		"|cff6e2c0aFlight masters you haven't learned show as not learned|r: some showed as learned, as OpenMap counted the stops a flight passes through. What it remembered is forgotten once and counted again at the next flight master you talk to.",
-		"|cff6e2c0aFlight masters are named in your own language|r: on a client that isn't English, the map's flight masters kept the game's tables' English names. They're now named as the game names them, and a flight's measured time is found again on a route.",
-		"|cff6e2c0aThe map window can't go above the top of the screen|r, where its title bar couldn't be grabbed to bring it back. /openmap reset puts the window back to its size and place.",
-		"|cff6e2c0aThe OpenMap menu fits a short screen|r: on a TV at a big UI scale the Look tab ran off the bottom.",
 	} },
 }

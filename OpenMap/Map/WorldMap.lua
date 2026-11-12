@@ -53,6 +53,9 @@ function mod.Migrate(db)
 	-- (friends and guild were one switch too, `friends`, and its menu row's id: the friends row keeps
 	-- that id, and a save's single choice carries to the guild's switch too)
 	if db.guild == nil then db.guild = db.friends end
+	-- ("Fade icons while zooming" off from v0.8.6, once for every save: the defaults were written into each
+	-- save, so one never touched has it on all the same; turned on again after this, it stays on)
+	if not db.zoomHidePinsOff then db.zoomHidePins, db.zoomHidePinsOff = false, true end
 end
 
 local ICONS_FROM = { 0, 20, 0.5 }   -- iconsFrom's least (0: Auto), most, step (zoom: times the whole-world view)
@@ -1536,6 +1539,16 @@ function mod:Diag()
 	if registered then
 		ns:Print("Questie: %d map icons, %d on this map (%d placed by Questie, %d of those moved to Forever's positions, %d placed by OpenMap), map %d.",
 			registered, shown, placed, moved, ours, map:GetMapID() or 0)
+	end
+	local kinds = mod.QuestieKinds and mod.QuestieKinds()
+	if kinds then ns:Print("Questie's icons by kind (all / on this map): %s.", kinds) end
+	local lost = mod.QuestieLost and mod.QuestieLost()
+	if lost then
+		ns:Print("Questie's pins: %d; pin hidden %d, no icon %d, icon off its pin %d, icon hidden %d, see-through %d, under the art %d.",
+			lost.pins, lost.pinHidden, lost.noIcon, lost.offPin, lost.hidden, lost.faint, lost.under)
+		local k = math.max(lost.pins - lost.noIcon, 1)
+		ns:Print("Questie's icons: %d visible; on screen %.1f px across on average (scale %.2f, pins' own %.2f); top level %d, art's top %d.",
+			lost.visible, lost.size / k, lost.scale / k, lost.pinScale / k, lost.level, S.artTop or 0)
 	end
 	local cv = S.closeView or {}
 	ns:Print("Up close: zoom %.1f, softening %.0f%%, minimap %.0f%% (%d tiles, %d in the gaps); %d view updates, the last %.1fs ago; %.2f ms each (worst %.1f).",

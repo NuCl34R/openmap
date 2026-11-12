@@ -1,5 +1,12 @@
 # OpenMap changelog
 
+## v0.8.6 (2026-11-12)
+
+### Improved
+
+- **Icons stay shown while zooming**: "Fade icons while zooming" is now off for everyone, as zooming is
+  smooth enough with them shown; turn it on again in the menu's On the map tab if you prefer it.
+
 ## v0.8.5 (2026-11-12)
 
 ### New
