@@ -657,12 +657,22 @@ local MARK_STEP = 3             -- px the cursor moves before the pen adds a poi
 local MARK_MAX = 300            -- points in one line
 local MARK_INK = { 0.92, 0.18, 0.14 }
 
+-- what's kept per dungeon was by name for WoW Forever's own that the game's tables had no mapID for (0):
+-- they have their instance's now (#149), so a name's entry goes to its mapID, once (`all`: the sketch's
+-- dungeons, or the bosses placed)
+local function ByMapID(all, inst)
+	if all and inst and inst[1] ~= 0 and all[inst[2]] ~= nil and all[inst[1]] == nil then
+		all[inst[1]], all[inst[2]] = all[inst[2]], nil
+	end
+end
+
 -- the quill's drawings on this dungeon's map (the sketch's dungeons, by the instance's map ID)
 local function Kept(make)
 	local sk = mod.db.sketch
 	local inst = view.inst
 	local key = inst and (inst[1] ~= 0 and inst[1] or inst[2])   -- (0: WoW Forever's own, by name)
 	if not (sk and key) then return end
+	ByMapID(sk.dungeons, inst)
 	if make then sk.dungeons = sk.dungeons or {} end
 	local all = sk.dungeons
 	if make and not all[key] then all[key] = {} end
@@ -1975,6 +1985,7 @@ end
 
 -- a boss's place: { floor, x, y }, the placer's over the shipped one; nil where it has none
 local function BossAt(inst, name)
+	ByMapID(mod.db.bossPlaced, inst)
 	local key = InstKey(inst)
 	local mine = mod.db.bossPlaced and mod.db.bossPlaced[key]
 	if mine and mine[name] then return mine[name], true end
@@ -2238,9 +2249,9 @@ function mod:DungeonOptions(opts, get, set, off)
 		desc = L["With Dungeon Journal installed, an entrance can open that dungeon's page in it instead of its map (its map still opens where Dungeon Journal has no page for it)."] }
 end
 
--- the dungeon you're in, as Places.lua has it (nil: not in one, or one it doesn't list). WoW Forever's own
--- that its tables have no mapID for yet (0) by their live one (Places.lua's sixth field): The Drowned City's
--- map didn't open inside it; one with no entrance yet (unplaced) too
+-- the dungeon you're in, as Places.lua has it (nil: not in one, or one it doesn't list); one with no
+-- entrance yet (unplaced) too. (WoW Forever's own the tables had no mapID for were never found: The
+-- Drowned City's map didn't open inside it; they have their instance's mapID now, #149)
 local function InstanceHere()
 	if not IsInInstance or not IsInInstance() then return end
 	local instID = select(8, GetInstanceInfo())
@@ -2248,11 +2259,11 @@ local function InstanceHere()
 	local places = Places()
 	for _, g in ipairs(places.instances or {}) do
 		for _, inst in ipairs(g[4]) do
-			if inst[1] == instID or (inst[1] == 0 and inst[6] == instID) then return inst end
+			if inst[1] == instID then return inst end
 		end
 	end
 	for _, inst in ipairs(places.unplaced or {}) do
-		if inst[1] == instID or (inst[1] == 0 and inst[6] == instID) then return inst end
+		if inst[1] == instID then return inst end
 	end
 end
 

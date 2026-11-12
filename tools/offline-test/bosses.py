@@ -47,9 +47,9 @@ class Bosses(unittest.TestCase):
 
 
 class InstanceHereTests(unittest.TestCase):
-    """the map opened inside a dungeon finds it (Dungeons.lua's InstanceHere, against Places.lua): by its
-    mapID, and WoW Forever's own the tables have no mapID for yet by their live one (Places.lua's sixth
-    field), with an entrance or not: The Drowned City's drawn map didn't open inside it"""
+    """the map opened inside a dungeon finds it (Dungeons.lua's InstanceHere, against Places.lua), by its
+    mapID: WoW Forever's own too, which the tables of Places.lua's build had none for (The Drowned City's
+    drawn map didn't open inside it; #149 takes theirs from the live build's)"""
 
     def setUp(self):
         import re
@@ -73,28 +73,53 @@ class InstanceHereTests(unittest.TestCase):
     def test_by_map_id(self):
         self.assertEqual(self.lua.eval("Find(36)"), "Deadmines")
 
-    def test_forevers_own_by_their_live_id(self):
+    def test_forevers_own(self):
         self.assertEqual(self.lua.eval("Find(2970)"), "The Drowned City")
-        self.assertEqual(self.lua.eval("Find(3039)"), "Krol'dok Stronghold")    # (no entrance yet: unplaced)
+        self.assertEqual(self.lua.eval("Find(3039)"), "Krol'dok Stronghold")
         self.assertEqual(self.lua.eval("Find(3001)"), "Shaper's Terrace")
 
     def test_not_in_one(self):
         self.assertIsNone(self.lua.eval("Find(nil)"))
-        self.assertIsNone(self.lua.eval("Find(0)"))                              # (0 never matches the name-keyed)
+        self.assertIsNone(self.lua.eval("Find(0)"))                              # (0: never one, not even a 0 left in the data)
 
-    def test_every_drawn_map_by_name_has_a_live_id(self):
+    def test_every_drawn_map_is_found_inside_its_dungeon(self):
         ns = load()
-        places = ns.MapPlaces
-        live = {}
-        for g in places.instances.values():
-            for inst in g[4].values():
-                live[inst[2]] = inst[6]
-        for inst in places.unplaced.values():
-            live[inst[2]] = inst[6]
         for key in ns.MapDungeonDrawn.keys():
-            if isinstance(key, str):
-                self.assertTrue(live.get(key), "%s: a drawn map by name, but no live instance ID to find it inside" % key)
+            self.assertIsInstance(key, int, "%s: a drawn map by name: the map opened inside it can't find it" % key)
+            self.assertIsNotNone(self.lua.eval("Find(%d)" % key), "%s: a drawn map no dungeon in Places.lua has" % key)
 
+
+class ByMapIDTests(unittest.TestCase):
+    """what was kept per dungeon by name (the quill's drawings, the bosses placed) for WoW Forever's own
+    goes to its mapID once they have one (Dungeons.lua's ByMapID, #149), never over what's there already"""
+
+    def setUp(self):
+        import re
+        self.lua = LuaRuntime(unpack_returned_tuples=True)
+        src = (ROOT / "OpenMap" / "Map" / "Dungeons.lua").read_text(encoding="utf-8")
+        m = re.search(r"\nlocal function ByMapID\(all, inst\).*?\nend\n", src, re.S)
+        self.assertIsNotNone(m, "ByMapID in Dungeons.lua")
+        self.lua.execute(m.group(0) + "\n Move = ByMapID")
+
+    def test_moved_once(self):
+        self.lua.execute("""
+            all = { ["The Drowned City"] = { "lines" } }
+            Move(all, { 2970, "The Drowned City" })
+            assert(all[2970][1] == "lines" and all["The Drowned City"] == nil)
+            Move(all, { 2970, "The Drowned City" })
+            assert(all[2970][1] == "lines")
+        """)
+
+    def test_never_over_whats_there(self):
+        self.lua.execute("""
+            all = { ["The Drowned City"] = { "old" }, [2970] = { "new" } }
+            Move(all, { 2970, "The Drowned City" })
+            assert(all[2970][1] == "new" and all["The Drowned City"][1] == "old")
+            Move(nil, { 2970, "x" })                    -- (nothing kept yet)
+            local none = {}
+            Move(none, { 0, "Somewhere" })              -- (no mapID: stays by name)
+            assert(next(none) == nil)
+        """)
 
 if __name__ == "__main__":
     unittest.main()

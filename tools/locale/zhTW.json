@@ -523,7 +523,6 @@
  "Dungeon maps from the minimap": "由小地圖生成的地城地圖",
  "Where OpenMap has one, a dungeon's map built from the game's own minimap pictures (what the minimap draws inside) instead of its drawn map. Dungeons with no other map use it anyway.": "若 OpenMap 有，則使用由遊戲本身小地圖圖片（小地圖在室內顯示的內容）生成的地城地圖，而不是手繪地圖。沒有其他地圖的地城總會使用它。",
  "the yellow ping hidden with your arrow": "黃色提示隨你的箭頭一起隱藏",
- "one marker per friend or guildmate, and none left over when they join your group": "每位好友或公會成員只有一個標記，加入你的隊伍後不再殘留",
  "the controller map option turned on in combat, and B by a quest's details": "戰鬥中開啟手把地圖選項，以及任務詳情中的 B 鍵",
  "With the controller, the D-pad's right opens the quest log.": "使用控制器時，按方向鍵右以開啟任務日誌。",
  "That isn't available with the Gamepad UI yet.": "遊戲控制器使用者介面目前還不支援此功能。",
@@ -531,5 +530,6 @@
  "OpenMap's map with the Gamepad UI (test)": "在手把介面中使用 OpenMap 地圖（測試）",
  "With the game's Gamepad UI on, OpenMap draws its map over Blizzard's and leaves Blizzard's map as it is, so the controller's buttons keep working. Off: Blizzard's map while the Gamepad UI is on. Still being tried out: if something doesn't work, turn this off and /reload.": "開啟遊戲的手把介面時，OpenMap 會在暴雪地圖上繪製自己的地圖，並保持暴雪地圖不變，因此手把按鍵可以繼續使用。關閉：手把介面開啟時使用暴雪地圖。仍在測試中：如果有功能不正常，請關閉此項並輸入 /reload。",
  "Center on your zone": "以你所在區域為中心",
- "Choose one behavior. Center on player: always open on you. Center on player, keep zoom: open on you, at the zoom you closed the map at. Center on your zone: open on the whole zone you're in, wherever you are in it. Always remember: restore your previous position and zoom, even after changing zones. Remember while visible: restore only if your current location is inside the previous view, even across zone boundaries. Otherwise, open on you. Maps opened for a quest still show the quest's area.": "選擇一種方式。以玩家為中心：總是在你的位置開啟。以玩家為中心並保留縮放：在你的位置開啟，並使用你關閉地圖時的縮放。以你所在區域為中心：顯示你所在的整個區域，無論你在區域中的哪裡。總是記住：恢復上次的位置與縮放，即使換了區域也一樣。在畫面內時記住：只有當你目前的位置在上次的畫面內時才恢復，跨越區域邊界也算；否則在你的位置開啟。為任務開啟的地圖仍會顯示任務區域。"
+ "Choose one behavior. Center on player: always open on you. Center on player, keep zoom: open on you, at the zoom you closed the map at. Center on your zone: open on the whole zone you're in, wherever you are in it. Always remember: restore your previous position and zoom, even after changing zones. Remember while visible: restore only if your current location is inside the previous view, even across zone boundaries. Otherwise, open on you. Maps opened for a quest still show the quest's area.": "選擇一種方式。以玩家為中心：總是在你的位置開啟。以玩家為中心並保留縮放：在你的位置開啟，並使用你關閉地圖時的縮放。以你所在區域為中心：顯示你所在的整個區域，無論你在區域中的哪裡。總是記住：恢復上次的位置與縮放，即使換了區域也一樣。在畫面內時記住：只有當你目前的位置在上次的畫面內時才恢復，跨越區域邊界也算；否則在你的位置開啟。為任務開啟的地圖仍會顯示任務區域。",
+ "one marker per friend or guildmate, none left over when they join your group, and the newest dungeons' entrances": "每位好友或公會成員只有一個標記，加入你的隊伍後不再殘留，以及最新地城的入口"
 }

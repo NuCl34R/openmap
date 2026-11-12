@@ -19,6 +19,10 @@
   Blizzard's map with the Gamepad UI, as before. If you play with a controller, try it and tell us
   how it goes (#57). By FlyingPenguin98.
 
+- **WoW Forever's newest dungeons on the map**: Krol'dok Stronghold, Alcaz Prison, Blackmaw Hold and
+  Shaper's Terrace have their entrance pins (#142), and they and The Drowned City list their bosses.
+  By puschie286.
+
 - **Reopen the map on your zone** (the menu's More tab, Reopen map: "Center on your zone"): the map
   opens on the whole zone you're in, in the middle, wherever you stand in it (#143).
 
@@ -35,7 +39,7 @@
 
 - **The Drowned City's map opens inside it**: opening the map in one of WoW Forever's own dungeons
   that the game's tables didn't list yet (The Drowned City, Krol'dok Stronghold, Shaper's Terrace) showed
-  the world map instead of its drawn map.
+  the world map instead of its drawn map. With puschie286.
 
 - **"Darken unexplored areas" keeps its soft edges up close**: once the minimap's detail shows, the
   shade was hard-edged rectangles, and it changed as the minimap came in; it now has each unexplored
