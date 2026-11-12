@@ -245,6 +245,7 @@ L["Keeps the chat windows on show over the map while it's full screen, to keep t
 L["Land no zone map covers (west of Searing Gorge, Mount Hyjal ...) shows the game's minimap of it, tinted like the zones around it, instead of blank paper."] = "Les terres qu'aucune carte de zone ne couvre (à l'ouest de la Gorge des Vents brûlants, le mont Hyjal...) affichent la minicarte du jeu, teintée comme les zones voisines, au lieu de papier vierge."
 L["Land no zone map covers, painted by hand in the zone maps' style from Blizzard's own art (by Santiago Reyes, used with his permission). Off: blank map paper there."] = "Les terres qu'aucune carte de zone ne couvre, peintes à la main dans le style des cartes de zone à partir des illustrations de Blizzard (par Santiago Reyes, utilisées avec sa permission). Désactivé : papier de carte vierge à cet endroit."
 L["Learned"] = "Découvert"
+L["Learned flight paths forgotten for this character: talk to a flight master to learn the ones you have again."] = "Trajets aériens appris oubliés pour ce personnage : parlez à un maître de vol pour réapprendre ceux que vous connaissez."
 L["Leatrix Maps: turn off %s there; OpenMap does the same for its map."] = "Leatrix Maps : désactivez-y %s ; OpenMap fait de même pour sa carte."
 L["Level ranges"] = "Tranches de niveaux"
 L["Libraries"] = "Bibliothèques"

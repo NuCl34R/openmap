@@ -1521,6 +1521,12 @@
   ]
  },
  {
+  "en": "Learned flight paths forgotten for this character: talk to a flight master to learn the ones you have again.",
+  "where": [
+   "Map/Flights.lua:339"
+  ]
+ },
+ {
   "en": "Leatrix Maps: turn off %s there; OpenMap does the same for its map.",
   "where": [
    "Map/Compat.lua:187"

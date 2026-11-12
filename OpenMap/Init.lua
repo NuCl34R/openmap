@@ -50,7 +50,7 @@ local function Slash(msg)
 	if takes[word] then msg, rest = word, raw:match("^%S+%s+(.+)$") end
 	local run = {
 		status = "Diag", paint = "TogglePaint", notes = "TogglePaint", debug = "ToggleDebugOverlay",
-		bench = "Bench", pins = "TogglePins", news = "ToggleNews", entrance = "Entrance", draw = "ToggleSketch", dungeons = "DungeonDiag", bosses = "ToggleBossPlacer",
+		bench = "Bench", pins = "TogglePins", news = "ToggleNews", entrance = "Entrance", draw = "ToggleSketch", dungeons = "DungeonDiag", bosses = "ToggleBossPlacer", forgetflights = "ForgetFlights",
 		welcome = "ShowWelcome", highlights = "Highlights", warm = "ToggleWarm",
 		reset = "ResetWindow",   -- (reset: the windowed map's size and place, for one off the screen)
 	}

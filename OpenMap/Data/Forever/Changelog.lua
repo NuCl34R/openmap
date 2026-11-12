@@ -14,6 +14,7 @@ ns.MapChangelog = {
 		"|cff6e2c0a\"Darken unexplored areas\" keeps its soft edges up close|r: once the minimap's detail shows, the shade was hard-edged rectangles, and it changed as the minimap came in; it now has each unexplored area's own shape, as further out (#101, #129).",
 		"|cff6e2c0aCave maps whole|r: Blizzard's cave maps showed only the parts their pale floors give away, cut off along a straight line near the page's foot (Maraudon's entrance, Wailing Caverns', Night Web's Hollow ...); the caves' own rooms now say where they are, as was meant (#141).",
 		"|cff6e2c0aNo white diamonds at cave mouths|r: one of the game's own cave minimap pictures has a white block baked in over its tunnel's mouth, which showed up close at two caves in the Hinterlands (and one in Kalimdor); OpenMap now draws a mended copy (#114).",
+		"|cff6e2c0a/openmap forgetflights|r forgets the flight paths OpenMap remembers as learned for the character, for one counted wrongly (route planners read the list); the next flight master's map learns the real ones again (#153).",
 	} },
 	{ version = "v0.8.4", date = "2026-11-11", heads = { [1] = "New", [4] = "Improved", [5] = "Fixed", }, items = {
 		"|cff6e2c0aBosses pinned on dungeon maps|r: a numbered pin where each boss is, on its floor, numbered as the Bosses tab lists them, with its name on the tooltip (click: its loot in NeedRoll). Placed from Blizzard's own dungeon journal for 153 bosses so far; \"Dungeon maps: bosses\" turns them off with the list (#90, #93).",

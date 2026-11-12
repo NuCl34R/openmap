@@ -245,6 +245,7 @@ L["Keeps the chat windows on show over the map while it's full screen, to keep t
 L["Land no zone map covers (west of Searing Gorge, Mount Hyjal ...) shows the game's minimap of it, tinted like the zones around it, instead of blank paper."] = "沒有區域地圖覆蓋的土地（灼熱峽谷以西、海加爾山……）改為顯示遊戲的小地圖，並依周圍區域著色，而不是空白紙張。"
 L["Land no zone map covers, painted by hand in the zone maps' style from Blizzard's own art (by Santiago Reyes, used with his permission). Off: blank map paper there."] = "沒有區域地圖覆蓋的土地，以 Blizzard 自己的美術素材依區域地圖的風格手繪而成（由 Santiago Reyes 繪製，經其同意使用）。關閉：該處為空白地圖紙。"
 L["Learned"] = "已發現"
+L["Learned flight paths forgotten for this character: talk to a flight master to learn the ones you have again."] = "已為此角色忘記已學會的飛行路線：與飛行管理員交談即可重新學會你已有的路線。"
 L["Leatrix Maps: turn off %s there; OpenMap does the same for its map."] = "Leatrix Maps：請在其中關閉 %s；OpenMap 已為自己的地圖提供相同功能。"
 L["Level ranges"] = "等級範圍"
 L["Libraries"] = "函式庫"

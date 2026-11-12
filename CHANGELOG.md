@@ -53,6 +53,10 @@
   baked in over its tunnel's mouth, which showed up close at two caves in the Hinterlands (and one in
   Kalimdor); OpenMap now draws a mended copy (#114).
 
+- **/openmap forgetflights** forgets the flight paths OpenMap remembers as learned for the character,
+  for one counted wrongly (route planners read the list); the next flight master's map learns the
+  real ones again (#153).
+
 ## v0.8.4 (2026-11-11)
 
 ### New
