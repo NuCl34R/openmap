@@ -313,6 +313,8 @@ local SHOW_CONTINENT = 2        -- HBD_PINS_WORLDMAP_SHOW_CONTINENT: an icon its
 -- every copy of the pins library loaded: name -> library
 local function PinLibs()
 	local out = {}
+	local q = mod.QuestieModule and mod.QuestieModule()   -- (Questie 12.8 and later: Extras.lua)
+	if q then out[mod.QUESTIE_MODULE] = q end
 	if not LibStub then return out end
 	if LibStub.IterateLibraries then
 		for name, lib in LibStub:IterateLibraries() do
@@ -362,7 +364,7 @@ local function ScanQuestie()
 	wipe(questieAt)
 	for name, lib in pairs(PinLibs()) do
 		local pins = lib.worldmapPins
-		local questie = name == QUESTIE_LIB
+		local questie = name == QUESTIE_LIB or name == mod.QUESTIE_MODULE
 		if type(pins) == "table" then
 			for icon, data in pairs(pins) do
 				if type(icon) == "table" and type(data) == "table" and icon.SetPoint and not (questie and icon.type == "line") then

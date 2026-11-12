@@ -463,6 +463,28 @@ local PIN_LIBS = {
 }
 local DEFAULT_TEMPLATE = "HereBeDragonsPinsTemplate"
 
+-- Questie 12.8 and later: its copy is one of its own modules (QuestieLoader's HBDPins), not in LibStub,
+-- with a template of its own (pins.worldmapPinTemplate); read from Questie's module list, so an older
+-- Questie isn't given an empty one (ImportModule makes what it doesn't find)
+local QUESTIE_MODULE = "Questie's HBDPins"
+local function QuestieModule()
+	local loader = _G.QuestieLoader
+	local modules = type(loader) == "table" and rawget(loader, "_modules")
+	local pins = type(modules) == "table" and rawget(modules, "HBDPins")
+	if type(pins) == "table" and type(pins.worldmapProvider) == "table" then return pins end
+end
+mod.QuestieModule = QuestieModule   -- (PadView.lua's too)
+mod.QUESTIE_MODULE = QUESTIE_MODULE
+
+-- what a copy is: PIN_LIBS' entry, Questie's module's (its template its own), else HereBeDragons' own
+local function PinSpec(name, pins)
+	if name == QUESTIE_MODULE then
+		local t = pins and pins.worldmapPinTemplate
+		return { template = type(t) == "string" and t or "HereBeDragonsPins-Questie-WorldMapPin", questie = true }
+	end
+	return PIN_LIBS[name] or { template = DEFAULT_TEMPLATE }
+end
+
 -- the pin template a copy registered: its own, or (a copy whose template's name this doesn't know) the
 -- one pool here that looks like HereBeDragons', Questie's or not as the copy is (PR #22, Ironship's)
 local function PoolTemplate(spec)
@@ -501,7 +523,7 @@ end
 -- a copy taken over: "done"; its pool not there yet: "waiting" (tried again, PinRetry); a copy of a
 -- shape this can't take over: "unknown"
 local function SetUpPins(name, pins)
-	local spec = PIN_LIBS[name] or { template = DEFAULT_TEMPLATE }
+	local spec = PinSpec(name, pins)
 	local provider = pins and pins.worldmapProvider
 	if type(provider) ~= "table" or type(provider.HandlePin) ~= "function" then return "unknown" end
 	if provider.openmapPins then return "done" end
@@ -511,7 +533,7 @@ local function SetUpPins(name, pins)
 	provider.openmapPins = true
 	pinTemplates[template] = true
 	local count = spec.questie and questie or { placed = 0, ours = 0, moved = 0 }
-	if spec.questie then questie.pins = pins end
+	if spec.questie then questie.pins, questie.template = pins, template end
 	local HandlePin = provider.HandlePin
 	provider.HandlePin = function(self, icon, data, ...)
 		-- (an older Questie's path stretch: not put on the stitched map at all, OpenMap draws the paths
@@ -590,20 +612,24 @@ end
 -- every copy of the pins library loaded so far (an addon loaded later: as it loads, or as the map opens).
 -- opening: a map opening, counted for one whose pool never comes (OPEN_TRIES)
 local function SetUpAllPins(opening)
-	if not LibStub or not LibStub.IterateLibraries then return end
-	for name, lib in LibStub:IterateLibraries() do
-		if type(name) == "string" and (name:match("^HereBeDragons.*%-Pins%-2%.0$") or PIN_LIBS[name]) then
-			local state = SetUpPins(name, lib)
-			if state == "unknown" then
-				Tell(name)
-			elseif state == "waiting" then
-				pending[name] = (pending[name] or 0) + (opening == true and 1 or 0)
-				if pending[name] > OPEN_TRIES then Tell(name) end
-			else
-				pending[name] = nil
-			end
+	local function One(name, lib)
+		local state = SetUpPins(name, lib)
+		if state == "unknown" then
+			Tell(name)
+		elseif state == "waiting" then
+			pending[name] = (pending[name] or 0) + (opening == true and 1 or 0)
+			if pending[name] > OPEN_TRIES then Tell(name) end
+		else
+			pending[name] = nil
 		end
 	end
+	if LibStub and LibStub.IterateLibraries then
+		for name, lib in LibStub:IterateLibraries() do
+			if type(name) == "string" and (name:match("^HereBeDragons.*%-Pins%-2%.0$") or PIN_LIBS[name]) then One(name, lib) end
+		end
+	end
+	local q = QuestieModule()
+	if q then One(QUESTIE_MODULE, q) end
 end
 
 -- a copy still waiting for its pool (Questie still setting up as the map first opened after a login,
@@ -628,7 +654,7 @@ function mod.QuestieStatus()
 	if not questie.pins then return nil end
 	local registered, shown = 0, 0
 	for _ in pairs(questie.pins.worldmapPins or {}) do registered = registered + 1 end
-	for _ in map:EnumeratePinsByTemplate("HereBeDragonsPinsTemplateQuestie") do shown = shown + 1 end
+	for _ in map:EnumeratePinsByTemplate(questie.template or "HereBeDragonsPinsTemplateQuestie") do shown = shown + 1 end
 	return registered, shown, questie.placed, questie.ours, questie.moved
 end
 
