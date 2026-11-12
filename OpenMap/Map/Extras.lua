@@ -19,7 +19,7 @@ d.coords = true
 d.zoneLevels = true
 d.moveFade = 0                  -- how much the map fades while you move (0 to 0.9)
 d.mapFpsCap = 0                 -- the frame rate at most while the map shows (the game's maxFPS, held then; 0: off)
-d.zoomHidePins = true           -- other addons' icons (Questie's ...) hidden while the map zooms
+d.zoomHidePins = false          -- other addons' icons (Questie's ...) hidden while the map zooms (off from v0.8.6)
 
 local map, sc, bar
 local labelProvider                     -- Blizzard's area label

@@ -2,12 +2,10 @@
 
 ## v0.8.6 (2026-11-12)
 
-### Fixed
+### Improved
 
-- **Questie's icons show again with Questie 12.8**: Questie 12.8 brings its map icons a new way (its
-  own module, with a new name), which OpenMap didn't know, so they were left off the map; and each icon
-  Questie drew again sank under the map's art, so they faded away one by one. Older Questie versions
-  work as before (#18). With bv101rj.
+- **Icons stay shown while zooming**: "Fade icons while zooming" is now off for everyone, as zooming is
+  smooth enough with them shown; turn it on again in the menu's On the map tab if you prefer it.
 
 ## v0.8.5 (2026-11-12)
 

@@ -53,6 +53,9 @@ function mod.Migrate(db)
 	-- (friends and guild were one switch too, `friends`, and its menu row's id: the friends row keeps
 	-- that id, and a save's single choice carries to the guild's switch too)
 	if db.guild == nil then db.guild = db.friends end
+	-- ("Fade icons while zooming" off from v0.8.6, once for every save: the defaults were written into each
+	-- save, so one never touched has it on all the same; turned on again after this, it stays on)
+	if not db.zoomHidePinsOff then db.zoomHidePins, db.zoomHidePinsOff = false, true end
 end
 
 local ICONS_FROM = { 0, 20, 0.5 }   -- iconsFrom's least (0: Auto), most, step (zoom: times the whole-world view)

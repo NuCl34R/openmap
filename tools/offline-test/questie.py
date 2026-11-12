@@ -87,5 +87,30 @@ class Questie(unittest.TestCase):
         self.assertIn("name == mod.QUESTIE_MODULE", src)
 
 
+class FadeWhileZooming(unittest.TestCase):
+    """"Fade icons while zooming" off from v0.8.6 (Extras.lua's default), for saves made before too, once
+    (WorldMap.lua's Migrate: each save has the old default written in); turned on again, it stays on"""
+
+    def setUp(self):
+        self.lua = LuaRuntime(unpack_returned_tuples=True)
+        src = (ROOT / "OpenMap" / "Map" / "WorldMap.lua").read_text(encoding="utf-8")
+        m = re.search(r"\nfunction mod\.Migrate\(db\).*?\nend\n", src, re.S)
+        self.assertIsNotNone(m, "Migrate in WorldMap.lua")
+        self.lua.execute("mod = {}\n" + m.group(0))
+
+    def test_default_off(self):
+        self.assertIn("d.zoomHidePins = false", SRC)
+
+    def test_old_save_turned_off_once(self):
+        self.lua.execute("""
+            db = { zoomHidePins = true }
+            mod.Migrate(db)
+            assert(db.zoomHidePins == false and db.zoomHidePinsOff == true)
+            db.zoomHidePins = true                          -- (turned on again in the menu)
+            mod.Migrate(db)
+            assert(db.zoomHidePins == true)
+        """)
+
+
 if __name__ == "__main__":
     unittest.main()
