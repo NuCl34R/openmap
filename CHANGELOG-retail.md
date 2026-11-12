@@ -5,8 +5,9 @@
 ### Fixed
 
 - **Questie's icons show again with Questie 12.8**: Questie 12.8 brings its map icons a new way (its
-  own module, with a new name), which OpenMap didn't know, so they didn't show on the map at all. Older
-  Questie versions work as before (#18).
+  own module, with a new name), which OpenMap didn't know, so they were left off the map; and each icon
+  Questie drew again sank under the map's art, so they faded away one by one. Older Questie versions
+  work as before (#18). With bv101rj.
 
 ## v0.8.5 (2026-11-12)
 

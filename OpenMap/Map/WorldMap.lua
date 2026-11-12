@@ -1537,6 +1537,14 @@ function mod:Diag()
 		ns:Print("Questie: %d map icons, %d on this map (%d placed by Questie, %d of those moved to Forever's positions, %d placed by OpenMap), map %d.",
 			registered, shown, placed, moved, ours, map:GetMapID() or 0)
 	end
+	local lost = mod.QuestieLost and mod.QuestieLost()
+	if lost then
+		ns:Print("Questie's pins: %d; pin hidden %d, no icon %d, icon off its pin %d, icon hidden %d, see-through %d, under the art %d.",
+			lost.pins, lost.pinHidden, lost.noIcon, lost.offPin, lost.hidden, lost.faint, lost.under)
+		local k = math.max(lost.pins - lost.noIcon, 1)
+		ns:Print("Questie's icons: %d visible; on screen %.1f px across on average (scale %.2f, pins' own %.2f); top level %d, art's top %d.",
+			lost.visible, lost.size / k, lost.scale / k, lost.pinScale / k, lost.level, S.artTop or 0)
+	end
 	local cv = S.closeView or {}
 	ns:Print("Up close: zoom %.1f, softening %.0f%%, minimap %.0f%% (%d tiles, %d in the gaps); %d view updates, the last %.1fs ago; %.2f ms each (worst %.1f).",
 		cv.zoom or 0, (cv.soft or 0) * 100, (cv.mix or 0) * 100, cv.tiles or 0, cv.gapTiles or 0,
